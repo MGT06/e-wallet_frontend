@@ -6,7 +6,7 @@ import heroImage from "../assets/hero-image.png";
 
 const HomePage = () => {
   return (
-    <section className="px-14 pt-10 bg-primary text-white">
+    <section className="lg:px-14 px-6 pt-8 lg:pt-10 bg-primary text-white">
       <div className="grid gap-6 lg:w-10/12 mx-auto">
         <h2 className="md:text-6xl text-4xl md:text-center">
           Experience the Future of Digital Payments with e-wallet
