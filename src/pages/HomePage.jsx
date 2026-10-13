@@ -1,5 +1,14 @@
+// import Login from "./auth/login";
+import Register from "./auth/register.jsx";
+
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <Register/>
+      {/* <Login/> */}
+    </>
+  );
 };
 
 export default HomePage;
