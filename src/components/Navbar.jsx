@@ -30,20 +30,24 @@ const Navbar = () => {
           </ul>
         </nav>
         <nav className="md:hidden">
-          <CgClose
-            onClick={handleClick}
+          <div
             className={
-              navOpen ? "text-3xl text-white cursor-pointer" : "hidden"
+              navOpen ? "text-3xl text-white cursor-pointer p-2" : "hidden"
             }
-          />
-          <CgMenuRightAlt
             onClick={handleClick}
+          >
+            <CgClose />
+          </div>
+          <div
             className={
-              navOpen ? "hidden" : "text-3xl text-white cursor-pointer"
+              navOpen ? "hidden" : "text-3xl text-white cursor-pointer p-2"
             }
-          />
+            onClick={handleClick}
+          >
+            <CgMenuRightAlt />
+          </div>
           <ul
-            className={`${navOpen ? "top-14" : "bg-primary opacity-0 -top-42"} absolute section-container flex flex-col gap-4 left-0 w-full rounded-b-2xl shadow-lg bg-white transition-all ease-in`}
+            className={`${navOpen ? "top-19" : "bg-primary opacity-0 -top-42"} absolute p-4 flex flex-col gap-2 left-0 w-full rounded-b-2xl shadow-lg bg-white transition-all ease-in`}
           >
             <li className="py-2 px-4 text-center text-primary rounded-lg">
               <Link to="/login">Sign In</Link>
