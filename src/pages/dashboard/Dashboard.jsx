@@ -21,10 +21,10 @@ export default function Dashboard() {
     datasets: [
       {
         data: [15000, 2000, 90000, 30000, 45000, 22000, 18000],
-        backgroundColor: "#2948ff", 
+        backgroundColor: "#2948ff",
         borderRadius: 6,
         borderSkipped: false,
-        barThickness: 32, 
+        barThickness: 32,
       },
     ],
   };
