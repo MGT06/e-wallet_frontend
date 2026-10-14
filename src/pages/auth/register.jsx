@@ -6,6 +6,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu"; 
 import gamberRegis from '../../assets/tanganDompet.svg'
+import { Link } from 'react-router';
 
 
 export default function Register() {  
@@ -96,7 +97,7 @@ export default function Register() {
             </div>
 
             <div className='bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer'>Register</div>
-            <div className='flex justify-center items-center text-dark-gray'>Have An Account?<span className='text-primary ml-1 cursor-pointer'>Login</span></div>
+            <div className='flex justify-center items-center text-dark-gray'>Have An Account?<Link to={"/login"} className='text-primary ml-1 cursor-pointer'>Login</Link></div>
         </section>
       </div>
 
