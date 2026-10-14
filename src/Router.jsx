@@ -7,9 +7,6 @@ import Register from "./pages/auth/register";
 import AuthLayout from "./layouts/AuthLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import Dashboard from "./pages/Dashboard";
-import History from "./pages/dashboard/History";
-import TopUp from "./pages/dashboard/TopUp";
-import Profile from "./pages/dashboard/Profile";
 import TransferLayout from "./layouts/TrasferLayout";
 import FindPeople from "./pages/transfer/FindPeople";
 
@@ -34,9 +31,9 @@ const Router = () => {
           <Route path="find" element={<FindPeople />} />
         </Route>
 
-        <Route path="/history" element={<History />} />
+        {/* <Route path="/history" element={<History />} />
         <Route path="/topup" element={<TopUp />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} /> */}
       </Route>
     </Routes>
   );
