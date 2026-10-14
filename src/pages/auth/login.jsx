@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import LOGO from '../../../public/LOGO.png'
 import logoGogle from '../../assets/google.svg'
 import logoFacebook from '../../assets/facebookLogo.svg'
 import { MdOutlineEmail } from "react-icons/md";
@@ -19,7 +18,7 @@ export default function Login() {
         <section className="w-full max-w-md flex flex-col gap-4">
             <div className='flex items-center'>
                 <div className='h-10 w-10'>
-                <img src={LOGO} alt="logo-apps" className="w-full h-full object-cover"/>
+                <img src="./LOGO.png" alt="logo-apps" className="w-full h-full object-cover"/>
                 </div>
                 <div className='text-2xl font-semibold text-primary'>E-Wallet</div>
             </div>
