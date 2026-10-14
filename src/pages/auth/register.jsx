@@ -34,14 +34,15 @@ export default function Register() {
             </div>
 
             <div className='grid grid-cols-2 md:grid-cols-1 gap-3'>
-              <div className='border border-dark-gray/30 rounded-3xl h-12 py-1.5 px-19 flex justify-center items-center md:px-51 md:py-1'>
-                <img src={logoGogle} alt="logo-google" className='h-full w-full object-cover'/>
+              <button className='cursor-pointer border border-dark-gray/30 rounded-3xl h-12 py-1.5 px-19 flex justify-center items-center md:px-51 md:py-1'>
+                <img src={logoGogle} alt="logo-google" className='min-h-8 min-w-8 object-cover'/>
                 <span className='hidden md:flex md:whitespace-nowrap md:ml-2'>Sign In With Google</span>
-              </div>
-              <div className='border border-dark-gray/30 rounded-3xl h-12 py-1 px-19 flex justify-center items-center md:px-51 md:py-1.5'>
-                <img src={logoFacebook} alt="logo-facebook" className='h-full w-full object-cover'/>
+              </button>
+              
+              <button className='cursor-pointer border border-dark-gray/30 rounded-3xl h-12 py-1 px-19 flex justify-center items-center md:px-51 md:py-1.5'>
+                <img src={logoFacebook} alt="logo-facebook" className='min-h-8 min-w-8 object-cover'/>
                 <span className='hidden md:flex md:whitespace-nowrap md:ml-2'>Sign In With Facebook</span>
-              </div>
+              </button>
             </div>
 
             <div className='flex w-full items-center gap-4 text-dark-gray/50'>
@@ -96,7 +97,10 @@ export default function Register() {
               </div>
             </div>
 
-            <div className='bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer'>Register</div>
+            <button className='bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer'>
+              Register
+            </button>
+
             <div className='flex justify-center items-center text-dark-gray'>Have An Account?<Link to={"/login"} className='text-primary ml-1 cursor-pointer'>Login</Link></div>
         </section>
       </div>
