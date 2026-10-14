@@ -5,6 +5,9 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import AuthLayout from "./layouts/AuthLayout";
+import TransferLayout from "./layouts/TrasferLayout";
+import FindPeople from "./pages/transfer/FindPeople";
+import ProtectedLayout from "./layouts/ProtectedLayout";
 
 const Router = () => {
   return (
@@ -16,7 +19,14 @@ const Router = () => {
 
       <Route element={<MainLayout />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="home" element={<HomePage />} />
+      </Route>
+
+      <Route element={<ProtectedLayout />}>
+        <Route path="/transfer" element={<TransferLayout />}>
+          <Route index element={<Navigate to="find" replace />} />
+          <Route path="find" element={<FindPeople />} />
+        </Route>
       </Route>
     </Routes>
   );
