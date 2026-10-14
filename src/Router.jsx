@@ -7,10 +7,11 @@ import Register from "./pages/auth/register";
 import AuthLayout from "./layouts/AuthLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
-import Transfer from "./pages/dashboard/Transfer";
 import History from "./pages/dashboard/History";
 import TopUp from "./pages/dashboard/TopUp";
 import Profile from "./pages/dashboard/Profile";
+import TransferLayout from "./layouts/TrasferLayout";
+import FindPeople from "./pages/transfer/FindPeople";
 
 const Router = () => {
   return (
@@ -26,18 +27,16 @@ const Router = () => {
       </Route>
 
       <Route element={<ProtectedLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/transfer" element={<TransferLayout />}>
           <Route index element={<Navigate to="find" replace />} />
           <Route path="find" element={<FindPeople />} />
         </Route>
-      </Route>
 
-      <Route element={<ProtectedLayout/>}>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-      <Route path="/transfer" element={<Transfer/>}/>
-      <Route path="/history" element={<History/>}/>
-      <Route path="/topup" element={<TopUp/>}/>
-      <Route path="/profile" element={<Profile/>}/>
+        <Route path="/history" element={<History />} />
+        <Route path="/topup" element={<TopUp />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );
