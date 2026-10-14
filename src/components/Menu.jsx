@@ -7,7 +7,7 @@ import { NavLink } from "react-router";
 
 export default function Menu() {
   return (
-    <nav className="bg-white flex gap-4 p-2 fixed bottom-0 w-full justify-center items-center shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+    <nav className="lg:hidden bg-white flex gap-4 p-2 fixed bottom-0 w-screen justify-center items-center shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
 
       <div className="grid grid-cols-5 gap-2 py-2 text-sm">
 
