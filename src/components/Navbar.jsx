@@ -12,7 +12,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-primary border-b border-white/20">
+    <header className="bg-primary border-b border-white/20 sticky top-0 left-0 right-0">
       <div className="container flex items-center justify-between">
         <h1>
           <Link to="/">
