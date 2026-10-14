@@ -1,3 +1,4 @@
+import CTASection from "../components/Home/CTASection";
 import FeaturesSection from "../components/Home/FeaturesSection";
 import HeroSection from "../components/Home/HeroSection";
 import ServicesSection from "../components/Home/ServicesSection";
@@ -12,6 +13,7 @@ const HomePage = () => {
       <WelcomeSection />
       <FeaturesSection />
       <TestimoniesSection />
+      <CTASection />
     </>
   );
 };
