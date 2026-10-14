@@ -5,7 +5,7 @@ import playStore from "../../assets/gplay.svg";
 
 const CTASection = () => {
   return (
-    <section className="container">
+    <section className="bg-gray container">
       <div className="flex flex-col-reverse lg:flex-row items-center justify-between">
         <img className="w-94 mt-16 lg:mt-0" src={ctaImage} alt="cta_image" />
         <div className="grid gap-8 lg:gap-4 lg:w-6/12">
