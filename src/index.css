@@ -32,7 +32,7 @@ body {
     margin: auto;
 
     @media (max-width: 600px) {
-      padding: 34px 24px;
+      padding: 52px 24px;
     }
   }
 }
