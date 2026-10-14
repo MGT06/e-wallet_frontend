@@ -9,6 +9,7 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import Dashboard from "./pages/Dashboard";
 import TransferLayout from "./layouts/TrasferLayout";
 import FindPeople from "./pages/transfer/FindPeople";
+import SetNominal from "./pages/transfer/SetNominal";
 
 const Router = () => {
   return (
@@ -29,11 +30,8 @@ const Router = () => {
         <Route path="/transfer" element={<TransferLayout />}>
           <Route index element={<Navigate to="find" replace />} />
           <Route path="find" element={<FindPeople />} />
+          <Route path="nominal" element={<SetNominal />} />
         </Route>
-
-        {/* <Route path="/history" element={<History />} />
-        <Route path="/topup" element={<TopUp />} />
-        <Route path="/profile" element={<Profile />} /> */}
       </Route>
     </Routes>
   );
