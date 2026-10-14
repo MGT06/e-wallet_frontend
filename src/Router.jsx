@@ -15,14 +15,14 @@ import Profile from "./pages/dashboard/Profile";
 const Router = () => {
   return (
     <Routes>
-      <Route element={<AuthLayout/>}>
+      <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
 
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Navigate to="/home" replace />}></Route>
-        <Route path="/home" element={<HomePage />}></Route>
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/home" element={<HomePage />} />
       </Route>
 
       <Route element={<ProtectedLayout/>}>
