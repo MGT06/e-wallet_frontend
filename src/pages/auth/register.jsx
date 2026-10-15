@@ -6,11 +6,22 @@ import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu"; 
 import gamberRegis from '../../assets/tanganDompet.svg'
 import { Link } from 'react-router';
+import { useForm } from 'react-hook-form';
 
 
 export default function Register() {  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: {errors}
+  } = useForm()
+
+  const onSubmit = (data) =>{
+    console.log(data);
+  }
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -68,67 +79,90 @@ export default function Register() {
             <div className="flex-1 border-t border-dark-gray/20" />
           </div>
 
-          <div className="flex w-full flex-col">
-            <label>Email</label>
-            <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
-              <MdOutlineEmail size={20} />
-              <input
-                type="email"
-                placeholder="Enter Your Email"
-                className="outline-none w-full"
-              />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex w-full flex-col">
+              <label>Email</label>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <MdOutlineEmail size={20} />
+                <input
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                  type="email"
+                  placeholder="Enter Your Email"
+                  className="outline-none w-full"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="flex w-full flex-col">
-            <label>Password</label>
-            <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
-              <IoMdKey
-                className="border-2 border-slate-700 rounded-sm text-xl"
-                size={16}
-              />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter Your Password"
-                className="outline-none w-full"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="text-gray-500 focus:outline-none">
-                {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
-              </button>
+            <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+              {errors.email?.message}
+            </p>
+
+            <div className="flex w-full flex-col">
+              <label>Password</label>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <IoMdKey
+                  className="border-2 border-slate-700 rounded-sm text-xl"
+                  size={16}
+                />
+                <input
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Your Password"
+                  className="outline-none w-full"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-gray-500 focus:outline-none">
+                  {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="flex w-full flex-col">
-            <label>Confirm Password</label>
-            <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
-              <IoMdKey
-                className="border-2 border-slate-600 rounded-sm text-xl"
-                size={16}
-              />
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Enter Your Password Again"
-                className="outline-none w-full"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="text-gray-500 focus:outline-none">
-                {showConfirmPassword ? (
-                  <LuEye size={20} />
-                ) : (
-                  <LuEyeOff size={20} />
-                )}
-              </button>
+            <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+              {errors.password?.message}
+            </p>
+
+            <div className="flex w-full flex-col">
+              <label>Confirm Password</label>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <IoMdKey
+                  className="border-2 border-slate-600 rounded-sm text-xl"
+                  size={16}
+                />
+                <input
+                  {...register("cpassword", {
+                    required: "Confirm Password is required",
+                  })}
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Enter Your Password Again"
+                  className="outline-none w-full"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="text-gray-500 focus:outline-none">
+                  {showConfirmPassword ? (
+                    <LuEye size={20} />
+                  ) : (
+                    <LuEyeOff size={20} />
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
 
-          <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer">
-            Register
-          </button>
+            <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+              {errors.cpassword?.message}
+            </p>
+
+            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90 shadow-lg">
+              Register
+            </button>
+          </form>
 
           <div className="flex justify-center items-center text-dark-gray">
             Have An Account?
