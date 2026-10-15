@@ -15,7 +15,7 @@ const FailedModal = () => {
           </div>
           <div className="grid gap-1 text-center lg:text-xs">
             <p className="text-lg font-semibold">
-              Yeay Transfer <span className="text-red">Failed</span>
+              Oops Transfer <span className="text-red">Failed</span>
             </p>
             <p className="text-dark-gray">
               Sorry Theres is an issue for your transfer, try again later !
