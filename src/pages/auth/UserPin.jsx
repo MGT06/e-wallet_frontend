@@ -26,17 +26,17 @@ export default function PinPage() {
   });
 
   const onSubmit = (data) => {
-    // Validasi tambahan: Pastikan semua 6 digit terisi
-    const isComplete = data.pin.every((digit) => digit !== '');
+    
+    const isComplete = data.pin.every((digit) => digit !== "");
     if (!isComplete) {
-      return; // Atau set custom error jika perlu
+      return;
     }
 
     const fullPin = data.pin.join('');
     console.log('PIN Submitted:', fullPin);
   };
 
-  // Cek apakah ada error di salah satu input pin
+  
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
 
   return (
@@ -55,7 +55,6 @@ export default function PinPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           <div className="flex justify-between gap-2" onPaste={handlePaste}>
             {[0, 1, 2, 3, 4, 5].map((index) => {
-              // Tambahkan opsi validasi required & pattern angka di register
               const { ref: registerRef, ...restRegister } = register(
                 `pin.${index}`,
                 {
@@ -93,11 +92,9 @@ export default function PinPage() {
             })}
           </div>
 
-          {/* Tampilkan pesan error jika ada salah satu field yang error */}
           <div className="mt-2 h-6">
             {hasPinError && (
               <p className="text-xs text-red-500">
-                {/* Ambil pesan error dari digit pertama yang bermasalah */}
                 {errors.pin.find((err) => err?.message)?.message ||
                   "PIN belum lengkap"}
               </p>
