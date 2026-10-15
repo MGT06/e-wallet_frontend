@@ -1,10 +1,12 @@
 import { IoPaperPlaneOutline } from "react-icons/io5";
 
 import { Outlet } from "react-router";
+import FailedModal from "../components/transfer/FailedModal";
 
 const TrasferLayout = () => {
   return (
     <>
+      <FailedModal />
       <div className="lg:pr-11">
         <div className="lg:grid gap-4 hidden lg:px-8 py-6">
           <div className="flex items-center gap-2">
