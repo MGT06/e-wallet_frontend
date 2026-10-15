@@ -35,7 +35,18 @@ body {
       padding: 52px 24px;
     }
   }
+
+  * Class untuk menyembunyikan scroll up/down pada input number */
+  .no-scrollbar-number::-webkit-inner-spin-button,
+  .no-scrollbar-number::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .no-scrollbar-number {
+    -moz-appearance: textfield;
+  }
 }
+
 
 .swiper {
   width: 100%;

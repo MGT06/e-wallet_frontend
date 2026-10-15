@@ -12,6 +12,7 @@ import FindPeople from "./pages/transfer/FindPeople";
 import SetNominal from "./pages/transfer/SetNominal";
 import HistoryPage from "./pages/HistoryPage";
 import Forgot from "./pages/auth/Forgot";
+import UserPin from "./pages/auth/UserPin";
 
 const Router = () => {
   return (
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot" element={<Forgot />} />
+        <Route path="/pin" element={<UserPin />} />
       </Route>
 
       <Route element={<MainLayout />}>
