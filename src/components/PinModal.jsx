@@ -19,36 +19,8 @@ const PinModal = () => {
             </div>
           </div>
           <div className="flex gap-2 justify-around">
-            <div className="p-2 border-b-2 border-b-primary w-fit">
-              <input
-                className="text-5xl lg:text-3xl w-8 outline-none"
-                type="number"
-                placeholder="1"
-              />
-            </div>
-            <div className="p-2 border-b-2 border-b-dark-gray/50 w-fit">
-              <input
-                className="text-5xl lg:text-3xl w-8 outline-none"
-                type="number"
-              />
-            </div>
-            <div className="p-2 border-b-2 border-b-dark-gray/50 w-fit">
-              <input
-                className="text-5xl lg:text-3xl w-8 outline-none"
-                type="number"
-              />
-            </div>
-            <div className="p-2 border-b-2 border-b-dark-gray/50 w-fit">
-              <input
-                className="text-5xl lg:text-3xl w-8 outline-none"
-                type="number"
-              />
-            </div>
-            <div className="p-2 border-b-2 border-b-dark-gray/50 w-fit">
-              <input
-                className="text-5xl lg:text-3xl w-8 outline-none"
-                type="number"
-              />
+            <div className="grid grid-cols-6 gap-2 lg:gap-4">
+              {/* pin */}
             </div>
           </div>
           <div className="grid gap-4 mt-8 text-center">
