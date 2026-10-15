@@ -18,7 +18,7 @@ export default function Login() {
     formState: {errors},    
   } = useForm()
 
-  const here = (data) =>{
+  const onSubmit = (data) =>{
     console.log(data);
   }
 
@@ -72,7 +72,7 @@ export default function Login() {
             <span className="text-sm">or</span>
             <div className="flex-1 border-t border-dark-gray/20" />
           </div>
-          <form onSubmit={handleSubmit(here)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex w-full flex-col">
               <label>Email</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
