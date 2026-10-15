@@ -15,15 +15,15 @@ const Navbar = () => {
     setNavOpen(!navOpen);
   };
 
-  useEffect(() => {
-    (() => {
-      setUser({
-        name: "Ghaluh Wizard",
-        img_url:
-          "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
-      });
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (() => {
+  //     setUser({
+  //       name: "Ghaluh Wizard",
+  //       img_url:
+  //         "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
+  //     });
+  //   })();
+  // }, []);
 
   return (
     <header
@@ -33,7 +33,11 @@ const Navbar = () => {
         <h1>
           <Link to="/" className="flex gap-2 items-center">
             <img className="h-7" src="./LOGO.png" alt="e-wallet_logo" />
-            <p className="font-semibold text-primary">E Wallet</p>
+            <p
+              className={`${user ? "text-primary" : "text-white"} font-semibold`}
+            >
+              E Wallet
+            </p>
           </Link>
         </h1>
         <nav className="hidden md:block">
