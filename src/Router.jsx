@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import TransferLayout from "./layouts/TrasferLayout";
 import FindPeople from "./pages/transfer/FindPeople";
 import SetNominal from "./pages/transfer/SetNominal";
+import HistoryPage from "./pages/HistoryPage";
 
 const Router = () => {
   return (
@@ -32,6 +33,8 @@ const Router = () => {
           <Route path="find" element={<FindPeople />} />
           <Route path="nominal" element={<SetNominal />} />
         </Route>
+
+        <Route path="/history" element={<HistoryPage />} />
       </Route>
     </Routes>
   );
