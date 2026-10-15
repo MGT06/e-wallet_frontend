@@ -6,10 +6,21 @@ import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu"; 
 import gamberLogin from '../../assets/tanganLogin.svg'
 import { Link, NavLink } from 'react-router';
+import { useForm } from 'react-hook-form';
 
 
 export default function Login() {  
   const [showPassword, setShowPassword] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},    
+  } = useForm()
+
+  const here = (data) =>{
+    console.log(data);
+  }
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -61,46 +72,61 @@ export default function Login() {
             <span className="text-sm">or</span>
             <div className="flex-1 border-t border-dark-gray/20" />
           </div>
-
-          <div className="flex w-full flex-col">
-            <label>Email</label>
-            <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
-              <MdOutlineEmail size={20} />
-              <input
-                type="email"
-                placeholder="Enter Your Email"
-                className="outline-none w-full"
-              />
+          <form onSubmit={handleSubmit(here)}>
+            <div className="flex w-full flex-col">
+              <label>Email</label>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <MdOutlineEmail size={20} />
+                <input
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                  type="email"
+                  placeholder="Enter Your Email"
+                  className="outline-none w-full"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="flex w-full flex-col">
-            <div className='flex justify-between'>
-              <label>Password</label>
-              <NavLink className="text-primary hover:text-primary/60" to="/forgot">Forgot Password?</NavLink>
-            </div>
-            <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
-              <IoMdKey
-                className="border-2 border-slate-700 rounded-sm text-xl"
-                size={16}
-              />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter Your Password"
-                className="outline-none w-full"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="text-gray-500 focus:outline-none">
-                {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
-              </button>
-            </div>
-          </div>
+            <p className="m-2 text-xs sm:text-xs h-6  text-red-500">{errors.email?.message}</p>
 
-          <div className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer">
-            Login
-          </div>
+            <div className="flex w-full flex-col">
+              <div className="flex justify-between">
+                <label>Password</label>
+                <NavLink
+                  className="text-primary hover:text-primary/60"
+                  to="/forgot">
+                  Forgot Password?
+                </NavLink>
+              </div>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <IoMdKey
+                  className="border-2 border-slate-700 rounded-sm text-xl"
+                  size={16}
+                />
+                <input
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Your Password"
+                  className="outline-none w-full"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-gray-500 focus:outline-none">
+                  {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <p className="m-2 text-xs sm:text-xs h-6  text-red-500">{errors.password?.message}</p>
+
+            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-green-500">
+              Login
+            </button>
+          </form>
           <div className="flex justify-center items-center text-dark-gray">
             Have An Account?
             <Link to={"/register"} className="text-primary ml-1 cursor-pointer">
