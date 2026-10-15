@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { usePinInput } from '../../components/UsePinInput';
 import { NavLink } from 'react-router';
 
@@ -8,15 +8,15 @@ export default function PinPage() {
     handleSubmit,
     setValue,
     getValues,
-    watch,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      pin: ['', '', '', '', '', ''],
+      pin: ["", "", "", "", "", ""],
     },
   });
 
-  const pinValues = watch('pin');
+  const pinValues = useWatch({ control, name: 'pin' });
 
   const { inputRefs, handleChange, handleKeyDown, handlePaste } = usePinInput({
     length: 6,
