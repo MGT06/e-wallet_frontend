@@ -4,7 +4,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuTrash, LuUserRound } from "react-icons/lu";
 import { Link } from "react-router";
 
-const MyProfile = () => {
+const EditProfile = () => {
   const {
     register,
     handleSubmit,
@@ -120,4 +120,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default EditProfile;
