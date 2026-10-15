@@ -5,7 +5,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu"; 
 import gamberLogin from '../../assets/tanganLogin.svg'
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 
 export default function Login() {  
@@ -75,7 +75,10 @@ export default function Login() {
           </div>
 
           <div className="flex w-full flex-col">
-            <label>Password</label>
+            <div className='flex justify-between'>
+              <label>Password</label>
+              <NavLink className="text-primary hover:text-primary/60" to="/forgot">Forgot Password?</NavLink>
+            </div>
             <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
               <IoMdKey
                 className="border-2 border-slate-700 rounded-sm text-xl"
