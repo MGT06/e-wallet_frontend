@@ -13,15 +13,21 @@ import SetNominal from "./pages/transfer/SetNominal";
 import HistoryPage from "./pages/HistoryPage";
 import Forgot from "./pages/auth/Forgot";
 import UserPin from "./pages/auth/UserPin";
+import ProfileLayout from "./layouts/ProfileLayout";
+import EditProfile from "./pages/profile/EditProfile";
+import MyProfile from "./pages/profile/MyProfile";
+import ChangePin from "./pages/profile/ChangePin";
+import ChangePassword from "./pages/profile/ChangePassword";
 
 const Router = () => {
   return (
     <Routes>
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot" element={<Forgot />} />
-        <Route path="/pin" element={<UserPin />} />
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route index element={<Navigate to="login" replace />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="forgot" element={<Forgot />} />
+        <Route path="pin" element={<UserPin />} />
       </Route>
 
       <Route element={<MainLayout />}>
@@ -39,6 +45,13 @@ const Router = () => {
         </Route>
 
         <Route path="/history" element={<HistoryPage />} />
+
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route index element={<MyProfile />} />
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="change-pin" element={<ChangePin />} />
+          <Route path="change-password" element={<ChangePassword />} />
+        </Route>
       </Route>
     </Routes>
   );
