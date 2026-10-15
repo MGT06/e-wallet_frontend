@@ -11,6 +11,8 @@ import TransferLayout from "./layouts/TrasferLayout";
 import FindPeople from "./pages/transfer/FindPeople";
 import SetNominal from "./pages/transfer/SetNominal";
 import HistoryPage from "./pages/HistoryPage";
+import ProfileLayout from "./layouts/ProfileLayout";
+import EditProfile from "./pages/profile/EditProfile";
 
 const Router = () => {
   return (
@@ -35,6 +37,10 @@ const Router = () => {
         </Route>
 
         <Route path="/history" element={<HistoryPage />} />
+
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route path="edit" element={<EditProfile />} />
+        </Route>
       </Route>
     </Routes>
   );
