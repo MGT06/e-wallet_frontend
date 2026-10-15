@@ -55,7 +55,7 @@ const EditProfile = () => {
                 id="full_name"
                 type="text"
                 className={`${errors?.full_name?.message && "outline outline-red"}  focus:outline-none w-full`}
-                placeholder="Ghaluh Wizard Anggoro"
+                placeholder="Enter Full Name"
                 {...register("full_name")}
               />
             </div>
@@ -70,7 +70,7 @@ const EditProfile = () => {
                 id="phone"
                 type="text"
                 className={`${errors?.phone?.message && "outline outline-red"}  focus:outline-none w-full`}
-                placeholder="Ghaluh Wizard Anggoro"
+                placeholder="Enter Your Number Phone"
                 {...register("phone")}
               />
             </div>
@@ -85,7 +85,7 @@ const EditProfile = () => {
                 id="email"
                 type="text"
                 className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
-                placeholder="Ghaluh Wizard Anggoro"
+                placeholder="Enter Your Email"
                 {...register("email")}
               />
             </div>
