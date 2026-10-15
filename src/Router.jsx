@@ -6,11 +6,10 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import AuthLayout from "./layouts/AuthLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Transfer from "./pages/dashboard/Transfer";
-import History from "./pages/dashboard/History";
-import TopUp from "./pages/dashboard/TopUp";
-import Profile from "./pages/dashboard/Profile";
+import Dashboard from "./pages/Dashboard";
+import TransferLayout from "./layouts/TrasferLayout";
+import FindPeople from "./pages/transfer/FindPeople";
+import SetNominal from "./pages/transfer/SetNominal";
 
 const Router = () => {
   return (
@@ -22,15 +21,17 @@ const Router = () => {
 
       <Route element={<MainLayout />}>
         <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="home" element={<HomePage />} />
       </Route>
 
-      <Route element={<ProtectedLayout/>}>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-      <Route path="/transfer" element={<Transfer/>}/>
-      <Route path="/history" element={<History/>}/>
-      <Route path="/topup" element={<TopUp/>}/>
-      <Route path="/profile" element={<Profile/>}/>
+      <Route element={<ProtectedLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/transfer" element={<TransferLayout />}>
+          <Route index element={<Navigate to="find" replace />} />
+          <Route path="find" element={<FindPeople />} />
+          <Route path="nominal" element={<SetNominal />} />
+        </Route>
       </Route>
     </Routes>
   );
