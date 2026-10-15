@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 import { TbSquareKey } from "react-icons/tb";
 
 const ChangePassword = () => {
@@ -8,9 +10,18 @@ const ChangePassword = () => {
     formState: { errors },
   } = useForm();
 
+  const [showPassword, setShowPassword] = useState({
+    existing_password: false,
+    new_password: false,
+    confirm_password: false,
+  });
+
   const onSubmit = () => {
     console.log("first");
   };
+
+  console.log(showPassword);
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="mb-4">
@@ -29,11 +40,29 @@ const ChangePassword = () => {
               <TbSquareKey className="text-lg text-dark-gray" />
               <input
                 id="existing_password"
-                type="password"
+                type={showPassword.existing_password ? "text" : "password"}
                 className={`${errors?.existing_password?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Existing Password"
                 {...register("existing_password")}
               />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword((prev) => {
+                    return {
+                      ...prev,
+                      existing_password: !prev.existing_password,
+                    };
+                  })
+                }
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
+                {showPassword.existing_password ? (
+                  <LuEye size={20} />
+                ) : (
+                  <LuEyeOff size={20} />
+                )}
+              </button>
             </div>
           </div>
           <div className="grid gap-2">
@@ -47,11 +76,26 @@ const ChangePassword = () => {
               <TbSquareKey className="text-lg text-dark-gray" />
               <input
                 id="new_password"
-                type="password"
+                type={showPassword.new_password ? "text" : "password"}
                 className={`${errors?.new_password?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your New Password"
                 {...register("new_password")}
               />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword((prev) => {
+                    return { ...prev, new_password: !prev.new_password };
+                  })
+                }
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
+                {showPassword.new_password ? (
+                  <LuEye size={20} />
+                ) : (
+                  <LuEyeOff size={20} />
+                )}
+              </button>
             </div>
           </div>
           <div className="grid gap-2">
@@ -65,11 +109,29 @@ const ChangePassword = () => {
               <TbSquareKey className="text-lg text-dark-gray" />
               <input
                 id="confirm_password"
-                type="password"
+                type={showPassword.confirm_password ? "text" : "password"}
                 className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Re-type your new password"
                 {...register("confirm_password")}
               />
+              <button
+                type="button"
+                onClick={() =>
+                  setShowPassword((prev) => {
+                    return {
+                      ...prev,
+                      confirm_password: !prev.confirm_password,
+                    };
+                  })
+                }
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
+                {showPassword.confirm_password ? (
+                  <LuEye size={20} />
+                ) : (
+                  <LuEyeOff size={20} />
+                )}
+              </button>
             </div>
           </div>
           <button
