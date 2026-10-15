@@ -1,8 +1,19 @@
+import { useForm } from "react-hook-form";
 import { CiStar } from "react-icons/ci";
 import { HiCash } from "react-icons/hi";
 import { VscVerified } from "react-icons/vsc";
 
 const SetNominal = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = () => {
+    console.log("first");
+  };
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="flex flex-col justify-between gap-6">
@@ -32,39 +43,59 @@ const SetNominal = () => {
             </div>
           </div>
         </div>
-        <div>
-          <h2 className="font-semibold">Amount</h2>
-          <p className="text-dark-gray lg:text-sm">
-            Type the amount you want to transfer and then press continue to the
-            next steps.
-          </p>
-        </div>
-        <div className="flex items-center gap-2  py-2 px-4 rounded-lg border border-dark-gray/20">
-          <HiCash className="text-2xl" />
-          <input
-            className="text-lg w-full outline-none lg:text-sm"
-            type="number"
-            placeholder="Enter Nominal Transfer"
-          />
-        </div>
-        <div>
-          <h2 className="font-semibold">Notes</h2>
-          <p className="text-dark-gray lg:text-sm">
-            You can add some notes for this transfer such as payment coffee or
-            something
-          </p>
-        </div>
-        <div>
-          <textarea
-            className="p-4 w-full rounded-lg border border-dark-gray/20 lg:text-sm outline-none"
-            rows={8}
-            name="notes"
-            placeholder="Enter Some Notes"
-          />
-        </div>
-        <button className="py-2 px-4 bg-primary text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg">
-          Submit & Transfer
-        </button>
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
+          <div>
+            <h2 className="font-semibold">Amount</h2>
+            <p className="text-dark-gray lg:text-sm">
+              Type the amount you want to transfer and then press continue to
+              the next steps.
+            </p>
+          </div>
+          <div>
+            <div className="flex items-center gap-2  py-2 px-4 rounded-lg border border-dark-gray/20">
+              <HiCash className="text-2xl" />
+              <input
+                id="nominal"
+                className="text-lg w-full outline-none lg:text-sm"
+                type="number"
+                placeholder="Enter Nominal Transfer"
+                {...register("nominal", {
+                  required: "Nominal is required",
+                  min: {
+                    value: 1,
+                    message: "Minimum transfer is Rp 1",
+                  },
+                })}
+              />
+            </div>
+            <span
+              className={`${errors?.nominal?.message ? "text-red" : "text-gray"} text-[10px]`}
+            >
+              {errors?.nominal?.message || "error"}
+            </span>
+          </div>
+          <div>
+            <h2 className="font-semibold">Notes</h2>
+            <p className="text-dark-gray lg:text-sm">
+              You can add some notes for this transfer such as payment coffee or
+              something
+            </p>
+          </div>
+          <div>
+            <textarea
+              className="p-4 w-full rounded-lg border border-dark-gray/20 lg:text-sm outline-none"
+              rows={8}
+              name="notes"
+              placeholder="Enter Some Notes"
+            />
+          </div>
+          <button
+            type="submit"
+            className="py-2 px-4 bg-primary text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg"
+          >
+            Submit & Transfer
+          </button>
+        </form>
       </div>
     </section>
   );
