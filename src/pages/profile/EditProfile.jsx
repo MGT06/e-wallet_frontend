@@ -21,18 +21,18 @@ const MyProfile = () => {
           <div className="grid gap-4 lg:gap-2">
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
-              <div className="rounded-lg overflow-hidden w-8/12 lg:w-26">
+              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26">
                 <img
                   src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
                   alt="profile-img"
                 />
               </div>
-              <div className="grid gap-4 lg:gap-2 h-10/12 w-full lg:w-fit">
-                <Link className="flex gap-2 items-center justify-center py-4 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
+              <div className="flex flex-col items-center justify-center gap-4 lg:gap-2 h-10/12 w-full lg:w-fit">
+                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
                   <FiEdit className="text-lg" />
                   Change Profile
                 </Link>
-                <Link className="flex gap-2 items-center justify-center py-4 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg">
+                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg">
                   <LuTrash className="text-lg" />
                   Delete Profile
                 </Link>
@@ -110,7 +110,7 @@ const MyProfile = () => {
           </div>
           <button
             type="submit"
-            className="py-4 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
+            className="py-3 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
           >
             Submit
           </button>
