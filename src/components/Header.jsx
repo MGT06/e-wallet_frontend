@@ -2,7 +2,6 @@ import { useLocation } from "react-router"
 
 export default function Header() {
     const param =useLocation()
-    console.log(param.pathname)
   return (
     <main className="lg:hidden bg-primary p-5 text-white text-1xl flex gap-4 border-b border-gray min-w-screen">
       {param.pathname == "/dashboard" && (
