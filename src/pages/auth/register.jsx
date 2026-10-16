@@ -30,7 +30,7 @@ export default function Register() {
           <div className="flex items-center">
             <div className="h-10 w-10">
               <img
-                src="./LOGO.png"
+                src="/LOGO.png"
                 alt="logo-apps"
                 className="w-full h-full object-cover"
               />
@@ -49,25 +49,29 @@ export default function Register() {
             that for you!
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
-            <button className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 py-1.5 px-19 flex justify-center items-center md:px-51 md:py-1">
+          <div className="flex flex-row lg:flex-col gap-3 w-full">
+            <button
+              type="button"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
               <img
                 src={logoGogle}
                 alt="logo-google"
-                className="min-h-8 min-w-8 object-cover"
+                className="h-5 w-5 lg:h-6.5 lg:w-6.5 object-contain"
               />
-              <span className="hidden md:flex md:whitespace-nowrap md:ml-2">
+              <span className="hidden lg:inline text-sm font-medium lg:text-base">
                 Sign In With Google
               </span>
             </button>
 
-            <button className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 py-1 px-19 flex justify-center items-center md:px-51 md:py-1.5">
+            <button
+              type="button"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
-                className="min-h-8 min-w-8 object-cover"
+                className="h-6 w-6 lg:h-8 lg:w-8 object-contain"
               />
-              <span className="hidden md:flex md:whitespace-nowrap md:ml-2">
+              <span className="hidden lg:inline text-sm font-medium lg:text-base">
                 Sign In With Facebook
               </span>
             </button>
@@ -166,7 +170,9 @@ export default function Register() {
 
           <div className="flex justify-center items-center text-dark-gray">
             Have An Account?
-            <Link to={"/login"} className="text-primary ml-1 cursor-pointer">
+            <Link
+              to={"/auth/login"}
+              className="text-primary ml-1 cursor-pointer">
               Login
             </Link>
           </div>

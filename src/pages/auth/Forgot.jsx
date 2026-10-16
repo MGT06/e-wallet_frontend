@@ -17,7 +17,7 @@ export default function Forgot() {
       <div>
         <div className="bg-white py-8 px-4 lg:px-8 rounded-2xl flex flex-col gap-4 shadow-3xl">
           <div className="flex items-center gap-2 min-w-full">
-            <img src="./LOGO.png" alt="logo-aps" className="h-8 w-8" />
+            <img src="/LOGO.png" alt="logo-aps" className="h-8 w-8" />
             <div className="text-primary font-semibold text-sm">E-Wallet</div>
           </div>
 
