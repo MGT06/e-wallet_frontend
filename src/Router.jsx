@@ -45,7 +45,7 @@ const Router = () => {
           <Route path="nominal" element={<SetNominal />} />
         </Route>
 
-        <Route path="/topup" element={<TopUpPage />} />
+        <Route path="/top-up" element={<TopUpPage />} />
 
         <Route path="/history" element={<HistoryPage />} />
 
