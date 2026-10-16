@@ -20,6 +20,7 @@ import ChangePin from "./pages/profile/ChangePin";
 import ChangePassword from "./pages/profile/ChangePassword";
 import TopUpPage from "./pages/TopUp/TopUpPage";
 import ResetPassUi from "./pages/auth/ResetPassUi";
+import Otp from "./pages/auth/Otp";
 
 const Router = () => {
   return (
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path="forgot" element={<Forgot />} />
         <Route path="pin" element={<UserPin />} />
         <Route path="reset/password" element={<ResetPassUi />} />
+        <Route path="otp" element={<Otp />} />
       </Route>
 
       <Route element={<MainLayout />}>
