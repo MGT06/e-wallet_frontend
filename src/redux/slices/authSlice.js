@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { upperCaseResponse } from "../../utils";
 
 const initialState = {
   auth: null,
@@ -41,7 +42,7 @@ export const loginThunk = createAsyncThunk(
         `${import.meta.env.VITE_API_URL}/auth/login`,
         {
           method: "POST",
-          body: JSON.stringify(payload.body),
+          body: JSON.stringify(payload.data),
         },
       );
 
@@ -63,28 +64,43 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    return builder.addAsyncThunk(registerThunk, {
-      pending: (state) => {
-        state.isPending = true;
-        state.isRejected = false;
-        state.isFulfilled = false;
-      },
-      fulfilled: (state, { payload }) => {
-        state.isPending = false;
-        state.isFulfilled = true;
-        if (payload.next) {
-          payload.next(payload.message);
-        }
-      },
-      rejected: (state, { payload }) => {
-        const message = [...payload.message];
-        message[0] = message[0].toUpperCase();
-        const fixMessage = message.join("");
-        state.error = fixMessage;
-        state.isPending = false;
-        state.isRejected = true;
-      },
-    });
+    return builder
+      .addAsyncThunk(registerThunk, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isRejected = false;
+          state.isFulfilled = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next(upperCaseResponse(payload));
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.error = upperCaseResponse(payload);
+          state.isPending = false;
+          state.isRejected = true;
+        },
+      })
+      .addAsyncThunk(loginThunk, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          console.log(payload);
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = upperCaseResponse(payload);
+        },
+      });
   },
 });
 

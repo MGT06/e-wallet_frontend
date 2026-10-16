@@ -55,7 +55,6 @@ export default function Register() {
 
   useEffect(() => {
     if (auth.isRejected) {
-      console.log(auth);
       setError("email", {
         type: "manual",
         message: auth.error,
