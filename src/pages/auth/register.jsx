@@ -4,6 +4,7 @@ import logoFacebook from "../../assets/facebookLogo.svg";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import { CiUser } from "react-icons/ci";
 import gamberRegis from "../../assets/tanganDompet.svg";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
@@ -28,7 +29,7 @@ export default function Register() {
   } = useForm();
 
   const onSubmit = (data) => {
-    const { email, password, cpassword } = data;
+    const { email, name, password, cpassword } = data;
 
     if (password !== cpassword) {
       setError("cpassword", {
@@ -39,7 +40,7 @@ export default function Register() {
       return;
     }
 
-    const newUser = { email, name: "mutfin computer science", password };
+    const newUser = { email, name, password };
 
     dispatch(
       registerThunk({
@@ -54,7 +55,7 @@ export default function Register() {
 
   useEffect(() => {
     if (auth.isRejected) {
-      console.log(auth)
+      console.log(auth);
       setError("email", {
         type: "manual",
         message: auth.error,
@@ -93,7 +94,8 @@ export default function Register() {
           <div className="flex flex-row lg:flex-col gap-3 w-full">
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+            >
               <img
                 src={logoGogle}
                 alt="logo-google"
@@ -106,7 +108,8 @@ export default function Register() {
 
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+            >
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
@@ -142,6 +145,29 @@ export default function Register() {
 
             <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
               {errors.email?.message}
+            </p>
+
+            <div className="flex w-full flex-col">
+              <label htmlFor="name">Name</label>
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+                <CiUser size={20} />
+                <input
+                  {...register("name", {
+                    required: "Name is required",
+                    minLength: {
+                      value: 3,
+                      message: "Name minimal 3 character length",
+                    },
+                  })}
+                  type="name"
+                  placeholder="Enter Your Name"
+                  className="outline-none w-full"
+                />
+              </div>
+            </div>
+
+            <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+              {errors.name?.message}
             </p>
 
             <div className="flex w-full flex-col">
@@ -219,7 +245,8 @@ export default function Register() {
             Have An Account?
             <Link
               to={"/auth/login"}
-              className="text-primary ml-1 cursor-pointer">
+              className="text-primary ml-1 cursor-pointer"
+            >
               Login
             </Link>
           </div>

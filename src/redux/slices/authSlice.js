@@ -77,7 +77,10 @@ const authSlice = createSlice({
         }
       },
       rejected: (state, { payload }) => {
-        state.error = payload.message;
+        const message = [...payload.message];
+        message[0] = message[0].toUpperCase();
+        const fixMessage = message.join("");
+        state.error = fixMessage;
         state.isPending = false;
         state.isRejected = true;
       },
