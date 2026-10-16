@@ -31,7 +31,7 @@ const DesktopMenu = () => {
         <p className="text-sm">History</p>
       </NavLink>
       <NavLink
-        to="/top-up"
+        to="/topup"
         className="flex items-center gap-3 py-3 px-3 rounded-lg w-full text-dark-gray"
       >
         <CgExport className="text-xl" />

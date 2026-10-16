@@ -13,6 +13,7 @@ import SetNominal from "./pages/transfer/SetNominal";
 import HistoryPage from "./pages/HistoryPage";
 import Forgot from "./pages/auth/Forgot";
 import UserPin from "./pages/auth/UserPin";
+import TopUpPage from "./pages/TopUp/TopUpPage";
 
 const Router = () => {
   return (
@@ -37,6 +38,8 @@ const Router = () => {
           <Route path="find" element={<FindPeople />} />
           <Route path="nominal" element={<SetNominal />} />
         </Route>
+
+        <Route path="/topup" element={<TopUpPage />} />
 
         <Route path="/history" element={<HistoryPage />} />
       </Route>
