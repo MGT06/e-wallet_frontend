@@ -1,27 +1,68 @@
-import { useState } from 'react'
-import logoGogle from '../../assets/google.svg'
-import logoFacebook from '../../assets/facebookLogo.svg'
+import { useEffect, useState } from "react";
+import logoGogle from "../../assets/google.svg";
+import logoFacebook from "../../assets/facebookLogo.svg";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
-import { LuEye, LuEyeOff } from "react-icons/lu"; 
-import gamberRegis from '../../assets/tanganDompet.svg'
-import { Link } from 'react-router';
-import { useForm } from 'react-hook-form';
+import { LuEye, LuEyeOff } from "react-icons/lu";
+import gamberRegis from "../../assets/tanganDompet.svg";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
+import { registerThunk } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
-export default function Register() {  
+export default function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const auth = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: {errors}
-  } = useForm()
+    setError,
+    formState: { errors },
+  } = useForm();
 
-  const onSubmit = (data) =>{
-    console.log(data);
-  }
+  const onSubmit = (data) => {
+    const { email, password, cpassword } = data;
+
+    if (password !== cpassword) {
+      setError("cpassword", {
+        type: "manual",
+        message: "Password do not match",
+      });
+
+      return;
+    }
+
+    const newUser = { email, name: "mutfin computer science", password };
+
+    dispatch(
+      registerThunk({
+        data: newUser,
+        next: (message) => {
+          toast.success(message);
+          navigate("/auth/login");
+        },
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (auth.isRejected) {
+      console.log(auth)
+      setError("email", {
+        type: "manual",
+        message: auth.error,
+      });
+
+      return;
+    }
+  }, [auth, setError]);
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -85,7 +126,7 @@ export default function Register() {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex w-full flex-col">
-              <label>Email</label>
+              <label htmlFor="email">Email</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <MdOutlineEmail size={20} />
                 <input
@@ -104,7 +145,7 @@ export default function Register() {
             </p>
 
             <div className="flex w-full flex-col">
-              <label>Password</label>
+              <label htmlFor="password">Password</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <IoMdKey
                   className="border-2 border-slate-700 rounded-sm text-xl"
@@ -113,6 +154,10 @@ export default function Register() {
                 <input
                   {...register("password", {
                     required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters",
+                    },
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter Your Password"
@@ -121,7 +166,8 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-500 focus:outline-none">
+                  className="text-gray-500 focus:outline-none"
+                >
                   {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
                 </button>
               </div>
@@ -132,7 +178,7 @@ export default function Register() {
             </p>
 
             <div className="flex w-full flex-col">
-              <label>Confirm Password</label>
+              <label htmlFor="cpassword">Confirm Password</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <IoMdKey
                   className="border-2 border-slate-600 rounded-sm text-xl"
@@ -149,7 +195,8 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="text-gray-500 focus:outline-none">
+                  className="text-gray-500 focus:outline-none"
+                >
                   {showConfirmPassword ? (
                     <LuEye size={20} />
                   ) : (
