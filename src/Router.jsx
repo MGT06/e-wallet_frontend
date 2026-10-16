@@ -18,6 +18,7 @@ import EditProfile from "./pages/profile/EditProfile";
 import MyProfile from "./pages/profile/MyProfile";
 import ChangePin from "./pages/profile/ChangePin";
 import ChangePassword from "./pages/profile/ChangePassword";
+import TopUpPage from "./pages/TopUp/TopUpPage";
 
 const Router = () => {
   return (
@@ -43,6 +44,8 @@ const Router = () => {
           <Route path="find" element={<FindPeople />} />
           <Route path="nominal" element={<SetNominal />} />
         </Route>
+
+        <Route path="/top-up" element={<TopUpPage />} />
 
         <Route path="/history" element={<HistoryPage />} />
 
