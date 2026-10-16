@@ -38,83 +38,85 @@ export default function Otp() {
   const hasPinError = Array.isArray(errors.otp) && errors.otp.some(Boolean);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-primary p-4">
-      <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl">
-        <div className="mb-6 flex items-center gap-2">
-          <img src="/LOGO.png" alt="logo-aps" className="h-8" />
-          <h1 className="text-xl font-bold text-primary">E-Wallet</h1>
-        </div>
+    <section className="bg-primary min-h-screen flex justify-center items-center">
+      <div>
+        <div className="bg-white py-8 px-4 lg:px-8 rounded-2xl flex flex-col gap-4 shadow-3xl">
+          <div className="flex items-center gap-2 min-w-full">
+            <img src="/LOGO.png" alt="logo-aps" className="h-8 w-8" />
+            <div className="text-primary font-semibold text-sm">E-Wallet</div>
+          </div>
 
-        <h2 className="text-lg font-bold text-gray-800">Enter Your OTP 👋</h2>
-        <p className="mt-1 text-sm text-gray-400">
-          Please save your otp because this so important.
-        </p>
+          <div className="text-xl lg:text-xl">Enter Your OTP 👋</div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-          <div className="flex justify-between gap-2">
-            {[0, 1, 2, 3, 4, 5].map((index) => {
-              const { ref: registerRef, ...restRegister } = register(
-                `otp.${index}`,
-                {
-                  required: "PIN must be filled in completely",
-                  pattern: {
-                    value: /^[0-9]$/,
-                    message: "The PIN must be a number",
+          <div className="text-sm text-dark-gray lg:text-medium">
+            Please save your otp because this so important.
+          </div>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-2 shadow-3xl">
+            <div className="flex justify-center gap-2">
+              {[0, 1, 2, 3, 4, 5].map((index) => {
+                const { ref: registerRef, ...restRegister } = register(
+                  `otp.${index}`,
+                  {
+                    required: "PIN must be filled in completely",
+                    pattern: {
+                      value: /^[0-9]$/,
+                      message: "The PIN must be a number",
+                    },
                   },
-                },
-              );
+                );
 
-              const isInputError = errors.otp?.[index];
+                const isInputError = errors.otp?.[index];
 
-              return (
-                <input
-                  key={index}
-                  {...restRegister}
-                  type="password"
-                  inputMode="numeric"
-                  maxLength={1}
-                  value={pinValues[index] || ""}
-                  ref={(e) => {
-                    registerRef(e);
-                    inputRefs.current[index] = e;
-                  }}
-                  onChange={(e) => handleChange(e, index)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  className={`h-12 w-10 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
-                    isInputError
-                      ? "border-red-500 text-red-500"
-                      : "border-gray-200 focus:border-primary"
-                  }`}
-                />
-              );
-            })}
-          </div>
+                return (
+                  <input
+                    key={index}
+                    {...restRegister}
+                    type="password"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={pinValues[index] || ""}
+                    ref={(e) => {
+                      registerRef(e);
+                      inputRefs.current[index] = e;
+                    }}
+                    onChange={(e) => handleChange(e, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className={`h-10 w-8 border-b-2 text-center text-xs font-bold text-gray-800 transition-colors focus:outline-none ${
+                      isInputError
+                        ? "border-red-500 text-red-500"
+                        : "border-gray-200 focus:border-primary"
+                    }`}
+                  />
+                );
+              })}
+            </div>
 
-          <div className="mt-2 h-6">
-            {hasPinError && (
-              <p className="text-xs text-red-500">
-                {errors.otp.find((err) => err?.message)?.message ||
-                  "OTP not complete"}
+            <div>
+              <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+                {hasPinError &&
+                  (errors.otp.find((err) => err?.message)?.message ||
+                    "OTP not complete")}
               </p>
-            )}
+            </div>
+
+            <button className="bg-primary rounded-lg text-white text-sm py-2 hover:opacity-80 cursor-pointer hover:shadow-lg">
+              Submit
+            </button>
+          </form>
+
+          <div className="text-center text-sm text-gray-500">
+            Forgot Your Otp?{" "}
+            <NavLink
+              to="/"
+              className="font-semibold text-primary hover:underline">
+              Reset
+            </NavLink>
           </div>
-
-          <button
-            type="submit"
-            className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer">
-            Submit
-          </button>
-        </form>
-
-        <div className="mt-6 text-center text-sm text-gray-500">
-          Forgot Your Otp?{" "}
-          <NavLink
-            to="/"
-            className="font-semibold text-primary hover:underline">
-            Reset
-          </NavLink>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
