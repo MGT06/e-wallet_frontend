@@ -1,5 +1,5 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
-import eWalletLogo from "../../assets/e-wallet_logo.svg";
+import eWalletLogo from "../../assets/e-wallet_logo.png";
 import { Link } from "react-router";
 import { TbBrandGithubFilled } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";

@@ -1,6 +1,6 @@
-import { useForm, useWatch } from 'react-hook-form';
-import { usePinInput } from '../../components/UsePinInput';
-import { NavLink } from 'react-router';
+import { useForm, useWatch } from "react-hook-form";
+import { usePinInput } from "../../hooks/UsePinInput";
+import { NavLink } from "react-router";
 
 export default function PinPage() {
   const {
@@ -16,27 +16,25 @@ export default function PinPage() {
     },
   });
 
-  const pinValues = useWatch({ control, name: 'pin' });
+  const pinValues = useWatch({ control, name: "pin" });
 
-  const { inputRefs, handleChange, handleKeyDown, handlePaste } = usePinInput({
+  const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
     setValue,
     getValues,
-    name: 'pin',
+    name: "pin",
   });
 
   const onSubmit = (data) => {
-    
     const isComplete = data.pin.every((digit) => digit !== "");
     if (!isComplete) {
       return;
     }
 
-    const fullPin = data.pin.join('');
-    console.log('PIN Submitted:', fullPin);
+    const fullPin = data.pin.join("");
+    console.log("PIN Submitted:", fullPin);
   };
 
-  
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
 
   return (
@@ -53,7 +51,7 @@ export default function PinPage() {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-          <div className="flex justify-between gap-2" onPaste={handlePaste}>
+          <div className="flex justify-between gap-2">
             {[0, 1, 2, 3, 4, 5].map((index) => {
               const { ref: registerRef, ...restRegister } = register(
                 `pin.${index}`,
@@ -103,7 +101,8 @@ export default function PinPage() {
 
           <button
             type="submit"
-            className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary active:bg-primary">
+            className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary active:bg-primary"
+          >
             Submit
           </button>
         </form>
@@ -112,7 +111,8 @@ export default function PinPage() {
           Forgot Your Pin?{" "}
           <NavLink
             to="/forgot"
-            className="font-semibold text-primary hover:underline">
+            className="font-semibold text-primary hover:underline"
+          >
             Reset
           </NavLink>
         </div>

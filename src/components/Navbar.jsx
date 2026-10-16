@@ -1,26 +1,49 @@
 import { Link } from "react-router";
 
-import logo from "../assets/e-wallet_logo.svg";
 import { CgClose, CgMenuRightAlt } from "react-icons/cg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { FiEdit } from "react-icons/fi";
+import { BiLogOut } from "react-icons/bi";
 
 const Navbar = () => {
+  const [user, setUser] = useState(false);
+
   const [navOpen, setNavOpen] = useState(false);
 
   const handleClick = () => {
     setNavOpen(!navOpen);
   };
 
+  useEffect(() => {
+    (() => {
+      setUser({
+        name: "Ghaluh Wizard",
+        img_url:
+          "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
+      });
+    })();
+  }, []);
+
   return (
-    <header className="hidden lg:block bg-primary border-b border-white/20 sticky top-0 left-0 right-0 z-50">
+    <header
+      className={`${user ? "lg:bg-white hidden lg:block" : "bg-primary"} bg-primary lg:block border-b border-dark-gray/20 sticky top-0 left-0 right-0 z-50`}
+    >
       <div className="container flex items-center justify-between">
         <h1>
-          <Link to="/">
-            <img className="h-7" src={logo} alt="e-wallet_logo" />
+          <Link to="/" className="flex gap-2 items-center">
+            <img className="h-7" src="/LOGO.png" alt="e-wallet_logo" />
+            <p
+              className={`${user ? "text-primary" : "text-white"} font-semibold`}
+            >
+              E Wallet
+            </p>
           </Link>
         </h1>
         <nav className="hidden md:block">
-          <ul className="flex items-center gap-4 text-xs">
+          <ul
+            className={`${user ? "hidden" : "flex"} items-center gap-4 text-xs`}
+          >
             <li className="text-white border py-2 px-4 rounded-md hover:shadow-lg hover:opacity-90">
               <Link to="/login">Sign In</Link>
             </li>
@@ -28,6 +51,42 @@ const Navbar = () => {
               <Link to="/register">Sign Up</Link>
             </li>
           </ul>
+          <div
+            className={`${user ? "flex" : "hidden"} items-center gap-4 text-xs relative`}
+          >
+            <p className="text-sm">Ghaluh Wizard</p>
+            <img
+              className="h-8 rounded-full"
+              src={user?.img_url}
+              alt="user-img"
+            />
+            <IoIosArrowUp
+              onClick={() => setNavOpen(!navOpen)}
+              className={`${navOpen ? "block" : "hidden"} cursor-pointer text-lg`}
+            />
+            <IoIosArrowDown
+              onClick={() => setNavOpen(!navOpen)}
+              className={`${navOpen ? "hidden" : "block"} cursor-pointer text-lg`}
+            />
+            <div
+              className={`${navOpen ? "opacity-100" : "opacity-0"} p-3 absolute right-0 top-14 grid gap-4 bg-white z-50 w-50 rounded-lg shadow-lg transition-all ease-in-out`}
+            >
+              <Link
+                to="/profile"
+                className="py-3 px-4 rounded-lg bg-primary text-white flex items-center gap-2 hover:opacity-90"
+              >
+                <FiEdit className="text-sm" />
+                Profile
+              </Link>
+              <button
+                type="button"
+                className="py-3 px-4 rounded-lg text-red flex items-center gap-2 cursor-pointer text-left hover:opacity-60"
+              >
+                <BiLogOut className="text-sm" />
+                Logout
+              </button>
+            </div>
+          </div>
         </nav>
         <nav className="md:hidden">
           <div
