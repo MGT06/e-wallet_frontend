@@ -3,7 +3,7 @@ import logoGogle from '../../assets/google.svg'
 import logoFacebook from '../../assets/facebookLogo.svg'
 import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
-import { LuEye, LuEyeOff } from "react-icons/lu"; 
+import { LuEye, LuEyeOff } from "react-icons/lu";
 import gamberLogin from '../../assets/tanganLogin.svg'
 import { Link, NavLink } from 'react-router';
 import { useForm } from 'react-hook-form';

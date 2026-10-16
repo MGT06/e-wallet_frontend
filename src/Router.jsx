@@ -19,6 +19,7 @@ import MyProfile from "./pages/profile/MyProfile";
 import ChangePin from "./pages/profile/ChangePin";
 import ChangePassword from "./pages/profile/ChangePassword";
 import TopUpPage from "./pages/TopUp/TopUpPage";
+import ResetPassUi from "./pages/auth/ResetPassUi";
 
 const Router = () => {
   return (
@@ -29,6 +30,7 @@ const Router = () => {
         <Route path="register" element={<Register />} />
         <Route path="forgot" element={<Forgot />} />
         <Route path="pin" element={<UserPin />} />
+        <Route path="reset/password" element={<ResetPassUi />} />
       </Route>
 
       <Route element={<MainLayout />}>
