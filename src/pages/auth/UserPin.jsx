@@ -41,7 +41,7 @@ export default function PinPage() {
     <div className="flex min-h-screen items-center justify-center bg-primary p-4">
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl">
         <div className="mb-6 flex items-center gap-2">
-          <img src="./LOGO.png" alt="logo-aps" className="h-8" />
+          <img src="/LOGO.png" alt="logo-aps" className="h-8" />
           <h1 className="text-xl font-bold text-primary">E-Wallet</h1>
         </div>
 
@@ -101,7 +101,7 @@ export default function PinPage() {
 
           <button
             type="submit"
-            className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary active:bg-primary"
+            className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
           >
             Submit
           </button>
