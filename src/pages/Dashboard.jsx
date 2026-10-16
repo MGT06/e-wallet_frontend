@@ -24,7 +24,7 @@ export default function Dashboard() {
     datasets: [
       {
         data: [15000, 2000, 90000, 30000, 45000, 22000, 18000],
-        backgroundColor: "#2948ff",
+        backgroundColor: "#ff2a57",
         borderRadius: 6,
         borderSkipped: false,
         barThickness: 32,
@@ -54,7 +54,7 @@ export default function Dashboard() {
           display: false,
         },
         ticks: {
-          color: "#4f5665",
+          color: "#ff2a57",
           font: {
             size: 12,
           },
@@ -65,7 +65,7 @@ export default function Dashboard() {
         max: 100000,
         ticks: {
           stepSize: 25000,
-          color: "#4f5665",
+          color: "#ff2a57",
           font: {
             size: 10,
           },
@@ -75,7 +75,7 @@ export default function Dashboard() {
           },
         },
         grid: {
-          color: "#F3F4F6",
+          color: "#4f5665",
         },
         border: {
           dash: [4, 4],
@@ -318,13 +318,13 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => navigate("/topup")}
-                  className="bg-primary hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
+                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
                   <BiExport className="text-lg" />
                   <span>Top Up</span>
                 </button>
                 <button
                   onClick={() => navigate("/transfer")}
-                  className="bg-primary hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
+                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
                   <FaRegPaperPlane className="text-base" />
                   <span>Transfer</span>
                 </button>
