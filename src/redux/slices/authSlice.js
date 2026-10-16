@@ -52,7 +52,7 @@ export const loginThunk = createAsyncThunk(
         throw data;
       }
 
-      return data;
+      return { data, next: payload.next };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -91,11 +91,18 @@ const authSlice = createSlice({
           state.isRejected = false;
         },
         fulfilled: (state, { payload }) => {
+          state.auth = { token: payload.data.data.token };
           state.isPending = false;
           state.isFulfilled = true;
-          console.log(payload);
+          if (payload.next) {
+            payload.next(
+              upperCaseResponse(payload.data),
+              payload.data.data.is_has_pin,
+            );
+          }
         },
         rejected: (state, { payload }) => {
+          console.log(payload)
           state.isPending = false;
           state.isRejected = true;
           state.error = upperCaseResponse(payload);

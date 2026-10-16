@@ -29,9 +29,13 @@ export default function Login() {
     dispatch(
       loginThunk({
         data,
-        next: (message) => {
+        next: (message, hasPin) => {
           toast.success(message);
-          navigate("/profile/dashboard");
+          if (!hasPin) {
+            navigate("/auth/pin");
+            return;
+          }
+          navigate("/dashboard");
         },
       }),
     );

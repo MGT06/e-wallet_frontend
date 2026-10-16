@@ -28,7 +28,7 @@ const storage = {
 const persistAuthConfig = {
   key: "token",
   storage,
-  whitelist: ["token"],
+  whitelist: ["auth"],
 };
 
 const store = configureStore({
@@ -38,10 +38,10 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
-      // serializableCheck: {
-      //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      // },
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActionPaths: ["payload.next", "meta.arg.next"],
+      },
     }),
 });
 
