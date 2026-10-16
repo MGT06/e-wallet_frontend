@@ -56,7 +56,7 @@ export default function PinPage() {
               const { ref: registerRef, ...restRegister } = register(
                 `pin.${index}`,
                 {
-                  required: "PIN harus diisi lengkap",
+                  required: "PIN must be filled in completely",
                   pattern: {
                     value: /^[0-9]$/,
                     message: "The PIN must be a number",
@@ -94,7 +94,7 @@ export default function PinPage() {
             {hasPinError && (
               <p className="text-xs text-red-500">
                 {errors.pin.find((err) => err?.message)?.message ||
-                  "PIN belum lengkap"}
+                  "PIN not complete"}
               </p>
             )}
           </div>
