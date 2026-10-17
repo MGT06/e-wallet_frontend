@@ -17,7 +17,7 @@ export const changePass = createAsyncThunk(
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/profile/change-password`,
+        `${import.meta.env.VITE_API_URL}/user/password`,
         {
           method: "PATCH",
           headers: {
