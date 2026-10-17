@@ -31,18 +31,13 @@ const ChangePassword = () => {
         data: {
           old_password: data.existing_password,
           new_password: data.new_password,
-          confirm_password: data.confirm_password,
         },
         next: (m) => {
           toast.success(m);
           navi("/profile");
         },
       }),
-    ).unwrap?.().catch((err) => {
-      if (err?.message) {
-        toast.error(err.message);
-      }
-    });
+    );
   };
 
   return (
