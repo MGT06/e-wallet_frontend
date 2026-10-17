@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { TbSquareKey } from "react-icons/tb";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { changePass } from "../../redux/slices/userSlice.js";
 
 const ChangePassword = () => {
+  const dispatch = useDispatch();
+  const navi = useNavigate();
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
+  const newPassword = useWatch({ control, name: "new_password" });
 
   const [showPassword, setShowPassword] = useState({
     existing_password: false,
@@ -16,11 +25,20 @@ const ChangePassword = () => {
     confirm_password: false,
   });
 
-  const onSubmit = () => {
-    console.log("first");
+  const onSubmit = (data) => {
+    dispatch(
+      changePass({
+        data: {
+          old_password: data.existing_password,
+          new_password: data.new_password,
+        },
+        next: (m) => {
+          toast.success(m);
+          navi("/profile");
+        },
+      }),
+    );
   };
-
-  console.log(showPassword);
 
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
@@ -32,8 +50,7 @@ const ChangePassword = () => {
           <div className="grid gap-2">
             <label
               className="text-sm lg:text-xs font-medium"
-              htmlFor="existing_password"
-            >
+              htmlFor="existing_password">
               Existing Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -41,9 +58,15 @@ const ChangePassword = () => {
               <input
                 id="existing_password"
                 type={showPassword.existing_password ? "text" : "password"}
-                className={`${errors?.existing_password?.message && "outline outline-red"}  focus:outline-none w-full`}
+                className={`${errors?.existing_password?.message && "outline outline-red"}  focus:outline-none w-full outline-none`}
                 placeholder="Enter Your Existing Password"
-                {...register("existing_password")}
+                {...register("existing_password", {
+                  required: "Existing password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
               />
               <button
                 type="button"
@@ -55,8 +78,7 @@ const ChangePassword = () => {
                     };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer"
-              >
+                className="text-gray-500 focus:outline-none cursor-pointer">
                 {showPassword.existing_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -64,12 +86,15 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+
+            <p className="text-red-500 text-xs h-2">
+              {errors.existing_password?.message}
+            </p>
           </div>
           <div className="grid gap-2">
             <label
               className="text-sm lg:text-xs font-medium"
-              htmlFor="new_password"
-            >
+              htmlFor="new_password">
               New Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -77,9 +102,15 @@ const ChangePassword = () => {
               <input
                 id="new_password"
                 type={showPassword.new_password ? "text" : "password"}
-                className={`${errors?.new_password?.message && "outline outline-red"}  focus:outline-none w-full`}
+                className={`${errors?.new_password?.message && "outline outline-red"}  focus:outline-none w-full outline-none`}
                 placeholder="Enter Your New Password"
-                {...register("new_password")}
+                {...register("new_password", {
+                  required: "New password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
               />
               <button
                 type="button"
@@ -88,8 +119,7 @@ const ChangePassword = () => {
                     return { ...prev, new_password: !prev.new_password };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer"
-              >
+                className="text-gray-500 focus:outline-none cursor-pointer">
                 {showPassword.new_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -97,12 +127,14 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+            <p className="text-red-500 text-xs h-2">
+              {errors.new_password?.message}
+            </p>
           </div>
           <div className="grid gap-2">
             <label
               className="password-sm lg:text-xs font-medium"
-              htmlFor="confirm_password"
-            >
+              htmlFor="confirm_password">
               Confirm Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -110,9 +142,13 @@ const ChangePassword = () => {
               <input
                 id="confirm_password"
                 type={showPassword.confirm_password ? "text" : "password"}
-                className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
+                className={`${errors?.confirm_password?.message && "outline outline-red"}  focus:outline-none w-full outline-none`}
                 placeholder="Re-type your new password"
-                {...register("confirm_password")}
+                {...register("confirm_password", {
+                  required: "Confirm password is required",
+                  validate: (value) =>
+                    value === newPassword || "Passwords do not match",
+                })}
               />
               <button
                 type="button"
@@ -124,8 +160,7 @@ const ChangePassword = () => {
                     };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer"
-              >
+                className="text-gray-500 focus:outline-none cursor-pointer">
                 {showPassword.confirm_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -133,11 +168,14 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+
+            <p className="text-red-500 text-xs h-2">
+              {errors.confirm_password?.message}
+            </p>
           </div>
           <button
             type="submit"
-            className="py-3 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
-          >
+            className="py-3 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer">
             Submit
           </button>
         </form>

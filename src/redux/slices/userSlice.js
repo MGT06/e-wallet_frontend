@@ -10,6 +10,41 @@ const initialState = {
   error: null,
 };
 
+export const changePass = createAsyncThunk(
+  "change-pass",
+  async (payload, { getState, dispatch, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/password`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.data),
+        },
+      );
+      const data = await response.json();
+
+      if (response.status === 401) {
+        dispatch(clearToken());
+        return;
+      }
+
+      if (!response.ok) {
+        throw data;
+      }
+
+      return { data, next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const getUserInfo = createAsyncThunk(
   "get_user_info",
   async (_, { dispatch, rejectWithValue, getState }) => {
@@ -118,6 +153,7 @@ export const setUserPin = createAsyncThunk(
         {
           method: "POST",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload.pin),
@@ -250,6 +286,29 @@ const userSlice = createSlice({
           state.isPending = false;
           state.isRejected = true;
           state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(changePass, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next(
+              payload.data?.message
+                ? upperCaseResponse(payload.data)
+                : "Password updated successfully",
+            );
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload?.message || "Failed to change password";
         },
       })
       .addAsyncThunk(editProfile, {
