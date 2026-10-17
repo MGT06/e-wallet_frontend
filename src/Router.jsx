@@ -12,7 +12,7 @@ import FindPeople from "./pages/transfer/FindPeople";
 import SetNominal from "./pages/transfer/SetNominal";
 import HistoryPage from "./pages/HistoryPage";
 import Forgot from "./pages/auth/Forgot";
-import UserPin from "./pages/auth/UserPin";
+import UserPin from "./pages/UserPin";
 import ProfileLayout from "./layouts/ProfileLayout";
 import EditProfile from "./pages/profile/EditProfile";
 import MyProfile from "./pages/profile/MyProfile";
