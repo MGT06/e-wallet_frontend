@@ -5,10 +5,11 @@ import { TbSquareKey } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { changePass } from "../../redux/slices/userSlice.js";
 
 const ChangePassword = () => {
-  const dispatch = useDispatch()
-  const navi = useNavigate()
+  const dispatch = useDispatch();
+  const navi = useNavigate();
 
   const {
     register,
@@ -25,13 +26,21 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Submitted password data:", data.existing_password);
-    dispatch({
-      new_password: data.new_password,
-      old_password: data.existing_password,
-      next: (m) => {
-        toast.success(m)
-        // navi("/profile")
+    dispatch(
+      changePass({
+        data: {
+          old_password: data.existing_password,
+          new_password: data.new_password,
+          confirm_password: data.confirm_password,
+        },
+        next: (m) => {
+          toast.success(m);
+          navi("/profile");
+        },
+      }),
+    ).unwrap?.().catch((err) => {
+      if (err?.message) {
+        toast.error(err.message);
       }
     });
   };

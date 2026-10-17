@@ -13,7 +13,6 @@ const initialState = {
 export const changePass = createAsyncThunk(
   "change-pass",
   async (payload, { getState, dispatch, rejectWithValue }) => {
-    console.log(payload)
     const token = getState().authState.auth.token;
 
     try {
@@ -22,6 +21,7 @@ export const changePass = createAsyncThunk(
         {
           method: "PATCH",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload.data),
@@ -153,6 +153,7 @@ export const setUserPin = createAsyncThunk(
         {
           method: "POST",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload.pin),
@@ -297,13 +298,17 @@ const userSlice = createSlice({
           state.isPending = false;
           state.isFulfilled = true;
           if (payload.next) {
-            payload.next("Password setted successfully");
+            payload.next(
+              payload.data?.message
+                ? upperCaseResponse(payload.data)
+                : "Password updated successfully",
+            );
           }
         },
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = payload.message;
+          state.error = payload?.message || "Failed to change password";
         },
       })
       .addAsyncThunk(editProfile, {
