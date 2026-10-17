@@ -7,6 +7,7 @@ const ChangePassword = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -16,11 +17,9 @@ const ChangePassword = () => {
     confirm_password: false,
   });
 
-  const onSubmit = () => {
-    console.log("first");
+  const onSubmit = (data) => {
+    console.log("Submitted password data:", data);
   };
-
-  console.log(showPassword);
 
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
@@ -43,7 +42,13 @@ const ChangePassword = () => {
                 type={showPassword.existing_password ? "text" : "password"}
                 className={`${errors?.existing_password?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Existing Password"
-                {...register("existing_password")}
+                {...register("existing_password", {
+                  required: "Existing password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
               />
               <button
                 type="button"
@@ -64,6 +69,11 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+            {errors?.existing_password && (
+              <span className="text-red-500 text-xs">
+                {errors.existing_password.message}
+              </span>
+            )}
           </div>
           <div className="grid gap-2">
             <label
@@ -79,7 +89,13 @@ const ChangePassword = () => {
                 type={showPassword.new_password ? "text" : "password"}
                 className={`${errors?.new_password?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your New Password"
-                {...register("new_password")}
+                {...register("new_password", {
+                  required: "New password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
               />
               <button
                 type="button"
@@ -97,6 +113,11 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+            {errors?.new_password && (
+              <span className="text-red-500 text-xs">
+                {errors.new_password.message}
+              </span>
+            )}
           </div>
           <div className="grid gap-2">
             <label
@@ -110,9 +131,14 @@ const ChangePassword = () => {
               <input
                 id="confirm_password"
                 type={showPassword.confirm_password ? "text" : "password"}
-                className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
+                className={`${errors?.confirm_password?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Re-type your new password"
-                {...register("confirm_password")}
+                {...register("confirm_password", {
+                  required: "Confirm password is required",
+                  validate: (value) =>
+                    value === watch("new_password") ||
+                    "Passwords do not match",
+                })}
               />
               <button
                 type="button"
@@ -133,6 +159,11 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
+            {errors?.confirm_password && (
+              <span className="text-red-500 text-xs">
+                {errors.confirm_password.message}
+              </span>
+            )}
           </div>
           <button
             type="submit"
