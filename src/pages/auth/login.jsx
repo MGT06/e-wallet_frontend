@@ -1,25 +1,56 @@
-import { useState } from 'react'
-import logoGogle from '../../assets/google.svg'
-import logoFacebook from '../../assets/facebookLogo.svg'
+import { useEffect, useState } from "react";
+import logoGogle from "../../assets/google.svg";
+import logoFacebook from "../../assets/facebookLogo.svg";
 import { MdOutlineEmail } from "react-icons/md";
 import { IoMdKey } from "react-icons/io";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import gamberLogin from '../../assets/tanganLogin.svg'
-import { Link, NavLink } from 'react-router';
-import { useForm } from 'react-hook-form';
+import gamberLogin from "../../assets/tanganLogin.svg";
+import { Link, NavLink, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { loginThunk } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
-export default function Login() {  
+export default function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const auth = useSelector((state) => state.authState);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: {errors},    
-  } = useForm()
+    formState: { errors },
+    setError,
+  } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-  }
+    dispatch(
+      loginThunk({
+        data,
+        next: (message, hasPin) => {
+          toast.success(message);
+          if (!hasPin) {
+            navigate("/auth/pin");
+            return;
+          }
+          navigate("/dashboard");
+        },
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (auth.isRejected) {
+      setError("password", {
+        type: "manual",
+        message: auth.error,
+      });
+
+      return;
+    }
+  }, [auth, setError]);
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -45,7 +76,8 @@ export default function Login() {
           <div className="flex flex-row lg:flex-col gap-3 w-full">
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+            >
               <img
                 src={logoGogle}
                 alt="logo-google"
@@ -58,7 +90,8 @@ export default function Login() {
 
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12">
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+            >
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
@@ -100,7 +133,8 @@ export default function Login() {
                 <label>Password</label>
                 <NavLink
                   className="text-primary hover:text-primary/60"
-                  to="/auth/forgot">
+                  to="/auth/forgot"
+                >
                   Forgot Password?
                 </NavLink>
               </div>
@@ -120,7 +154,8 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-500 focus:outline-none">
+                  className="text-gray-500 focus:outline-none"
+                >
                   {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
                 </button>
               </div>
@@ -138,7 +173,8 @@ export default function Login() {
             Have An Account?
             <Link
               to={"/auth/register"}
-              className="text-primary ml-1 cursor-pointer">
+              className="text-primary ml-1 cursor-pointer"
+            >
               Register
             </Link>
           </div>
