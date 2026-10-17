@@ -2,20 +2,21 @@ import { useForm } from "react-hook-form";
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuTrash, LuUserRound } from "react-icons/lu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { deleteImage, editProfile } from "../../redux/slices/profileSlice";
-import useToken from "../../hooks/UseToken";
+import {
+  deleteImage,
+  editProfile,
+  getProfile,
+} from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
-import useProfile from "../../hooks/UseProfile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const token = useToken();
-  const profile = useProfile();
+  const user = useSelector((state) => state.userState.user);
 
   const [img, setImg] = useState(null);
   const [imgUpload, setImgUpload] = useState(null);
@@ -32,10 +33,13 @@ const EditProfile = () => {
 
     const formData = new FormData();
 
-    if ((phone.length && phone[0] !== 6) || (phone.length && phone[1] !== 2)) {
+    if (
+      (phone.length && phone[0] !== "6") ||
+      (phone.length && phone[1] !== "2")
+    ) {
       setError("phone", {
         type: "manual",
-        message: "The first and second numbers must be 62",
+        message: "The phone number must begin with 62",
       });
     }
 
@@ -54,7 +58,6 @@ const EditProfile = () => {
 
     dispatch(
       editProfile({
-        token,
         body: formData,
         next: (message) => {
           toast.success(message);
@@ -67,13 +70,16 @@ const EditProfile = () => {
   const handleDelete = () => {
     dispatch(
       deleteImage({
-        token,
         next: (message) => {
           toast.success(message);
         },
       }),
     );
   };
+
+  useEffect(() => {
+    dispatch(getProfile);
+  }, [dispatch]);
 
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
@@ -82,20 +88,20 @@ const EditProfile = () => {
           <div className="grid gap-4 lg:gap-2">
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
-              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26">
-                {profile?.image_url || img ? (
+              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26 h-24">
+                {user?.image_url || img ? (
                   <img
                     className="w-full h-full"
                     src={
                       img
                         ? img
-                        : `${import.meta.env.VITE_API_URL}${profile?.image_url}`
+                        : `${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`
                     }
                     alt="profile-img"
                   />
                 ) : (
                   <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl">
-                    <p>{`${profile?.name[0].toUpperCase()}${profile?.name[1].toUpperCase()}`}</p>
+                    <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
                   </div>
                 )}
               </div>
@@ -155,7 +161,16 @@ const EditProfile = () => {
                 type="text"
                 className={`${errors?.phone?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Phone Number"
-                {...register("phone")}
+                {...register("phone", {
+                  minLength: {
+                    value: 12,
+                    message: "Phone number minimal 12 character",
+                  },
+                  maxLength: {
+                    value: 14,
+                    message: "Phone number maximal 14 character",
+                  },
+                })}
               />
             </div>
           </div>
@@ -170,10 +185,24 @@ const EditProfile = () => {
                 type="email"
                 className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Email"
-                {...register("email")}
+                {...register("email", {
+                  minLength: {
+                    value: 7,
+                    message: "Email minimal 7 character",
+                  },
+                  maxLength: {
+                    value: 40,
+                    message: "Email maximal 40 character",
+                  },
+                })}
               />
             </div>
           </div>
+          <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+            {errors.phone?.message
+              ? errors.phone?.message
+              : errors.email?.message}
+          </p>
           <div className="grid gap-2">
             <p className="text-sm lg:text-xs font-medium">Password</p>
             <Link
