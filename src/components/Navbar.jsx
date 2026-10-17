@@ -1,13 +1,21 @@
 import { Link } from "react-router";
 
 import { CgClose, CgMenuRightAlt } from "react-icons/cg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import useToken from "../hooks/UseToken";
+import { logoutThunk } from "../redux/slices/authSlice";
+import { toast } from "react-toastify";
+import useUser from "../hooks/UseUser";
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const dispatch = useDispatch();
+
+  const token = useToken();
+  const user = useUser();
 
   const [navOpen, setNavOpen] = useState(false);
 
@@ -15,26 +23,27 @@ const Navbar = () => {
     setNavOpen(!navOpen);
   };
 
-  useEffect(() => {
-    (() => {
-      setUser({
-        name: "Ghaluh Wizard",
-        img_url:
-          "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
-      });
-    })();
-  }, []);
+  const handleLogout = () => {
+    dispatch(
+      logoutThunk({
+        token,
+        next: (message) => {
+          toast.success(message);
+        },
+      }),
+    );
+  };
 
   return (
     <header
-      className={`${user ? "lg:bg-white hidden lg:block" : "bg-primary"} bg-primary lg:block border-b border-dark-gray/20 sticky top-0 left-0 right-0 z-50`}
+      className={`${token ? "lg:bg-white hidden lg:block" : "bg-primary"} bg-primary lg:block border-b border-b-dark-gray/20 top-0 left-0 right-0 z-50`}
     >
       <div className="container flex items-center justify-between">
         <h1>
           <Link to="/" className="flex gap-2 items-center">
             <img className="h-7" src="/LOGO.png" alt="e-wallet_logo" />
             <p
-              className={`${user ? "text-primary" : "text-white"} font-semibold`}
+              className={`${token ? "text-primary" : "text-white"} font-semibold`}
             >
               E Wallet
             </p>
@@ -42,24 +51,30 @@ const Navbar = () => {
         </h1>
         <nav className="hidden md:block">
           <ul
-            className={`${user ? "hidden" : "flex"} items-center gap-4 text-xs`}
+            className={`${token ? "hidden" : "flex"} items-center gap-4 text-xs`}
           >
             <li className="text-white border py-2 px-4 rounded-md hover:shadow-lg hover:opacity-90">
-              <Link to="/login">Sign In</Link>
+              <Link to="/auth/login">Sign In</Link>
             </li>
             <li className="text-primary bg-white border py-2 px-4 rounded-md hover:shadow-lg hover:opacity-90">
-              <Link to="/register">Sign Up</Link>
+              <Link to="/auth/register">Sign Up</Link>
             </li>
           </ul>
           <div
-            className={`${user ? "flex" : "hidden"} items-center gap-4 text-xs relative`}
+            className={`${token ? "flex" : "hidden"} items-center gap-4 text-xs relative`}
           >
-            <p className="text-sm">Ghaluh Wizard</p>
-            <img
-              className="h-8 rounded-full"
-              src={user?.img_url}
-              alt="user-img"
-            />
+            <p className="text-sm">{user?.name}</p>
+            {user?.image_url ? (
+              <img
+                className="h-8 w-8 rounded-full"
+                src={`${import.meta.env.VITE_API_URL}/${user?.image_url}`}
+                alt="user-img"
+              />
+            ) : (
+              <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center">
+                <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
+              </div>
+            )}
             <IoIosArrowUp
               onClick={() => setNavOpen(!navOpen)}
               className={`${navOpen ? "block" : "hidden"} cursor-pointer text-lg`}
@@ -80,6 +95,7 @@ const Navbar = () => {
               </Link>
               <button
                 type="button"
+                onClick={handleLogout}
                 className="py-3 px-4 rounded-lg text-red flex items-center gap-2 cursor-pointer text-left hover:opacity-60"
               >
                 <BiLogOut className="text-sm" />

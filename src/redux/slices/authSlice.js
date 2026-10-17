@@ -59,10 +59,40 @@ export const loginThunk = createAsyncThunk(
   },
 );
 
+export const logoutThunk = createAsyncThunk(
+  "logout",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/logout`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${payload.token}`,
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw data;
+      }
+
+      return { data, next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearToken: () => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     return builder
       .addAsyncThunk(registerThunk, {
@@ -102,13 +132,33 @@ const authSlice = createSlice({
           }
         },
         rejected: (state, { payload }) => {
-          console.log(payload)
           state.isPending = false;
           state.isRejected = true;
           state.error = upperCaseResponse(payload);
+        },
+      })
+      .addAsyncThunk(logoutThunk, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next(upperCaseResponse(payload.data));
+          }
+          state.auth = null;
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.message;
         },
       });
   },
 });
 
+export const {clearToken} = authSlice.actions
 export default authSlice.reducer;

@@ -17,7 +17,7 @@ export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.authState);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -41,6 +41,8 @@ export default function Register() {
     }
 
     const newUser = { email, name, password };
+
+    console.log(newUser);
 
     dispatch(
       registerThunk({

@@ -33,14 +33,14 @@ const persistAuthConfig = {
 
 const store = configureStore({
   reducer: {
-    auth: persistReducer(persistAuthConfig, authReducer),
-    user: userReducer,
+    authState: persistReducer(persistAuthConfig, authReducer),
+    userState: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredActionPaths: ["payload.next", "meta.arg.next"],
+        ignoredActionPaths: ["payload.next", "meta.arg.next", "payload"],
       },
     }),
 });
