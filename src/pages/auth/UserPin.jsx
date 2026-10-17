@@ -51,19 +51,19 @@ export default function PinPage() {
             Please save your pin because this so important.
           </p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-            <div className="flex justify-between gap-2">
-              {[0, 1, 2, 3, 4, 5].map((index) => {
-                const { ref: registerRef, ...restRegister } = register(
-                  `pin.${index}`,
-                  {
-                    required: "PIN harus diisi lengkap",
-                    pattern: {
-                      value: /^[0-9]$/,
-                      message: "The PIN must be a number",
-                    },
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
+          <div className="flex justify-between gap-2">
+            {[0, 1, 2, 3, 4, 5].map((index) => {
+              const { ref: registerRef, ...restRegister } = register(
+                `pin.${index}`,
+                {
+                  required: "PIN must be filled in completely",
+                  pattern: {
+                    value: /^[0-9]$/,
+                    message: "The PIN must be a number",
                   },
-                );
+                },
+              );
 
                 const isInputError = errors.pin?.[index];
 
@@ -91,14 +91,14 @@ export default function PinPage() {
               })}
             </div>
 
-            <div className="mt-2 h-6">
-              {hasPinError && (
-                <p className="text-xs text-red-500">
-                  {errors.pin.find((err) => err?.message)?.message ||
-                    "PIN belum lengkap"}
-                </p>
-              )}
-            </div>
+          <div className="mt-2 h-6">
+            {hasPinError && (
+              <p className="text-xs text-red-500">
+                {errors.pin.find((err) => err?.message)?.message ||
+                  "PIN not complete"}
+              </p>
+            )}
+          </div>
 
             <button
               type="submit"
