@@ -2,18 +2,63 @@ import { useForm } from "react-hook-form";
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuTrash, LuUserRound } from "react-icons/lu";
-import { Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { editProfile } from "../../redux/slices/userSlice";
+import useToken from "../../hooks/UseToken";
+import { toast } from "react-toastify";
+import useProfile from "../../hooks/UseProfile";
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const token = useToken();
+  const profile = useProfile();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
-  const onSubmit = () => {
-    console.log("first");
+  const onSubmit = (data) => {
+    const { full_name, phone, email } = data;
+
+    const formData = new FormData();
+
+    if ((phone.length && phone[0] !== 6) || (phone.length && phone[1] !== 2)) {
+      setError("phone", {
+        type: "manual",
+        message: "The first and second numbers must be 62",
+      });
+    }
+
+    if (full_name.length) {
+      formData.append("name", full_name);
+    }
+    if (phone) {
+      formData.append("phone", phone);
+    }
+    if (email) {
+      formData.append("email", email);
+    }
+
+    dispatch(
+      editProfile({
+        token,
+        body: formData,
+        next: (message) => {
+          toast.success(message);
+          navigate("/profile");
+        },
+      }),
+    );
   };
+
+  const handleDelete = () => {};
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="flex flex-col justify-between lg:gap-4">
@@ -22,20 +67,34 @@ const EditProfile = () => {
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
               <div className="rounded-lg overflow-hidden w-6/12 lg:w-26">
-                <img
-                  src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
-                  alt="profile-img"
-                />
+                {profile?.image_url ? (
+                  <img
+                    className="w-full h-full"
+                    src={`${import.meta.env.VITE_API_URL}${profile?.image_url}`}
+                    alt="profile-img"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl">
+                    <p>{`${profile?.name[0].toUpperCase()}${profile?.name[1].toUpperCase()}`}</p>
+                  </div>
+                )}
               </div>
               <div className="flex flex-col items-center justify-center gap-4 lg:gap-2 h-10/12 w-full lg:w-fit">
-                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
+                <Link
+                  to="/edit"
+                  className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg"
+                >
                   <FiEdit className="text-lg" />
                   Change Profile
                 </Link>
-                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg">
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg"
+                >
                   <LuTrash className="text-lg" />
                   Delete Profile
-                </Link>
+                </button>
               </div>
             </div>
             <p className="text-sm lg:text-xs text-dark-gray">
@@ -70,7 +129,7 @@ const EditProfile = () => {
                 id="phone"
                 type="text"
                 className={`${errors?.phone?.message && "outline outline-red"}  focus:outline-none w-full`}
-                placeholder="Enter Your Number Phone"
+                placeholder="Enter Your Phone Number"
                 {...register("phone")}
               />
             </div>
@@ -83,7 +142,7 @@ const EditProfile = () => {
               <HiOutlineMail className="text-lg text-dark-gray" />
               <input
                 id="email"
-                type="text"
+                type="email"
                 className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Email"
                 {...register("email")}

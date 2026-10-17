@@ -11,14 +11,20 @@ const MyProfile = () => {
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="grid grid-cols-4 grid-rows-8 lg:grid-cols-8 lg:grid-rows-4 gap-6">
         <div className="rounded-lg overflow-hidden col-span-2 row-span-2">
-          <img
-            className="w-full h-full"
-            src={`${import.meta.env.VITE_API_URL}/${profile?.image_url}`}
-            alt="profile-img"
-          />
+          {profile?.image_url ? (
+            <img
+              className="w-full h-full"
+              src={`${import.meta.env.VITE_API_URL}${profile?.image_url}`}
+              alt="profile-img"
+            />
+          ) : (
+            <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl">
+              <p>{`${profile?.name[0].toUpperCase()}${profile?.name[1].toUpperCase()}`}</p>
+            </div>
+          )}
         </div>
         <div className="col-start-3 lg:col-start-7 col-span-2">
-          <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
+          <Link to="edit" className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
             <FiEdit className="text-lg" />
             Change Profile
           </Link>

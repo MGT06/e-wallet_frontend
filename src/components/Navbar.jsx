@@ -67,7 +67,7 @@ const Navbar = () => {
             {user?.image_url ? (
               <img
                 className="h-8 w-8 rounded-full"
-                src={`${import.meta.env.VITE_API_URL}/${user?.image_url}`}
+                src={`${import.meta.env.VITE_API_URL}${user?.image_url}`}
                 alt="user-img"
               />
             ) : (

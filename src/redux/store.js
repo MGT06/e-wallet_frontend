@@ -42,7 +42,12 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredActionPaths: ["payload.next", "meta.arg.next", "payload"],
+        ignoredActionPaths: [
+          "payload.next",
+          "meta.arg.next",
+          "payload",
+          "meta.arg.body",
+        ],
       },
     }),
 });
