@@ -65,7 +65,7 @@ const MyProfile = () => {
             <div className="grid gap-2">
               <p className="text-sm lg:text-xs font-medium">Password</p>
               <Link
-                to="/change-password"
+                to="/profile/change-password"
                 className="text-sm lg:text-xs text-primary hover:underline"
               >
                 Change Password
