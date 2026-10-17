@@ -42,8 +42,6 @@ export default function Register() {
 
     const newUser = { email, name, password };
 
-    console.log(newUser);
-
     dispatch(
       registerThunk({
         data: newUser,

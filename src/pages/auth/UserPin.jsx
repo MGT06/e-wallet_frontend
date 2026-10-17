@@ -1,8 +1,17 @@
 import { useForm, useWatch } from "react-hook-form";
 import { usePinInput } from "../../hooks/UsePinInput";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { setUserPin } from "../../redux/slices/userSlice";
+import { toast } from "react-toastify";
+import useToken from "../../hooks/UseToken";
 
 export default function PinPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const token = useToken();
+
   const {
     register,
     handleSubmit,
@@ -32,7 +41,20 @@ export default function PinPage() {
     }
 
     const fullPin = data.pin.join("");
-    console.log("PIN Submitted:", fullPin);
+    const pin = {
+      pin: fullPin,
+    };
+
+    dispatch(
+      setUserPin({
+        token,
+        pin,
+        next: (message) => {
+          toast.success(message);
+          navigate("/dashboard");
+        },
+      }),
+    );
   };
 
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
@@ -56,7 +78,7 @@ export default function PinPage() {
               const { ref: registerRef, ...restRegister } = register(
                 `pin.${index}`,
                 {
-                  required: "PIN harus diisi lengkap",
+                  required: "PIN must be filled",
                   pattern: {
                     value: /^[0-9]$/,
                     message: "The PIN must be a number",
