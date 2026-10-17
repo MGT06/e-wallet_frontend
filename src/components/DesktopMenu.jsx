@@ -8,17 +8,14 @@ import { BiLogOut } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 
 import { logoutThunk } from "../redux/slices/authSlice";
-import useToken from "../hooks/UseToken";
 import { toast } from "react-toastify";
 
 const DesktopMenu = () => {
   const dispatch = useDispatch();
-  const token = useToken();
 
   const handleLogout = () => {
     dispatch(
       logoutThunk({
-        token,
         next: (message) => {
           toast.success(message);
         },

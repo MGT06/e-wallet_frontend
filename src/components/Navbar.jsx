@@ -5,17 +5,15 @@ import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
-import { useDispatch } from "react-redux";
-import useToken from "../hooks/UseToken";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutThunk } from "../redux/slices/authSlice";
 import { toast } from "react-toastify";
-import useUser from "../hooks/UseUser";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
-  const token = useToken();
-  const user = useUser();
+  const token = useSelector((state) => state.authState.auth?.token);
+  const user = useSelector((state) => state.userState.user);
 
   const [navOpen, setNavOpen] = useState(false);
 
@@ -26,7 +24,6 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(
       logoutThunk({
-        token,
         next: (message) => {
           toast.success(message);
         },
@@ -67,7 +64,7 @@ const Navbar = () => {
             {user?.image_url ? (
               <img
                 className="h-8 w-8 rounded-full"
-                src={`${import.meta.env.VITE_API_URL}${user?.image_url}`}
+                src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
                 alt="user-img"
               />
             ) : (
