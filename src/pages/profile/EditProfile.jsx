@@ -4,10 +4,11 @@ import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuTrash, LuUserRound } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { editProfile } from "../../redux/slices/userSlice";
+import { deleteImage, editProfile } from "../../redux/slices/profileSlice";
 import useToken from "../../hooks/UseToken";
 import { toast } from "react-toastify";
 import useProfile from "../../hooks/UseProfile";
+import { useState } from "react";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ const EditProfile = () => {
 
   const token = useToken();
   const profile = useProfile();
+
+  const [img, setImg] = useState(null);
+  const [imgUpload, setImgUpload] = useState(null);
 
   const {
     register,
@@ -35,7 +39,10 @@ const EditProfile = () => {
       });
     }
 
-    if (full_name.length) {
+    if (imgUpload) {
+      formData.append("image", imgUpload);
+    }
+    if (full_name) {
       formData.append("name", full_name);
     }
     if (phone) {
@@ -57,7 +64,16 @@ const EditProfile = () => {
     );
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    dispatch(
+      deleteImage({
+        token,
+        next: (message) => {
+          toast.success(message);
+        },
+      }),
+    );
+  };
 
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
@@ -67,10 +83,14 @@ const EditProfile = () => {
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
               <div className="rounded-lg overflow-hidden w-6/12 lg:w-26">
-                {profile?.image_url ? (
+                {profile?.image_url || img ? (
                   <img
                     className="w-full h-full"
-                    src={`${import.meta.env.VITE_API_URL}${profile?.image_url}`}
+                    src={
+                      img
+                        ? img
+                        : `${import.meta.env.VITE_API_URL}${profile?.image_url}`
+                    }
                     alt="profile-img"
                   />
                 ) : (
@@ -80,13 +100,18 @@ const EditProfile = () => {
                 )}
               </div>
               <div className="flex flex-col items-center justify-center gap-4 lg:gap-2 h-10/12 w-full lg:w-fit">
-                <Link
-                  to="/edit"
+                <label
+                  htmlFor="change_img"
+                  onChange={(e) => {
+                    setImg(URL.createObjectURL(e.target.files[0]));
+                    setImgUpload(e.target.files[0]);
+                  }}
                   className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg"
                 >
                   <FiEdit className="text-lg" />
+                  <input id="change_img" className="hidden" type="file" />
                   Change Profile
-                </Link>
+                </label>
                 <button
                   type="button"
                   onClick={handleDelete}
