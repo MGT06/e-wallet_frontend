@@ -1,18 +1,14 @@
 import { useForm, useWatch } from "react-hook-form";
-import { usePinInput } from "../../hooks/UsePinInput";
-import { NavLink } from "react-router";
-import gambarPin from "../../assets/pin.svg";
+import { usePinInput } from "../hooks/UsePinInput";
+import gambarPin from "../assets/orangPin.svg";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { setUserPin } from "../../redux/slices/userSlice";
+import { setUserPin } from "../redux/slices/userSlice";
 import { toast } from "react-toastify";
-import useToken from "../../hooks/UseToken";
 
 export default function PinPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const token = useToken();
 
   const {
     register,
@@ -49,7 +45,6 @@ export default function PinPage() {
 
     dispatch(
       setUserPin({
-        token,
         pin,
         next: (message) => {
           toast.success(message);
@@ -75,19 +70,19 @@ export default function PinPage() {
             Please save your pin because this so important.
           </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-          <div className="flex justify-between gap-2">
-            {[0, 1, 2, 3, 4, 5].map((index) => {
-              const { ref: registerRef, ...restRegister } = register(
-                `pin.${index}`,
-                {
-                  required: "PIN must be filled in completely",
-                  pattern: {
-                    value: /^[0-9]$/,
-                    message: "The PIN must be a number",
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
+            <div className="flex justify-between gap-2">
+              {[0, 1, 2, 3, 4, 5].map((index) => {
+                const { ref: registerRef, ...restRegister } = register(
+                  `pin.${index}`,
+                  {
+                    required: "PIN must be filled in completely",
+                    pattern: {
+                      value: /^[0-9]$/,
+                      message: "The PIN must be a number",
+                    },
                   },
-                },
-              );
+                );
 
                 const isInputError = errors.pin?.[index];
 
@@ -115,18 +110,19 @@ export default function PinPage() {
               })}
             </div>
 
-          <div className="mt-2 h-6">
-            {hasPinError && (
-              <p className="text-xs text-red-500">
-                {errors.pin.find((err) => err?.message)?.message ||
-                  "PIN not complete"}
-              </p>
-            )}
-          </div>
+            <div className="mt-2 h-6">
+              {hasPinError && (
+                <p className="text-xs text-red-500">
+                  {errors.pin.find((err) => err?.message)?.message ||
+                    "PIN not complete"}
+                </p>
+              )}
+            </div>
 
             <button
               type="submit"
-              className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer">
+              className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
+            >
               Submit
             </button>
           </form>
@@ -135,7 +131,8 @@ export default function PinPage() {
             Forgot Your Pin?{" "}
             <NavLink
               to="/forgot"
-              className="font-semibold text-primary hover:underline">
+              className="font-semibold text-primary hover:underline"
+            >
               Reset
             </NavLink>
           </div>

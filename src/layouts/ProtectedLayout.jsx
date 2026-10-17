@@ -1,14 +1,22 @@
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import Menu from "../components/Menu.jsx";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import DesktopMenu from "../components/DesktopMenu.jsx";
-import useToken from "../hooks/UseToken.js";
+import { getUserInfo } from "../redux/slices/userSlice.js";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProtectedLayout = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useToken();
+  const location = useLocation();
+
+  const token = useSelector((state) => state.authState.auth?.token);
+
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch, token, location.pathname]);
 
   useEffect(() => {
     if (!token) {

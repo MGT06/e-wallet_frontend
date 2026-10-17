@@ -12,7 +12,6 @@ import {
 import persistStore from "redux-persist/es/persistStore";
 import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
-import profileReducer from "./slices/profileSlice";
 
 const storage = {
   getItem: (key) => {
@@ -36,13 +35,17 @@ const store = configureStore({
   reducer: {
     authState: persistReducer(persistAuthConfig, authReducer),
     userState: userReducer,
-    profileState: profileReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredActionPaths: ["payload.next", "meta.arg.next", "payload"],
+        ignoredActionPaths: [
+          "payload.next",
+          "meta.arg.next",
+          "payload",
+          "meta.arg.body",
+        ],
       },
     }),
 });

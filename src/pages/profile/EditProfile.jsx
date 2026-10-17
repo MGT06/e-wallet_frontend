@@ -2,18 +2,85 @@ import { useForm } from "react-hook-form";
 import { FiEdit } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuTrash, LuUserRound } from "react-icons/lu";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import {
+  deleteImage,
+  editProfile,
+  getProfile,
+} from "../../redux/slices/userSlice";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector((state) => state.userState.user);
+
+  const [img, setImg] = useState(null);
+  const [imgUpload, setImgUpload] = useState(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
-  const onSubmit = () => {
-    console.log("first");
+  const onSubmit = (data) => {
+    const { full_name, phone, email } = data;
+
+    const formData = new FormData();
+
+    if (
+      (phone.length && phone[0] !== "6") ||
+      (phone.length && phone[1] !== "2")
+    ) {
+      setError("phone", {
+        type: "manual",
+        message: "The phone number must begin with 62",
+      });
+    }
+
+    if (imgUpload) {
+      formData.append("image", imgUpload);
+    }
+    if (full_name) {
+      formData.append("name", full_name);
+    }
+    if (phone) {
+      formData.append("phone", phone);
+    }
+    if (email) {
+      formData.append("email", email);
+    }
+
+    dispatch(
+      editProfile({
+        body: formData,
+        next: (message) => {
+          toast.success(message);
+          navigate("/profile");
+        },
+      }),
+    );
   };
+
+  const handleDelete = () => {
+    dispatch(
+      deleteImage({
+        next: (message) => {
+          toast.success(message);
+        },
+      }),
+    );
+  };
+
+  useEffect(() => {
+    dispatch(getProfile);
+  }, [dispatch]);
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="flex flex-col justify-between lg:gap-4">
@@ -21,21 +88,44 @@ const EditProfile = () => {
           <div className="grid gap-4 lg:gap-2">
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
-              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26">
-                <img
-                  src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
-                  alt="profile-img"
-                />
+              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26 h-24">
+                {user?.image_url || img ? (
+                  <img
+                    className="w-full h-full"
+                    src={
+                      img
+                        ? img
+                        : `${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`
+                    }
+                    alt="profile-img"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-primary flex items-center justify-center text-white text-4xl">
+                    <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
+                  </div>
+                )}
               </div>
               <div className="flex flex-col items-center justify-center gap-4 lg:gap-2 h-10/12 w-full lg:w-fit">
-                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg">
+                <label
+                  htmlFor="change_img"
+                  onChange={(e) => {
+                    setImg(URL.createObjectURL(e.target.files[0]));
+                    setImgUpload(e.target.files[0]);
+                  }}
+                  className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg bg-primary text-white text-xs hover:opacity-90 hover:shadow-lg"
+                >
                   <FiEdit className="text-lg" />
+                  <input id="change_img" className="hidden" type="file" />
                   Change Profile
-                </Link>
-                <Link className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg">
+                </label>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg"
+                >
                   <LuTrash className="text-lg" />
                   Delete Profile
-                </Link>
+                </button>
               </div>
             </div>
             <p className="text-sm lg:text-xs text-dark-gray">
@@ -70,8 +160,17 @@ const EditProfile = () => {
                 id="phone"
                 type="text"
                 className={`${errors?.phone?.message && "outline outline-red"}  focus:outline-none w-full`}
-                placeholder="Enter Your Number Phone"
-                {...register("phone")}
+                placeholder="Enter Your Phone Number"
+                {...register("phone", {
+                  minLength: {
+                    value: 12,
+                    message: "Phone number minimal 12 character",
+                  },
+                  maxLength: {
+                    value: 14,
+                    message: "Phone number maximal 14 character",
+                  },
+                })}
               />
             </div>
           </div>
@@ -83,13 +182,27 @@ const EditProfile = () => {
               <HiOutlineMail className="text-lg text-dark-gray" />
               <input
                 id="email"
-                type="text"
+                type="email"
                 className={`${errors?.email?.message && "outline outline-red"}  focus:outline-none w-full`}
                 placeholder="Enter Your Email"
-                {...register("email")}
+                {...register("email", {
+                  minLength: {
+                    value: 7,
+                    message: "Email minimal 7 character",
+                  },
+                  maxLength: {
+                    value: 40,
+                    message: "Email maximal 40 character",
+                  },
+                })}
               />
             </div>
           </div>
+          <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+            {errors.phone?.message
+              ? errors.phone?.message
+              : errors.email?.message}
+          </p>
           <div className="grid gap-2">
             <p className="text-sm lg:text-xs font-medium">Password</p>
             <Link

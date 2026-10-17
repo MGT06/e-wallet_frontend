@@ -61,14 +61,16 @@ export const loginThunk = createAsyncThunk(
 
 export const logoutThunk = createAsyncThunk(
   "logout",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { getState, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/auth/logout`,
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${payload.token}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       );
@@ -160,5 +162,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {clearToken} = authSlice.actions
+export const { clearToken } = authSlice.actions;
 export default authSlice.reducer;
