@@ -1,10 +1,9 @@
-import { CiStar } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 const HistoryCard = ({ color }) => {
   return (
     <article
-      className={`container ${color} border-b border-b-dark-gray/20 rounded-lg`}
+      className={`px-4 py-2 ${color} border-b border-b-dark-gray/20 rounded-lg`}
     >
       <div className="flex items-center justify-between">
         <div className="rounded-lg overflow-hidden w-18 lg:w-14 hidden lg:block">
@@ -20,7 +19,7 @@ const HistoryCard = ({ color }) => {
         <div className="p-2 text-2xl">
           <p className="font-semibold text-green/80 text-sm">Rp.50.000</p>
         </div>
-        <div className="p-2 text-lg cursor-pointer text-red hover:opacity-60 hidden lg:block">
+        <div className="p-2 text-lg cursor-pointer text-red hover:opacity-60 block">
           <FaRegTrashAlt />
         </div>
       </div>

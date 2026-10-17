@@ -1,10 +1,12 @@
 import { useForm, useWatch } from "react-hook-form";
 import { usePinInput } from "../hooks/UsePinInput";
 import gambarPin from "../assets/orangPin.svg";
-import { NavLink, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserPin } from "../redux/slices/userSlice";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function PinPage() {
   const dispatch = useDispatch();
@@ -24,6 +26,8 @@ export default function PinPage() {
   });
 
   const pinValues = useWatch({ control, name: "pin" });
+  const user = useSelector((state) => state.userState);
+  const [loading, setLoading] = useState(false);
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
@@ -54,6 +58,16 @@ export default function PinPage() {
     );
   };
 
+  useEffect(() => {
+    (() => {
+      if (user.isPending) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+    })();
+  }, [user]);
+
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
 
   return (
@@ -65,7 +79,9 @@ export default function PinPage() {
             <h1 className="text-xl font-bold text-primary">E-Wallet</h1>
           </div>
 
-          <h2 className="text-lg font-bold text-gray-800">Enter Your Pin 👋</h2>
+          <h2 className="text-lg font-bold text-gray-800">
+            Create Your Pin 👋
+          </h2>
           <p className="mt-1 text-sm text-gray-400">
             Please save your pin because this so important.
           </p>
@@ -121,21 +137,14 @@ export default function PinPage() {
 
             <button
               type="submit"
-              className="mt-6 w-full rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
+              className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
             >
-              Submit
+              <AiOutlineLoading3Quarters
+                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+              />
+              {loading ? "" : "Submit"}
             </button>
           </form>
-
-          <div className="mt-6 text-center text-sm text-gray-500">
-            Forgot Your Pin?{" "}
-            <NavLink
-              to="/forgot"
-              className="font-semibold text-primary hover:underline"
-            >
-              Reset
-            </NavLink>
-          </div>
         </div>
       </div>
 
@@ -144,7 +153,7 @@ export default function PinPage() {
           <img
             src={gambarPin}
             alt="E-Wallet Illustration"
-            className="w-full h-auto object-contain drop-shadow-2xl"
+            className="w-90 h-auto object-contain drop-shadow-2xl"
           />
         </div>
       </div>

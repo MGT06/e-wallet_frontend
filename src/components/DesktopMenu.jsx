@@ -4,24 +4,8 @@ import { MdHistory } from "react-icons/md";
 import { CgExport } from "react-icons/cg";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { NavLink } from "react-router";
-import { BiLogOut } from "react-icons/bi";
-import { useDispatch } from "react-redux";
-
-import { logoutThunk } from "../redux/slices/authSlice";
-import { toast } from "react-toastify";
 
 const DesktopMenu = () => {
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(
-      logoutThunk({
-        next: (message) => {
-          toast.success(message);
-        },
-      }),
-    );
-  };
   return (
     <section className="py-8 px-2 pl-16 hidden lg:flex flex-col gap-4 text-white left-0 bottom-0 border border-r-dark-gray/20">
       <NavLink
@@ -69,14 +53,6 @@ const DesktopMenu = () => {
         <HiOutlineUsers className="text-xl" />
         <p className="text-sm">Profile</p>
       </NavLink>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="flex items-center gap-3 py-3 px-3 rounded-lg w-full text-red hover:opacity-70 hover:bg-red-50"
-      >
-        <BiLogOut className="text-xl" />
-        <p className="text-sm">Log Out</p>
-      </button>
     </section>
   );
 };

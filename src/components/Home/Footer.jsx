@@ -1,5 +1,4 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
-import eWalletLogo from "../../assets/e-wallet_logo.png";
 import { Link } from "react-router";
 import { TbBrandGithubFilled } from "react-icons/tb";
 import { MdOutlineEmail } from "react-icons/md";
@@ -12,7 +11,10 @@ const Footer = () => {
       <div className="section-container">
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
           <div className="grid gap-2 lg:w-3/12">
-            <img className="h-12" src={eWalletLogo} alt="e-wallet-logo" />
+            <div className="flex gap-2 items-center">
+              <img className="h-12" src="/LOGO.png" alt="e-wallet-logo" />
+              <p className="text-2xl font-semibold">E Wallet</p>
+            </div>
             <p className="lg:text-sm">
               Clarity gives you the blocks and components you need to create a
               truly professional website.

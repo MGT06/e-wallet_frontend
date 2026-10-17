@@ -10,12 +10,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginThunk } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const auth = useSelector((state) => state.authState);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -42,6 +44,14 @@ export default function Login() {
   };
 
   useEffect(() => {
+    (() => {
+      if (auth.isPending) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+    })();
+
     if (auth.isRejected) {
       setError("password", {
         type: "manual",
@@ -53,10 +63,10 @@ export default function Login() {
   }, [auth, setError]);
 
   return (
-    <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+    <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 text-sm">
       <div className="py-6 px-5 flex justify-center items-center">
         <section className="w-full max-w-md flex flex-col gap-4">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <div className="h-10 w-10">
               <img
                 src="/LOGO.png"
@@ -76,28 +86,28 @@ export default function Login() {
           <div className="flex flex-row lg:flex-col gap-3 w-full">
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-10"
             >
               <img
                 src={logoGogle}
                 alt="logo-google"
-                className="h-5 w-5 lg:h-6.5 lg:w-6.5 object-contain"
+                className="h-5 w-5 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium lg:text-base">
+              <span className="hidden lg:inline text-sm font-medium">
                 Sign In With Google
               </span>
             </button>
 
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-10"
             >
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
-                className="h-6 w-6 lg:h-8 lg:w-8 object-contain"
+                className="h-6 w-6 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium lg:text-base">
+              <span className="hidden lg:inline text-sm font-medium">
                 Sign In With Facebook
               </span>
             </button>
@@ -166,7 +176,10 @@ export default function Login() {
             </p>
 
             <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90">
-              Login
+              <AiOutlineLoading3Quarters
+                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+              />
+              {loading ? "" : "Login"}
             </button>
           </form>
           <div className="flex justify-center items-center text-dark-gray">

@@ -2,7 +2,7 @@ import { CiStar } from "react-icons/ci";
 
 const PeopleCard = ({ color }) => {
   return (
-    <article className={`container ${color} border-b border-b-dark-gray/20 rounded-lg`}>
+    <article className={`px-4 py-2 ${color} border-b border-b-dark-gray/20 rounded-lg`}>
       <div className="flex items-center justify-between">
         <div className="rounded-lg overflow-hidden w-18 lg:w-14">
           <img
