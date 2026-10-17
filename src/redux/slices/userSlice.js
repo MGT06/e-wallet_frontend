@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {clearToken} from "./authSlice.js";
+import { clearToken } from "./authSlice.js";
 
 const initialState = {
   user: null,
@@ -24,6 +24,7 @@ export const getUserInfo = createAsyncThunk(
 
       if (response.status === 401) {
         dispatch(clearToken());
+        return;
       }
 
       const data = await response.json();

@@ -12,6 +12,7 @@ import {
 import persistStore from "redux-persist/es/persistStore";
 import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
+import profileReducer from "./slices/profileSlice";
 
 const storage = {
   getItem: (key) => {
@@ -35,6 +36,7 @@ const store = configureStore({
   reducer: {
     authState: persistReducer(persistAuthConfig, authReducer),
     userState: userReducer,
+    profileState: profileReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

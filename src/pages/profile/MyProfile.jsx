@@ -2,15 +2,18 @@ import { FiEdit } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
 import { LuPhone, LuUserRound } from "react-icons/lu";
 import { Link } from "react-router";
+import useProfile from "../../hooks/UseProfile";
 
 const MyProfile = () => {
+  const profile = useProfile();
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="grid grid-cols-4 grid-rows-8 lg:grid-cols-8 lg:grid-rows-4 gap-6">
         <div className="rounded-lg overflow-hidden col-span-2 row-span-2">
           <img
             className="w-full h-full"
-            src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
+            src={`${import.meta.env.VITE_API_URL}/${profile?.image_url}`}
             alt="profile-img"
           />
         </div>
@@ -25,17 +28,17 @@ const MyProfile = () => {
             <p className="text-lg lg:text-sm font-medium">Fullname</p>
             <div className="flex items-start gap-2 text-dark-gray">
               <LuUserRound className="text-lg" />
-              <p className="text-xs">Ghaluh Wizard Anggoro</p>
+              <p className="text-xs">{profile?.name}</p>
             </div>
             <p className="text-lg lg:text-sm font-medium">Phone</p>
             <div className="flex items-start gap-2 text-dark-gray">
               <LuPhone className="text-lg" />
-              <p className="text-xs">081239821932</p>
+              <p className="text-xs">{profile?.phone || "Phone not set yet"}</p>
             </div>
             <p className="text-lg lg:text-sm font-medium">Email</p>
             <div className="flex items-start gap-2 text-dark-gray">
               <HiOutlineMail className="text-lg" />
-              <p className="text-xs">ghaluhwizz@gmail.com</p>
+              <p className="text-xs">{profile?.email}</p>
             </div>
           </div>
         </div>
