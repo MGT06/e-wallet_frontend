@@ -32,8 +32,6 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
-    clearErrors();
-
     dispatch(
       changePass({
         data: {
@@ -51,7 +49,18 @@ const ChangePassword = () => {
           });
         },
       }),
-    );
+    )
+      .unwrap()
+      .catch((rejected) => {
+        const errorMsg =
+          rejected?.message ||
+          rejected?.data?.message ||
+          "Failed to change password";
+        setError("existing_password", {
+          type: "server",
+          message: errorMsg,
+        });
+      });
   };
 
   useEffect(() => {
@@ -88,6 +97,11 @@ const ChangePassword = () => {
                   minLength: {
                     value: 8,
                     message: "Password must be at least 8 characters",
+                  },
+                  onChange: () => {
+                    if (errors.existing_password) {
+                      clearErrors("existing_password");
+                    }
                   },
                 })}
               />

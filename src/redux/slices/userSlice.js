@@ -35,10 +35,8 @@ export const changePass = createAsyncThunk(
       }
 
       if (!response.ok) {
-        const errorMsg =
-          (data && (data.message || data.error || data.err)) ||
-          "Failed to change password";
-        const formattedMsg = upperCaseResponse({ message: errorMsg });
+        const rawMsg = data?.message || data?.error || data?.err || "Failed to change password";
+        const formattedMsg = upperCaseResponse({ message: rawMsg });
 
         if (payload.nextErr) {
           payload.nextErr(formattedMsg);
@@ -49,9 +47,8 @@ export const changePass = createAsyncThunk(
 
       return { data, next: payload.next };
     } catch (error) {
-      const errorMsg =
-        error?.message || error?.data?.message || "Failed to change password";
-      const formattedMsg = upperCaseResponse({ message: errorMsg });
+      const rawMsg = error?.message || error?.data?.message || "Failed to change password";
+      const formattedMsg = upperCaseResponse({ message: rawMsg });
 
       if (payload?.nextErr) {
         payload.nextErr(formattedMsg);
@@ -161,7 +158,7 @@ export const deleteImage = createAsyncThunk(
 
 export const checkPin = createAsyncThunk(
   "check_pin",
-  async (payload, {getState, dispatch, rejectWithValue}) => {
+  async (payload, { getState, dispatch, rejectWithValue }) => {
     const token = getState().authState.auth.token;
 
     try {
@@ -177,20 +174,37 @@ export const checkPin = createAsyncThunk(
         },
       );
 
+      const data = await res.json();
+
       if (res.status === 401) {
-        dispatch(clearToken())
+        dispatch(clearToken());
+        return rejectWithValue({ message: "Unauthorized" });
       }
 
-      if (!res.ok){
-        throw await res.json()
+      if (!res.ok) {
+        const rawMsg = data?.message || data?.error || "Check pin failed";
+        const formattedMsg = upperCaseResponse({ message: rawMsg });
+
+        if (payload?.nextErr) {
+          payload.nextErr(formattedMsg);
+        }
+
+        return rejectWithValue({ data, message: formattedMsg, nextErr: payload?.nextErr });
       }
 
-      return {next: payload.next}
+      return { data, next: payload.next };
     } catch (err) {
-      return rejectWithValue(err);
+      const rawMsg = err?.message || "Check pin failed";
+      const formattedMsg = upperCaseResponse({ message: rawMsg });
+
+      if (payload?.nextErr) {
+        payload.nextErr(formattedMsg);
+      }
+
+      return rejectWithValue({ err, message: formattedMsg, nextErr: payload?.nextErr });
     }
-  }
-)
+  },
+);
 
 export const setUserPin = createAsyncThunk(
   "set_pin",
@@ -357,9 +371,12 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = payload.message;
-          if (payload.nextErr) {
-            payload.nextErr()
+          const errorMsg =
+            payload?.message ||
+            (payload?.data ? upperCaseResponse(payload.data) : "Check pin failed");
+          state.error = errorMsg;
+          if (payload?.nextErr) {
+            payload.nextErr(errorMsg);
           }
         },
       })
@@ -387,6 +404,9 @@ const userSlice = createSlice({
             payload?.message ||
             (payload?.data ? upperCaseResponse(payload.data) : "Failed to change password");
           state.error = errorMsg;
+          if (payload?.nextErr) {
+            payload.nextErr(errorMsg);
+          }
         },
       })
       .addAsyncThunk(editProfile, {
