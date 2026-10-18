@@ -45,12 +45,13 @@ const ChangePin = () => {
     if (!isComplete) {
       return;
     }
-    console.log(data);
 
-    // const fullPin = data.cpin.join("")
-    // const pin = {
-    //   cpin: fullPin,
-    // };
+    const fullPin = data.cpin.join("")
+    const pin = {
+      cpin: fullPin,
+    };
+
+    console.log(pin)
   };
 
   return (
