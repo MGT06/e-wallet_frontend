@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { TbSquareKey } from "react-icons/tb";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { changePass } from "../../redux/slices/userSlice.js";
@@ -11,11 +11,13 @@ const ChangePassword = () => {
   const dispatch = useDispatch();
   const navi = useNavigate();
 
+  const userState = useSelector(state => state.userState)
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors },setError
   } = useForm();
   const newPassword = useWatch({ control, name: "new_password" });
 
@@ -26,6 +28,15 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
+    if (userState.isRejected) {
+      setError("existing_password", {
+      type: "manual",
+      message: userState.error,
+    });
+
+    return;
+    }
+
     dispatch(
       changePass({
         data: {

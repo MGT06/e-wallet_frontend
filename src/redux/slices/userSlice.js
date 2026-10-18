@@ -151,7 +151,7 @@ export const setUserPin = createAsyncThunk(
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/user/set-pin`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -308,7 +308,7 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = payload?.message || "Failed to change password";
+          state.error = upperCaseResponse(payload);
         },
       })
       .addAsyncThunk(editProfile, {
