@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 import { HiCash } from "react-icons/hi";
 import { VscVerified } from "react-icons/vsc";
 import { useSelector } from "react-redux";
@@ -16,6 +17,8 @@ const SetNominal = () => {
   const onSubmit = () => {
     console.log("first");
   };
+
+  const handleAddFavorit = () => {};
 
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
@@ -39,7 +42,13 @@ const SetNominal = () => {
               </div>
             </div>
             <div className="p-2 text-2xl cursor-pointer">
-              <CiStar className="text-3xl" />
+              <CiStar
+                onClick={handleAddFavorit}
+                className={user?.is_favorit ? "hidden" : "block"}
+              />
+              <FaStar
+                className={`${user?.is_favorit ? "block" : "hidden"} text-yellow-500`}
+              />
             </div>
           </div>
         </div>

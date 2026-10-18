@@ -3,6 +3,7 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { IoMdArrowDropup } from "react-icons/io";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { Link } from "react-router";
 
 import {
   Chart as ChartJS,
@@ -368,9 +369,12 @@ export default function Dashboard() {
                 <div className="font-bold text-lg text-gray-900">
                   Transaction History
                 </div>
-                <button className="text-primary text-sm font-semibold hover:underline">
+                <Link
+                  to="/history"
+                  className="text-primary text-sm font-semibold hover:underline"
+                >
                   See All
-                </button>
+                </Link>
               </div>
 
               <div className="space-y-4 mb-32 lg:mb-0">
@@ -414,9 +418,12 @@ export default function Dashboard() {
               <div className="font-bold text-lg text-gray-900">
                 Transaction History
               </div>
-              <button className="text-primary text-sm font-semibold hover:underline">
+              <Link
+                to="/history"
+                className="text-primary text-sm font-semibold hover:underline"
+              >
                 See All
-              </button>
+              </Link>
             </div>
 
             <div className="space-y-4">

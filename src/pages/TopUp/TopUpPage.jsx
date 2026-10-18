@@ -8,6 +8,7 @@ import SuccessModal from "../../components/transfer/SuccessModal.jsx";
 import FailedModal from "../../components/transfer/FailedModal.jsx";
 import PaymentSummary from "../../components/topup/PaymentSummary.jsx";
 import LoadingModal from "../../components/LoadingModal.jsx";
+import { VscVerified } from "react-icons/vsc";
 import { useSearchParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/userSlice.js";
@@ -135,12 +136,7 @@ export default function TopUpPage() {
                     </h3>
                     <p className="text-sm text-dark-gray">{user?.phone}</p>
                     <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-semibold text-white">
-                      <svg
-                        className="h-3.5 w-3.5 fill-current"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-                      </svg>
+                      <VscVerified className="text-lg" />
                       Verified
                     </span>
                   </div>
