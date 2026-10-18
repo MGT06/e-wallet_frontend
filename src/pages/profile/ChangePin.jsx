@@ -11,18 +11,16 @@ const ChangePin = () => {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const user = useSelector((state) => state.userState);
-  const [checkOldPin, setCheckOldPin] = useState(false)
+  const [checkOldPin, setCheckOldPin] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    () => {
-      if (user.isPending) {
-        setLoading(true);
-      } else {
-        setLoading(false);
-      }
-    };
+    if (user.isPending) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
   }, [user]);
 
   const {
@@ -38,17 +36,19 @@ const ChangePin = () => {
     defaultValues: {
       cpin: ["", "", "", "", "", ""],
       npin: ["", "", "", "", "", ""],
+      cnpin: ["", "", "", "", "", ""],
     },
   });
 
   const cpinV = useWatch({ control, name: "cpin" });
   const npinV = useWatch({ control, name: "npin" });
+  const cnpinV = useWatch({ control, name: "cnpin" });
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
     setValue,
     getValues,
-    name: "cpin,npin",
+    name: "cpin,npin,cnpin",
   });
 
   const hasArrayPinErr = Array.isArray(errors.cpin) && errors.cpin.some(Boolean);
@@ -66,11 +66,18 @@ const ChangePin = () => {
 
   const onSubmit = (data) => {
     const isComplete = data.cpin.every((d) => d !== "");
-    console.log(data.npin)
     if (!isComplete) {
       setError("cpin.root", {
         type: "manual",
         message: "PIN must be filled in completely",
+      });
+      return;
+    }
+
+    if (data.npin !== data.cnpin) {
+      setError("cnpin.root", {
+        type: "manual",
+        message: "New PIN and Confirm PIN must match",
       });
       return;
     }
@@ -118,10 +125,10 @@ const ChangePin = () => {
       <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 flex flex-col items-center text-center shadow-sm border border-gray-100">
         <div className="pb-4">
           <p className="text-xl font-semibold text-gray-800">
-            Enter Your Pin 👋
+            Change Your Pin 👋
           </p>
           <p className="text-dark-gray text-sm mt-1">
-            Enter Your Pin For Transaction
+            Enter Your Current Pin, New Pin, and Confirm New Pin
           </p>
         </div>
 
@@ -133,7 +140,7 @@ const ChangePin = () => {
               const { ref: registerRef, ...restRegister } = register(
                 `cpin.${i}`,
                 {
-                  required: "PIN must be filled in completely",
+                  required: "Current PIN must be filled in completely",
                   pattern: {
                     value: /[0-9]$/,
                     message: "The PIN must be a number",
@@ -170,9 +177,9 @@ const ChangePin = () => {
           <div className="flex justify-center items-center gap-2 sm:gap-3">
             {[0, 1, 2, 3, 4, 5].map((i) => {
               const { ref: registerRef, ...restRegister } = register(
-                `cpin.${i}`,
+                `npin.${i}`,
                 {
-                  required: "PIN must be filled in completely",
+                  required: "New PIN must be filled in completely",
                   pattern: {
                     value: /[0-9]$/,
                     message: "The PIN must be a number",
@@ -180,7 +187,7 @@ const ChangePin = () => {
                 },
               );
 
-              const isInputErr = errors.cpin?.[i] || rootPinErr;
+              const isInputErr = errors.npin?.[i] || errors.npin?.root?.message;
 
               return (
                 <input
@@ -190,6 +197,45 @@ const ChangePin = () => {
                   inputMode="numeric"
                   maxLength={1}
                   value={npinV[i] || ""}
+                  ref={(e) => {
+                    registerRef(e);
+                    inputRefs.current[i] = e;
+                  }}
+                  onChange={(e) => onInputChange(e, i)}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  className={`my-8 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
+                    isInputErr
+                      ? "border-red-500 text-red-500"
+                      : "border-gray-300 focus:border-primary"
+                  }`}
+                />
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center items-center gap-2 sm:gap-3">
+            {[0, 1, 2, 3, 4, 5].map((i) => {
+              const { ref: registerRef, ...restRegister } = register(
+                `cnpin.${i}`,
+                {
+                  required: "Confirm PIN must be filled in completely",
+                  pattern: {
+                    value: /[0-9]$/,
+                    message: "The PIN must be a number",
+                  },
+                },
+              );
+
+              const isInputErr = errors.cnpin?.[i] || errors.cnpin?.root?.message;
+
+              return (
+                <input
+                  key={i}
+                  {...restRegister}
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={cnpinV[i] || ""}
                   ref={(e) => {
                     registerRef(e);
                     inputRefs.current[i] = e;
