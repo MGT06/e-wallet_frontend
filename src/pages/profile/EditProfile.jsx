@@ -188,8 +188,8 @@ const EditProfile = () => {
                 placeholder="Enter Your Phone Number"
                 {...register("phone", {
                   minLength: {
-                    value: 12,
-                    message: "Phone number minimal 12 character",
+                    value: 13,
+                    message: "Phone number minimal 13 character",
                   },
                   maxLength: {
                     value: 14,

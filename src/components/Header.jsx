@@ -12,6 +12,7 @@ export default function Header() {
   const param = useLocation();
 
   const auth = useSelector((state) => state.authState);
+  const user = useSelector((state) => state.userState.user);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [navOpen, setNavOpen] = useState(false);
@@ -62,14 +63,20 @@ export default function Header() {
   return (
     <header className="lg:hidden bg-primary p-5 text-white text-1xl flex gap-4 border-b border-gray min-w-screen justify-between items-center z-50">
       <div className="flex gap-4">
-        <img
-          src="https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg"
-          alt="profile"
-          className="rounded-full h-10 w-10"
-        />
+        {user?.image_url ? (
+          <img
+            src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
+            alt="user-image"
+            className="h-10 w-10 rounded-xl object-cover"
+          />
+        ) : (
+          <div className="w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center">
+            <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
+          </div>
+        )}
         <div className="text-sm">
           <div>Hallo,</div>
-          <div>Sigma Cat Wizard</div>
+          <div>{user?.name}</div>
         </div>
       </div>
       <nav className="md:hidden">

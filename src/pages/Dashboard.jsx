@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { IoMdArrowDropup } from "react-icons/io";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -304,15 +303,17 @@ export default function Dashboard() {
 
             <div className="flex lg:hidden items-center justify-between gap-4 my-6 text-white">
               <button
-                onClick={() => navigate("/topup")}
-                className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity">
+                onClick={() => navigate("/top-up")}
+                className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity"
+              >
                 <BiExport className="text-xl" />
                 <span>Top Up</span>
               </button>
 
               <button
                 onClick={() => navigate("/transfer")}
-                className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity">
+                className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity"
+              >
                 <FaRegPaperPlane className="text-lg" />
                 <span>Transfer</span>
               </button>
@@ -324,14 +325,16 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate("/topup")}
-                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
+                  onClick={() => navigate("/top-up")}
+                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm"
+                >
                   <BiExport className="text-lg" />
                   <span>Top Up</span>
                 </button>
                 <button
                   onClick={() => navigate("/transfer")}
-                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm">
+                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm"
+                >
                   <FaRegPaperPlane className="text-base" />
                   <span>Transfer</span>
                 </button>
@@ -395,7 +398,8 @@ export default function Dashboard() {
                       <div
                         className={`font-bold text-sm ${
                           c.isIncome ? "text-green-500" : "text-red-500"
-                        }`}>
+                        }`}
+                      >
                         {c.amount}
                       </div>
                     </div>
@@ -440,7 +444,8 @@ export default function Dashboard() {
                     <div
                       className={`font-bold text-sm ${
                         c.isIncome ? "text-emerald-500" : "text-rose-500"
-                      }`}>
+                      }`}
+                    >
                       {c.amount}
                     </div>
                   </div>
