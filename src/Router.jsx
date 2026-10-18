@@ -30,7 +30,6 @@ const Router = () => {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot" element={<Forgot />} />
-        <Route path="pin" element={<UserPin />} />
         <Route path="reset/password" element={<ResetPassUi />} />
         <Route path="otp" element={<Otp />} />
       </Route>
@@ -41,6 +40,8 @@ const Router = () => {
       </Route>
 
       <Route element={<ProtectedLayout />}>
+        <Route path="/set-pin" element={<UserPin />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/transfer" element={<TransferLayout />}>

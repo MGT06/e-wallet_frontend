@@ -3,6 +3,7 @@ import { upperCaseResponse } from "../../utils";
 
 const initialState = {
   auth: null,
+  isHasPin: null,
   isPending: false,
   isFulfilled: false,
   isRejected: false,
@@ -94,6 +95,9 @@ const authSlice = createSlice({
     clearToken: () => {
       return initialState;
     },
+    setIsHasPin: (state) => {
+      state.isHasPin = true;
+    },
   },
   extraReducers: (builder) => {
     return builder
@@ -126,6 +130,7 @@ const authSlice = createSlice({
           state.auth = { token: payload.data.data.token };
           state.isPending = false;
           state.isFulfilled = true;
+          state.isHasPin = payload.data.data.is_has_pin;
           if (payload.next) {
             payload.next(
               upperCaseResponse(payload.data),
@@ -162,5 +167,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearToken } = authSlice.actions;
+export const { clearToken, setIsHasPin } = authSlice.actions;
 export default authSlice.reducer;

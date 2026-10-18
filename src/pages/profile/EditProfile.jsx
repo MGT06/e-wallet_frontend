@@ -188,8 +188,8 @@ const EditProfile = () => {
                 placeholder="Enter Your Phone Number"
                 {...register("phone", {
                   minLength: {
-                    value: 13,
-                    message: "Phone number minimal 13 character",
+                    value: 12,
+                    message: "Phone number minimal 12 character",
                   },
                   maxLength: {
                     value: 14,
@@ -199,7 +199,7 @@ const EditProfile = () => {
               />
             </div>
           </div>
-          <p className="text-xs sm:text-xs h-6 text-red-500">
+          <p className="text-xs sm:text-xs text-red-500">
             {errors.phone?.message}
           </p>
           <div className="grid gap-2">
@@ -226,7 +226,7 @@ const EditProfile = () => {
               />
             </div>
           </div>
-          <p className="text-xs sm:text-xs h-6 text-red-500">
+          <p className="text-xs sm:text-xs text-red-500">
             {errors.email?.message}
           </p>
           <div className="grid gap-2">

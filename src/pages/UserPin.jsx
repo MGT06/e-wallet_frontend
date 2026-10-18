@@ -12,6 +12,8 @@ export default function PinPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const isHasPin = useSelector((state) => state.authState.isHasPin);
+
   const {
     register,
     handleSubmit,
@@ -60,13 +62,16 @@ export default function PinPage() {
 
   useEffect(() => {
     (() => {
+      if (isHasPin) {
+        navigate("/dashboard");
+      }
       if (user.isPending) {
         setLoading(true);
       } else {
         setLoading(false);
       }
     })();
-  }, [user]);
+  }, [user, isHasPin, navigate]);
 
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
 
