@@ -11,6 +11,7 @@ const ChangePin = () => {
   const dispatch = useDispatch();
   const navi = useNavigate();
   const user = useSelector((state) => state.userState);
+  const [checkOldPin, setCheckOldPin] = useState(false)
 
   const [loading, setLoading] = useState(false);
 
@@ -36,16 +37,18 @@ const ChangePin = () => {
   } = useForm({
     defaultValues: {
       cpin: ["", "", "", "", "", ""],
+      npin: ["", "", "", "", "", ""],
     },
   });
 
   const cpinV = useWatch({ control, name: "cpin" });
+  const npinV = useWatch({ control, name: "npin" });
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
     setValue,
     getValues,
-    name: "cpin",
+    name: "cpin,npin",
   });
 
   const hasArrayPinErr = Array.isArray(errors.cpin) && errors.cpin.some(Boolean);
@@ -63,6 +66,7 @@ const ChangePin = () => {
 
   const onSubmit = (data) => {
     const isComplete = data.cpin.every((d) => d !== "");
+    console.log(data.npin)
     if (!isComplete) {
       setError("cpin.root", {
         type: "manual",
@@ -83,7 +87,7 @@ const ChangePin = () => {
         cpin,
         next: () => {
           toast.success("Appropriate pin");
-          navi("/auth/pin");
+          // navi("/auth/pin");
         },
         nextErr: (err) => {
           setError("cpin.root", {
@@ -147,6 +151,45 @@ const ChangePin = () => {
                   inputMode="numeric"
                   maxLength={1}
                   value={cpinV[i] || ""}
+                  ref={(e) => {
+                    registerRef(e);
+                    inputRefs.current[i] = e;
+                  }}
+                  onChange={(e) => onInputChange(e, i)}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  className={`my-8 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
+                    isInputErr
+                      ? "border-red-500 text-red-500"
+                      : "border-gray-300 focus:border-primary"
+                  }`}
+                />
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center items-center gap-2 sm:gap-3">
+            {[0, 1, 2, 3, 4, 5].map((i) => {
+              const { ref: registerRef, ...restRegister } = register(
+                `cpin.${i}`,
+                {
+                  required: "PIN must be filled in completely",
+                  pattern: {
+                    value: /[0-9]$/,
+                    message: "The PIN must be a number",
+                  },
+                },
+              );
+
+              const isInputErr = errors.cpin?.[i] || rootPinErr;
+
+              return (
+                <input
+                  key={i}
+                  {...restRegister}
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={npinV[i] || ""}
                   ref={(e) => {
                     registerRef(e);
                     inputRefs.current[i] = e;
