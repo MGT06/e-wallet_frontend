@@ -15,14 +15,12 @@ const ChangePin = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-      (() => {
-        if (user.isPending) {
-          setLoading(true);
-        } else {
-          setLoading(false);
-        }
-      })();
-    }, [user]);
+    if (user.isPending) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [user.isPending]);
 
   const {
     register,
@@ -30,6 +28,8 @@ const ChangePin = () => {
     setValue,
     getValues,
     control,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -46,15 +46,30 @@ const ChangePin = () => {
     name: "cpin",
   });
 
-  const hasPinErr = Array.isArray(errors.cpin) && errors.cpin.some(Boolean);
+  const hasArrayPinErr = Array.isArray(errors.cpin) && errors.cpin.some(Boolean);
+  const rootPinErr = errors.cpin?.root?.message || errors.cpin?.message;
+  const pinErrorMessage =
+    rootPinErr ||
+    (hasArrayPinErr && errors.cpin.find((err) => err?.message)?.message);
+
+  const onInputChange = (e, i) => {
+    if (errors.cpin) {
+      clearErrors("cpin");
+    }
+    handleChange(e, i);
+  };
 
   const onSubmit = (data) => {
     const isComplete = data.cpin.every((d) => d !== "");
     if (!isComplete) {
+      setError("cpin.root", {
+        type: "manual",
+        message: "PIN must be filled in completely",
+      });
       return;
     }
 
-    const fullPin = data.cpin.join("")
+    const fullPin = data.cpin.join("");
     const cpin = {
       pin: fullPin,
     };
@@ -64,10 +79,27 @@ const ChangePin = () => {
         cpin,
         next: () => {
           toast.success("Appropriate pin");
-          navi("/auth/pin")
-        }
-      })
+          navi("/auth/pin");
+        },
+        nextErr: (err) => {
+          setError("cpin.root", {
+            type: "server",
+            message: err,
+          });
+        },
+      }),
     )
+      .unwrap()
+      .catch((rejected) => {
+        const errorMsg =
+          rejected?.message ||
+          rejected?.data?.message ||
+          "Check pin not match";
+        setError("cpin.root", {
+          type: "server",
+          message: errorMsg,
+        });
+      });
   };
 
   return (
@@ -98,7 +130,7 @@ const ChangePin = () => {
                 },
               );
 
-              const isInputErr = errors.cpin?.[i];
+              const isInputErr = errors.cpin?.[i] || rootPinErr;
 
               return (
                 <input
@@ -112,7 +144,7 @@ const ChangePin = () => {
                     registerRef(e);
                     inputRefs.current[i] = e;
                   }}
-                  onChange={(e) => handleChange(e, i)}
+                  onChange={(e) => onInputChange(e, i)}
                   onKeyDown={(e) => handleKeyDown(e, i)}
                   className={`my-8 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
                     isInputErr
@@ -125,10 +157,9 @@ const ChangePin = () => {
           </div>
 
           <div className="mt-3 min-h-6 flex items-center justify-center">
-            {hasPinErr && (
+            {pinErrorMessage && (
               <p className="text-xs text-red-500 text-center">
-                {errors.cpin.find((err) => err?.message)?.message ||
-                  "PIN not complete"}
+                {pinErrorMessage}
               </p>
             )}
           </div>
