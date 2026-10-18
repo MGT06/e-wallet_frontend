@@ -1,19 +1,21 @@
 import { Link } from "react-router";
 
 import { CgClose, CgMenuRightAlt } from "react-icons/cg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FiEdit } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutThunk } from "../redux/slices/authSlice";
 import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((state) => state.authState.auth?.token);
+  const auth = useSelector((state) => state.authState);
   const user = useSelector((state) => state.userState.user);
+  const [loading, setLoading] = useState(false);
 
   const [navOpen, setNavOpen] = useState(false);
 
@@ -22,6 +24,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    setLoading(true);
     dispatch(
       logoutThunk({
         next: (message) => {
@@ -31,9 +34,17 @@ const Navbar = () => {
     );
   };
 
+  useEffect(() => {
+    (() => {
+      if (!auth.isPending) {
+        setLoading(false);
+      }
+    })();
+  }, [auth]);
+
   return (
     <header
-      className={`${token ? "lg:bg-white hidden lg:block" : "bg-primary"} bg-primary lg:block border-b border-b-dark-gray/20 top-0 left-0 right-0 z-50`}
+      className={`${token ? "lg:bg-white hidden lg:block" : "bg-primary"} bg-primary lg:block border-b border-b-dark-gray/20 sticky top-0 left-0 right-0 z-50`}
     >
       <div className="container flex items-center justify-between">
         <h1>
@@ -81,22 +92,20 @@ const Navbar = () => {
               className={`${navOpen ? "hidden" : "block"} cursor-pointer text-lg`}
             />
             <div
-              className={`${navOpen ? "opacity-100" : "opacity-0"} p-3 absolute right-0 top-14 grid gap-4 bg-white z-50 w-50 rounded-lg shadow-lg transition-all ease-in-out`}
+              className={`${navOpen ? "opacity-100" : "opacity-0"} p-1 absolute right-0 top-14 grid gap-4 bg-white z-50 w-50 rounded-lg shadow-lg transition-all ease-in-out`}
             >
-              <Link
-                to="/profile"
-                className="py-3 px-4 rounded-lg bg-primary text-white flex items-center gap-2 hover:opacity-90"
-              >
-                <FiEdit className="text-sm" />
-                Profile
-              </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="py-3 px-4 rounded-lg text-red flex items-center gap-2 cursor-pointer text-left hover:opacity-60"
+                className={`py-3 px-4 rounded-lg text-red flex items-center gap-2 cursor-pointer text-left hover:opacity-60 ${loading ? "justify-center" : ""}`}
               >
-                <BiLogOut className="text-sm" />
-                Logout
+                <BiLogOut
+                  className={`${loading ? "hidden" : "block"} text-sm`}
+                />
+                <AiOutlineLoading3Quarters
+                  className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+                />
+                {loading ? "" : "Logout"}
               </button>
             </div>
           </div>

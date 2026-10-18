@@ -11,12 +11,14 @@ import {
 } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.userState.user);
+  const [loading, setLoading] = useState(false);
 
   const [img, setImg] = useState(null);
   const [imgUpload, setImgUpload] = useState(null);
@@ -29,6 +31,8 @@ const EditProfile = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+    setLoading(2);
+
     const { full_name, phone, email } = data;
 
     const formData = new FormData();
@@ -61,6 +65,7 @@ const EditProfile = () => {
         body: formData,
         next: (message) => {
           toast.success(message);
+          setLoading(null);
           navigate("/profile");
         },
       }),
@@ -68,10 +73,13 @@ const EditProfile = () => {
   };
 
   const handleDelete = () => {
+    setLoading(1);
+
     dispatch(
       deleteImage({
         next: (message) => {
           toast.success(message);
+          setLoading(null);
         },
       }),
     );
@@ -123,8 +131,13 @@ const EditProfile = () => {
                   onClick={handleDelete}
                   className="w-full flex gap-2 items-center justify-center py-3 lg:py-2 px-4 rounded-lg border border-red text-red text-xs hover:opacity-90 hover:shadow-lg"
                 >
-                  <LuTrash className="text-lg" />
-                  Delete Profile
+                  <LuTrash
+                    className={`${loading === 1 ? "hidden" : "block"} text-lg`}
+                  />
+                  <AiOutlineLoading3Quarters
+                    className={`${loading === 1 ? "block" : "hidden"} text-xl animate-spin`}
+                  />
+                  {loading === 1 ? "" : "Delete Profile"}
                 </button>
               </div>
             </div>
@@ -206,7 +219,7 @@ const EditProfile = () => {
           <div className="grid gap-2">
             <p className="text-sm lg:text-xs font-medium">Password</p>
             <Link
-              to="/change-password"
+              to="/profile/change-password"
               className="text-sm lg:text-xs text-primary hover:underline"
             >
               Change Password
@@ -215,7 +228,7 @@ const EditProfile = () => {
           <div className="grid gap-2">
             <p className="text-sm lg:text-xs font-medium">Pin</p>
             <Link
-              to="/change-pin"
+              to="/profile/change-pin"
               className="text-sm lg:text-xs text-primary hover:underline"
             >
               Change Pin
@@ -223,9 +236,12 @@ const EditProfile = () => {
           </div>
           <button
             type="submit"
-            className="py-3 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
+            className="py-3 lg:py-2 flex items-center justify-center bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
           >
-            Submit
+            <AiOutlineLoading3Quarters
+              className={`${loading === 2 ? "block" : "hidden"} text-xl animate-spin`}
+            />
+            {loading === 2 ? "" : "Submit"}
           </button>
         </form>
       </div>

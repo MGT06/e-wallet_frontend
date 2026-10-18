@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { TbSquareKey } from "react-icons/tb";
@@ -6,18 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { changePass } from "../../redux/slices/userSlice.js";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
   const navi = useNavigate();
 
-  const userState = useSelector(state => state.userState)
+  const userState = useSelector((state) => state.userState);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },setError
+    formState: { errors },
+    setError,
   } = useForm();
   const newPassword = useWatch({ control, name: "new_password" });
 
@@ -30,11 +33,11 @@ const ChangePassword = () => {
   const onSubmit = (data) => {
     if (userState.isRejected) {
       setError("existing_password", {
-      type: "manual",
-      message: userState.error,
-    });
+        type: "manual",
+        message: userState.error,
+      });
 
-    return;
+      return;
     }
 
     dispatch(
@@ -51,6 +54,16 @@ const ChangePassword = () => {
     );
   };
 
+  useEffect(() => {
+    (() => {
+      if (userState.isPending) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+    })();
+  }, [userState.isPending]);
+
   return (
     <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
       <div className="mb-4">
@@ -61,7 +74,8 @@ const ChangePassword = () => {
           <div className="grid gap-2">
             <label
               className="text-sm lg:text-xs font-medium"
-              htmlFor="existing_password">
+              htmlFor="existing_password"
+            >
               Existing Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -89,7 +103,8 @@ const ChangePassword = () => {
                     };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer">
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
                 {showPassword.existing_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -105,7 +120,8 @@ const ChangePassword = () => {
           <div className="grid gap-2">
             <label
               className="text-sm lg:text-xs font-medium"
-              htmlFor="new_password">
+              htmlFor="new_password"
+            >
               New Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -130,7 +146,8 @@ const ChangePassword = () => {
                     return { ...prev, new_password: !prev.new_password };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer">
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
                 {showPassword.new_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -145,7 +162,8 @@ const ChangePassword = () => {
           <div className="grid gap-2">
             <label
               className="password-sm lg:text-xs font-medium"
-              htmlFor="confirm_password">
+              htmlFor="confirm_password"
+            >
               Confirm Password
             </label>
             <div className="lg:p-2 p-4 text-sm lg:text-xs bg-white rounded-lg border border-gray-300 flex items-center gap-2">
@@ -171,7 +189,8 @@ const ChangePassword = () => {
                     };
                   })
                 }
-                className="text-gray-500 focus:outline-none cursor-pointer">
+                className="text-gray-500 focus:outline-none cursor-pointer"
+              >
                 {showPassword.confirm_password ? (
                   <LuEye size={20} />
                 ) : (
@@ -186,8 +205,12 @@ const ChangePassword = () => {
           </div>
           <button
             type="submit"
-            className="py-3 lg:py-2 bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer">
-            Submit
+            className="py-3 lg:py-2 bg-primary flex items-center justify-center text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
+          >
+            <AiOutlineLoading3Quarters
+              className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+            />
+            {loading ? "" : "Submit"}
           </button>
         </form>
       </div>

@@ -9,6 +9,7 @@ import gamberRegis from "../../assets/tanganDompet.svg";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import { registerThunk } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
@@ -18,6 +19,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   const auth = useSelector((state) => state.authState);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -54,6 +56,14 @@ export default function Register() {
   };
 
   useEffect(() => {
+    (() => {
+      if (auth.isPending) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+    })();
+
     if (auth.isRejected) {
       setError("email", {
         type: "manual",
@@ -68,7 +78,7 @@ export default function Register() {
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       <div className="py-6 px-5 flex justify-center items-center">
         <section className="w-full max-w-md flex flex-col gap-4">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <div className="h-10 w-10">
               <img
                 src="/LOGO.png"
@@ -93,28 +103,28 @@ export default function Register() {
           <div className="flex flex-row lg:flex-col gap-3 w-full">
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-10"
             >
               <img
                 src={logoGogle}
                 alt="logo-google"
-                className="h-5 w-5 lg:h-6.5 lg:w-6.5 object-contain"
+                className="h-5 w-5 lg:h-4 lg:w-4 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium lg:text-base">
+              <span className="hidden lg:inline text-sm font-medium">
                 Sign In With Google
               </span>
             </button>
 
             <button
               type="button"
-              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-12"
+              className="cursor-pointer border border-dark-gray/30 rounded-3xl h-12 flex-1 lg:w-full flex justify-center items-center gap-2 lg:min-h-10"
             >
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
-                className="h-6 w-6 lg:h-8 lg:w-8 object-contain"
+                className="h-6 w-6 lg:h-5 lg:w-5 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium lg:text-base">
+              <span className="hidden lg:inline text-sm font-medium">
                 Sign In With Facebook
               </span>
             </button>
@@ -127,9 +137,9 @@ export default function Register() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col text-sm">
               <label htmlFor="email">Email</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <MdOutlineEmail size={20} />
                 <input
                   {...register("email", {
@@ -146,9 +156,9 @@ export default function Register() {
               {errors.email?.message}
             </p>
 
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col text-sm">
               <label htmlFor="name">Name</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <CiUser size={20} />
                 <input
                   {...register("name", {
@@ -169,9 +179,9 @@ export default function Register() {
               {errors.name?.message}
             </p>
 
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col text-sm">
               <label htmlFor="password">Password</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <IoMdKey
                   className="border-2 border-slate-700 rounded-sm text-xl"
                   size={16}
@@ -186,7 +196,7 @@ export default function Register() {
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter Your Password"
-                  className="outline-none w-full"
+                  className="outline-none w-full text-sm"
                 />
                 <button
                   type="button"
@@ -202,7 +212,7 @@ export default function Register() {
               {errors.password?.message}
             </p>
 
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col text-sm">
               <label htmlFor="cpassword">Confirm Password</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <IoMdKey
@@ -215,7 +225,7 @@ export default function Register() {
                   })}
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Enter Your Password Again"
-                  className="outline-none w-full"
+                  className="outline-none w-full text-sm"
                 />
                 <button
                   type="button"
@@ -235,12 +245,15 @@ export default function Register() {
               {errors.cpassword?.message}
             </p>
 
-            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90 shadow-lg">
-              Register
+            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90 shadow-lg text-sm">
+              <AiOutlineLoading3Quarters
+                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+              />
+              {loading ? "" : "Register"}
             </button>
           </form>
 
-          <div className="flex justify-center items-center text-dark-gray">
+          <div className="flex justify-center items-center text-dark-gray text-sm">
             Have An Account?
             <Link
               to={"/auth/login"}
