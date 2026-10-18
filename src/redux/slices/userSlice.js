@@ -273,6 +273,39 @@ export const editProfile = createAsyncThunk(
   },
 );
 
+export const changePin = createAsyncThunk(
+  "change_pin",
+  async (payload, { getState, dispatch, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/change-pin`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.cpin),
+        },
+      );
+
+      if (response.status === 401) {
+        dispatch(clearToken());
+      }
+
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      return { next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -373,7 +406,9 @@ const userSlice = createSlice({
           state.isRejected = true;
           const errorMsg =
             payload?.message ||
-            (payload?.data ? upperCaseResponse(payload.data) : "Check pin failed");
+            (payload?.data
+              ? upperCaseResponse(payload.data)
+              : "Check pin failed");
           state.error = errorMsg;
           if (payload?.nextErr) {
             payload.nextErr(errorMsg);
@@ -402,7 +437,9 @@ const userSlice = createSlice({
           state.isRejected = true;
           const errorMsg =
             payload?.message ||
-            (payload?.data ? upperCaseResponse(payload.data) : "Failed to change password");
+            (payload?.data
+              ? upperCaseResponse(payload.data)
+              : "Failed to change password");
           state.error = errorMsg;
           if (payload?.nextErr) {
             payload.nextErr(errorMsg);
@@ -430,6 +467,25 @@ const userSlice = createSlice({
           if (payload.nextErr) {
             payload.nextErr();
           }
+        },
+      })
+      .addAsyncThunk(changePin, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next("Pin setted successfully");
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.message;
         },
       });
   },
