@@ -14,13 +14,15 @@ const FindPeople = () => {
   const people = useSelector((state) => state.peopleState.people);
 
   useEffect(() => {
-    setTimeout(() => {
+    const debounce = setTimeout(() => {
       dispatch(
         findPeople({
           params: `/transaction/people?search=${search}`,
         }),
       );
     }, 3000);
+
+    return () => clearTimeout(debounce);
   }, [dispatch, search]);
 
   return (
