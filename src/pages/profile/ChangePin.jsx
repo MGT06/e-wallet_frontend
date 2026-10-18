@@ -96,7 +96,7 @@ const ChangePin = () => {
                   }}
                   onChange={(e) => handleChange(e, i)}
                   onKeyDown={(e) => handleKeyDown(e, i)}
-                  className={`h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
+                  className={`my-14 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
                     isInputErr
                       ? "border-red-500 text-red-500"
                       : "border-gray-300 focus:border-primary"

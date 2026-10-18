@@ -142,6 +142,39 @@ export const deleteImage = createAsyncThunk(
   },
 );
 
+export const checkPin = createAsyncThunk(
+  "check_pin",
+  async (payload, {getState, dispatch, rejectWithValue}) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/check-pin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.pin),
+        },
+      );
+
+      if (res.status === 401) {
+        dispatch(clearToken())
+      }
+
+      if (!res.ok){
+        throw await res.json()
+      }
+
+      return {next: payload.next}
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+)
+
 export const setUserPin = createAsyncThunk(
   "set_pin",
   async (payload, { getState, dispatch, rejectWithValue }) => {
@@ -273,6 +306,25 @@ const userSlice = createSlice({
         },
       })
       .addAsyncThunk(setUserPin, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next("Pin setted successfully");
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(checkPin, {
         pending: (state) => {
           state.isPending = true;
           state.isFulfilled = false;
