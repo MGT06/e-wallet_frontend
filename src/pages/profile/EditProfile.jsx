@@ -17,7 +17,8 @@ const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.userState.user);
+  const userState = useSelector((state) => state.userState);
+  const user = userState?.user;
   const [loading, setLoading] = useState(false);
 
   const [img, setImg] = useState(null);
@@ -68,6 +69,10 @@ const EditProfile = () => {
           setLoading(null);
           navigate("/profile");
         },
+        nextErr: () => {
+          toast.error("Accept only jpg/png/jpeg max 2mb");
+          setLoading(null);
+        },
       }),
     );
   };
@@ -81,12 +86,16 @@ const EditProfile = () => {
           toast.success(message);
           setLoading(null);
         },
+        nextErr: () => {
+          toast.error("You don't have photo profile yet");
+          setLoading(null);
+        },
       }),
     );
   };
 
   useEffect(() => {
-    dispatch(getProfile);
+    dispatch(getProfile());
   }, [dispatch]);
 
   return (
@@ -143,6 +152,9 @@ const EditProfile = () => {
             </div>
             <p className="text-sm lg:text-xs text-dark-gray">
               The profile picture must be 512 x 512 pixels or less
+            </p>
+            <p className="text-xs sm:text-xs text-red-500">
+              {errors.change_img?.message}
             </p>
           </div>
           <div className="grid gap-2">
@@ -236,7 +248,7 @@ const EditProfile = () => {
           </div>
           <button
             type="submit"
-            className="py-3 lg:py-2 flex items-center justify-center bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
+            className="mb-32 lg:mb-0 py-3 lg:py-2 flex items-center justify-center bg-primary text-white rounded-lg hover:opacity-90 hover:shadow-lg cursor-pointer"
           >
             <AiOutlineLoading3Quarters
               className={`${loading === 2 ? "block" : "hidden"} text-xl animate-spin`}

@@ -132,7 +132,7 @@ export const deleteImage = createAsyncThunk(
       }
 
       if (!response.ok) {
-        throw data;
+        throw { data, nextErr: payload.nextErr };
       }
 
       return { data, next: payload.next };
@@ -199,7 +199,7 @@ export const editProfile = createAsyncThunk(
       }
 
       if (!response.ok) {
-        throw data;
+        throw { data, nextErr: payload.nextErr };
       }
 
       return { data, next: payload.next };
@@ -266,7 +266,10 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = payload.message;
+          state.error = payload.data.message;
+          if (payload.nextErr) {
+            payload.nextErr();
+          }
         },
       })
       .addAsyncThunk(setUserPin, {
@@ -328,7 +331,10 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = payload.message;
+          state.error = payload.data.message;
+          if (payload.nextErr) {
+            payload.nextErr();
+          }
         },
       });
   },
