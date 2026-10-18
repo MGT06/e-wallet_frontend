@@ -156,7 +156,7 @@ export const checkPin = createAsyncThunk(
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(payload.pin),
+          body: JSON.stringify(payload.cpin),
         },
       );
 
@@ -341,6 +341,9 @@ const userSlice = createSlice({
           state.isPending = false;
           state.isRejected = true;
           state.error = payload.message;
+          if (payload.nextErr) {
+            payload.nextErr()
+          }
         },
       })
       .addAsyncThunk(changePass, {
