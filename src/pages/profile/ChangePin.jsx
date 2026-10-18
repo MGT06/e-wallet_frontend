@@ -15,14 +15,12 @@ const ChangePin = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    () => {
-      if (user.isPending) {
-        setLoading(true);
-      } else {
-        setLoading(false);
-      }
-    };
-  }, [user]);
+    if (user.isPending) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [user.isPending]);
 
   const {
     register,
@@ -76,6 +74,8 @@ const ChangePin = () => {
       pin: fullPin,
     };
 
+    setLoading(true);
+
     dispatch(
       checkPin({
         cpin,
@@ -101,6 +101,9 @@ const ChangePin = () => {
           type: "server",
           message: errorMsg,
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -169,7 +172,8 @@ const ChangePin = () => {
           <div className="w-full mt-6">
             <button
               type="submit"
-              className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer">
+              disabled={loading || user.isPending}
+              className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
               <AiOutlineLoading3Quarters
                 className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
               />
