@@ -1,6 +1,9 @@
 import { BiExport } from "react-icons/bi";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import { IoMdArrowDropup } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
+
 
 import {
   Chart as ChartJS,
@@ -90,33 +93,37 @@ export default function Dashboard() {
       id: 1,
       name: "Floyd 1",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
-      avatar: "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
+      avatar:
+        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
     },
     {
       id: 2,
       name: "Floyd 2",
       type: "Send",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
-      avatar: "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
+      avatar:
+        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
     },
     {
       id: 3,
       name: "Floyd 3",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
-      avatar: "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
+      avatar:
+        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
     },
     {
       id: 4,
       name: "Floyd Miles",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
-      avatar: "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
+      avatar:
+        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
     },
   ];
 
@@ -125,7 +132,7 @@ export default function Dashboard() {
       id: 1,
       name: "Robert",
       type: "Transfer",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -134,7 +141,7 @@ export default function Dashboard() {
       id: 2,
       name: "Floyd",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -143,7 +150,7 @@ export default function Dashboard() {
       id: 3,
       name: "Ujang",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -152,7 +159,7 @@ export default function Dashboard() {
       id: 4,
       name: "Asep",
       type: "Transfer",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -161,7 +168,7 @@ export default function Dashboard() {
       id: 5,
       name: "Reva",
       type: "Transfer",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -170,7 +177,7 @@ export default function Dashboard() {
       id: 6,
       name: "Thanos",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -179,7 +186,7 @@ export default function Dashboard() {
       id: 7,
       name: "Bunjay",
       type: "Transfer",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -188,7 +195,7 @@ export default function Dashboard() {
       id: 8,
       name: "Adisurya",
       type: "Send",
-      amount: "-Rp50.000",
+      amount: "Rp50.000",
       isIncome: false,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -197,7 +204,7 @@ export default function Dashboard() {
       id: 9,
       name: "Miguel",
       type: "Transfer",
-      amount: "+Rp50.000",
+      amount: "Rp50.000",
       isIncome: true,
       avatar:
         "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
@@ -379,12 +386,19 @@ export default function Dashboard() {
                         <p className="text-gray-400 text-xs">{c.type}</p>
                       </div>
                     </div>
-                    <span
-                      className={`font-bold text-sm ${
-                        c.isIncome ? "text-emerald-500" : "text-rose-500"
-                      }`}>
-                      {c.amount}
-                    </span>
+                    <div className="flex justify-center items-center gap-2">
+                      {c.isIncome ? (
+                        <IoMdArrowDropup className="text-green-500" />
+                      ) : (
+                        <IoMdArrowDropdown className="text-red-500" />
+                      )}
+                      <div
+                        className={`font-bold text-sm ${
+                          c.isIncome ? "text-green-500" : "text-red-500"
+                        }`}>
+                        {c.amount}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -417,12 +431,19 @@ export default function Dashboard() {
                       <p className="text-gray-400 text-xs">{c.type}</p>
                     </div>
                   </div>
-                  <span
-                    className={`font-bold text-sm ${
-                      c.isIncome ? "text-emerald-500" : "text-rose-500"
-                    }`}>
-                    {c.amount}
-                  </span>
+                  <div className="flex justify-center items-center gap-2">
+                    {c.isIncome ? (
+                      <IoMdArrowDropup className="text-green-500" />
+                    ) : (
+                      <IoMdArrowDropdown className="text-red-500" />
+                    )}
+                    <div
+                      className={`font-bold text-sm ${
+                        c.isIncome ? "text-emerald-500" : "text-rose-500"
+                      }`}>
+                      {c.amount}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
