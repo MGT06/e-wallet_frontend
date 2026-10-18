@@ -15,11 +15,13 @@ const ChangePin = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user.isPending) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
+    () => {
+      if (user.isPending) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
+    };
   }, [user.isPending]);
 
   const {
