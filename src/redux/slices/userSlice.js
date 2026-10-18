@@ -10,6 +10,89 @@ const initialState = {
   error: null,
 };
 
+export const checkPin = createAsyncThunk(
+  "check_pin",
+  async (payload, { getState, dispatch, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/check-pin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.cpin),
+        },
+      );
+
+      const data = await res.json();
+
+      if (res.status === 401) {
+        dispatch(clearToken());
+        return rejectWithValue({ message: "Unauthorized" });
+      }
+
+      if (!res.ok) {
+        const rawMsg = data?.message || data?.error || "Check pin failed";
+        const formattedMsg = upperCaseResponse({ message: rawMsg });
+
+        if (payload?.nextErr) {
+          payload.nextErr(formattedMsg);
+        }
+
+        return rejectWithValue({ data, message: formattedMsg, nextErr: payload?.nextErr });
+      }
+
+      return { data, next: payload.next };
+    } catch (err) {
+      const rawMsg = err?.message || "Check pin failed";
+      const formattedMsg = upperCaseResponse({ message: rawMsg });
+
+      if (payload?.nextErr) {
+        payload.nextErr(formattedMsg);
+      }
+
+      return rejectWithValue({ err, message: formattedMsg, nextErr: payload?.nextErr });
+    }
+  },
+);
+
+export const changePin = createAsyncThunk(
+  "change_pin",
+  async (payload, { getState, dispatch, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/change-pin`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.cpin),
+        },
+      );
+
+      if (response.status === 401) {
+        dispatch(clearToken());
+      }
+
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      return { next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const changePass = createAsyncThunk(
   "change-pass",
   async (payload, { getState, dispatch, rejectWithValue }) => {
@@ -334,6 +417,52 @@ const userSlice = createSlice({
           state.error = payload.data.message;
           if (payload.nextErr) {
             payload.nextErr();
+          }
+        },
+      })
+      .addAsyncThunk(changePin, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next("Pin setted successfully");
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(checkPin, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next("Pin setted successfully");
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          const errorMsg =
+            payload?.message ||
+            (payload?.data
+              ? upperCaseResponse(payload.data)
+              : "Check pin failed");
+          state.error = errorMsg;
+          if (payload?.nextErr) {
+            payload.nextErr(errorMsg);
           }
         },
       });
