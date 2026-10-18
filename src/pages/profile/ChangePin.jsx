@@ -22,7 +22,7 @@ const ChangePin = () => {
         setLoading(false);
       }
     };
-  }, [user.isPending]);
+  }, [user]);
 
   const {
     register,
