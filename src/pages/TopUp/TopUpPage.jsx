@@ -68,11 +68,8 @@ export default function TopUpPage() {
   return (
     <>
       {/* <LoadingModal /> */}
-      {status === "success" ? (
-        <SuccessModal status={"Top Up"} />
-      ) : (
-        <FailedModal status={"Top Up"} />
-      )}
+      {status === "success" && <SuccessModal status={"Top Up"} />}
+      {status === "failed" && <FailedModal status={"Top Up"} />}
       <div className="min-h-screen bg-white font-sans text-dark">
         <div className="border-b border-gray-100 bg-white">
           <div className="container flex items-center gap-3 py-4 text-dark">

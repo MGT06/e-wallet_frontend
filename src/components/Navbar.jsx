@@ -131,10 +131,10 @@ const Navbar = () => {
             className={`${navOpen ? "top-19" : "bg-primary opacity-0 -top-42"} absolute p-4 flex flex-col gap-2 left-0 w-full rounded-b-2xl shadow-lg bg-white transition-all ease-in`}
           >
             <li className="py-2 px-4 text-center text-primary rounded-lg">
-              <Link to="/login">Sign In</Link>
+              <Link to="/auth/login">Sign In</Link>
             </li>
             <li className="py-2 px-4 text-center text-primary border border-primary rounded-lg">
-              <Link to="/register">Sign Up</Link>
+              <Link to="/auth/register">Sign Up</Link>
             </li>
           </ul>
         </nav>

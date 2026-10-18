@@ -370,7 +370,7 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 mb-32 lg:mb-0">
                 {transactionsMob.map((c) => (
                   <div key={c.id} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
