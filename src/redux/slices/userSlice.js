@@ -31,16 +31,33 @@ export const changePass = createAsyncThunk(
 
       if (response.status === 401) {
         dispatch(clearToken());
-        return;
+        return rejectWithValue({ message: "Unauthorized" });
       }
 
       if (!response.ok) {
-        throw { data, nextErr: payload.nextErr };
+        const errorMsg =
+          (data && (data.message || data.error || data.err)) ||
+          "Failed to change password";
+        const formattedMsg = upperCaseResponse({ message: errorMsg });
+
+        if (payload.nextErr) {
+          payload.nextErr(formattedMsg);
+        }
+
+        return rejectWithValue({ data, message: formattedMsg, nextErr: payload.nextErr });
       }
 
       return { data, next: payload.next };
     } catch (error) {
-      return rejectWithValue(error);
+      const errorMsg =
+        error?.message || error?.data?.message || "Failed to change password";
+      const formattedMsg = upperCaseResponse({ message: errorMsg });
+
+      if (payload?.nextErr) {
+        payload.nextErr(formattedMsg);
+      }
+
+      return rejectWithValue({ error, message: formattedMsg, nextErr: payload?.nextErr });
     }
   },
 );
@@ -366,12 +383,10 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          const errorObj = payload?.data || payload;
-          const errorMsg = errorObj ? upperCaseResponse(errorObj) : "Failed to change password";
+          const errorMsg =
+            payload?.message ||
+            (payload?.data ? upperCaseResponse(payload.data) : "Failed to change password");
           state.error = errorMsg;
-          if (payload?.nextErr) {
-            payload.nextErr(errorMsg);
-          }
         },
       })
       .addAsyncThunk(editProfile, {

@@ -111,7 +111,7 @@ const ChangePassword = () => {
               </button>
             </div>
 
-            <p className="text-red-500 text-xs h-2">
+            <p className="text-red-500 text-xs min-h-[1rem]">
               {errors.existing_password?.message}
             </p>
           </div>
@@ -153,7 +153,7 @@ const ChangePassword = () => {
                 )}
               </button>
             </div>
-            <p className="text-red-500 text-xs h-2">
+            <p className="text-red-500 text-xs min-h-[1rem]">
               {errors.new_password?.message}
             </p>
           </div>
@@ -197,7 +197,7 @@ const ChangePassword = () => {
               </button>
             </div>
 
-            <p className="text-red-500 text-xs h-2">
+            <p className="text-red-500 text-xs min-h-[1rem]">
               {errors.confirm_password?.message}
             </p>
           </div>
