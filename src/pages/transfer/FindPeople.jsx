@@ -20,7 +20,7 @@ const FindPeople = () => {
           params: `/transaction/people?search=${search}`,
         }),
       );
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(debounce);
   }, [dispatch, search]);

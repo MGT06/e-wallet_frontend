@@ -1,16 +1,43 @@
 import { useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { CgClose, CgMenuRightAlt } from "react-icons/cg";
-import { Link, useLocation } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router";
+import { logoutThunk } from "../redux/slices/authSlice";
+import { toast } from "react-toastify";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const param = useLocation();
+
+  const auth = useSelector((state) => state.authState);
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [navOpen, setNavOpen] = useState(false);
 
   const handleClick = () => {
     setNavOpen(!navOpen);
   };
+
+  const handleLogout = () => {
+    setLoading(true);
+    dispatch(
+      logoutThunk({
+        next: (message) => {
+          toast.success(message);
+        },
+      }),
+    );
+  };
+
+  useEffect(() => {
+    (() => {
+      if (!auth.isPending) {
+        setLoading(false);
+      }
+    })();
+  }, [auth]);
 
   useEffect(() => {
     (() => {
@@ -65,9 +92,15 @@ export default function Header() {
         <ul
           className={`${navOpen ? "opacity-100" : "bg-primary opacity-0"} top-18 absolute p-1 flex flex-col gap-2 right-4 w-4/12 rounded-lg shadow-lg bg-white border-b border-dark-gray transition-all ease-in z-50`}
         >
-          <li className="py-1 text-center text-red rounded-lg text-lg flex items-center justify-center gap-2">
-            <BiLogOut className="text-xl" />
-            <Link to="/register">Logout</Link>
+          <li
+            onClick={handleLogout}
+            className="py-1 text-center text-red rounded-lg text-lg flex items-center justify-center gap-2"
+          >
+            <BiLogOut className={`${loading ? "hidden" : "block"} text-sm`} />
+            <AiOutlineLoading3Quarters
+              className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+            />
+            {loading ? "" : "Logout"}
           </li>
         </ul>
       </nav>
