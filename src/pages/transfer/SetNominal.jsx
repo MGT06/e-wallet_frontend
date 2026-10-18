@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { CiStar } from "react-icons/ci";
 import { HiCash } from "react-icons/hi";
 import { VscVerified } from "react-icons/vsc";
+import { useSelector } from "react-redux";
 
 const SetNominal = () => {
   const {
@@ -9,6 +10,8 @@ const SetNominal = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const user = useSelector((state) => state.peopleState.selected);
 
   const onSubmit = () => {
     console.log("first");
@@ -24,14 +27,11 @@ const SetNominal = () => {
           <div className="flex items-center justify-between lg">
             <div className="flex items-center gap-4 justify-start">
               <div className="rounded-lg overflow-hidden w-20 lg:w-16">
-                <img
-                  src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
-                  alt="user-image"
-                />
+                <img src={user?.image_url} alt="user-image" />
               </div>
               <div className="grid gap-2">
-                <p className="lg:text-sm font-semibold">Ghaluh 1</p>
-                <p className="lg:text-sm">(239) 555-0108</p>
+                <p className="lg:text-sm font-semibold">{user?.fullname}</p>
+                <p className="lg:text-sm">{user?.phone}</p>
                 <div className="flex items-center gap-2 bg-primary text-white w-fit py-0.5 px-3 rounded-lg">
                   <VscVerified className="text-lg" />
                   <p className="text-xs">Verified</p>
@@ -91,7 +91,7 @@ const SetNominal = () => {
           </div>
           <button
             type="submit"
-            className="py-2 px-4 bg-primary text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg"
+            className="mb-32 lg:mb-0 py-2 px-4 bg-primary text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg"
           >
             Submit & Transfer
           </button>
