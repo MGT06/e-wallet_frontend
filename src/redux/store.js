@@ -45,6 +45,7 @@ const store = configureStore({
           "meta.arg.next",
           "payload",
           "meta.arg.body",
+          "meta.arg.nextErr",
         ],
       },
     }),
