@@ -10,13 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 const ProtectedLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const token = useSelector((state) => state.authState.auth?.token);
 
   useEffect(() => {
     dispatch(getUserInfo());
-  }, [dispatch, token, location.pathname]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!token) {

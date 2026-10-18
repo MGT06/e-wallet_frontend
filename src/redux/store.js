@@ -13,6 +13,7 @@ import persistStore from "redux-persist/es/persistStore";
 import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
 import peopleReducer from "./slices/peopleSlice";
+import transactionReducer from "./slices/transactionSlice.js";
 
 const storage = {
   getItem: (key) => {
@@ -37,6 +38,7 @@ const store = configureStore({
     authState: persistReducer(persistAuthConfig, authReducer),
     userState: userReducer,
     peopleState: peopleReducer,
+    transactionState: transactionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

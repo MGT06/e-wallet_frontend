@@ -199,6 +199,9 @@ const EditProfile = () => {
               />
             </div>
           </div>
+          <p className="text-xs sm:text-xs h-6 text-red-500">
+            {errors.phone?.message}
+          </p>
           <div className="grid gap-2">
             <label className="text-sm lg:text-xs font-medium" htmlFor="email">
               Email
@@ -223,10 +226,8 @@ const EditProfile = () => {
               />
             </div>
           </div>
-          <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
-            {errors.phone?.message
-              ? errors.phone?.message
-              : errors.email?.message}
+          <p className="text-xs sm:text-xs h-6 text-red-500">
+            {errors.email?.message}
           </p>
           <div className="grid gap-2">
             <p className="text-sm lg:text-xs font-medium">Password</p>

@@ -32,14 +32,14 @@ const PeopleCard = ({ id, fullname, image_url, phone, is_favorit, color }) => {
       className={`px-4 py-2 ${color} border-b border-b-dark-gray/20 rounded-lg`}
     >
       <div className="flex items-center justify-between">
-        <div className="rounded-lg overflow-hidden w-18 lg:w-14">
+        <div className="rounded-lg overflow-hidden w-18 lg:w-12">
           {image_url ? (
             <img
               src={`${import.meta.env.VITE_API_URL}/public/image/${image_url}`}
               alt="user-image"
             />
           ) : (
-            <div className="h-7 w-7 bg-primary text-xs text-white rounded-full flex items-center justify-center">
+            <div className="p-6 h-6 w-6 bg-primary text-xs text-white rounded-lg flex items-center justify-center">
               <p>{`${fullname[0].toUpperCase()}${fullname[1].toUpperCase()}`}</p>
             </div>
           )}

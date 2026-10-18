@@ -30,12 +30,23 @@ const SetNominal = () => {
           <div className="flex items-center justify-between lg">
             <div className="flex items-center gap-4 justify-start">
               <div className="rounded-lg overflow-hidden w-20 lg:w-16">
-                <img src={user?.image_url} alt="user-image" />
+                {user?.image_url ? (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
+                    alt="user-image"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center bg-primary text-white w-full h-18">
+                    <p>{`${user?.fullname[0].toUpperCase()}${user?.fullname[1].toUpperCase()}`}</p>
+                  </div>
+                )}
               </div>
               <div className="grid gap-2">
                 <p className="lg:text-sm font-semibold">{user?.fullname}</p>
                 <p className="lg:text-sm">{user?.phone}</p>
-                <div className="flex items-center gap-2 bg-primary text-white w-fit py-0.5 px-3 rounded-lg">
+                <div
+                  className={`${user?.phone ? "block" : "hidden"} flex items-center gap-2 bg-primary text-white w-fit py-0.5 px-3 rounded-lg`}
+                >
                   <VscVerified className="text-lg" />
                   <p className="text-xs">Verified</p>
                 </div>

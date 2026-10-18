@@ -38,9 +38,9 @@ const PaymentSummary = ({
         Submit
       </button>
 
-      <p className="text-center text-xs leading-relaxed text-dark-gray">
+      {/* <p className="text-center text-xs leading-relaxed text-dark-gray">
         *Get Discount if you pay with Bank Central Asia
-      </p>
+      </p> */}
     </div>
   );
 };
