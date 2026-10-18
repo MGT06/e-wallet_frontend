@@ -46,7 +46,7 @@ const Router = () => {
         <Route path="/transfer" element={<TransferLayout />}>
           <Route index element={<Navigate to="find" replace />} />
           <Route path="find" element={<FindPeople />} />
-          <Route path="nominal" element={<SetNominal />} />
+          <Route path=":id/nominal" element={<SetNominal />} />
         </Route>
 
         <Route path="/top-up" element={<TopUpPage />} />
