@@ -1,57 +1,36 @@
 import { useEffect, useState } from "react";
-import bri from "../../assets/bri.svg";
-import dana from "../../assets/dana.svg";
-import bca from "../../assets/bca.svg";
-import gopay from "../../assets/gopay.svg";
-import ovo from "../../assets/ovo.svg";
 import SuccessModal from "../../components/transfer/SuccessModal.jsx";
 import FailedModal from "../../components/transfer/FailedModal.jsx";
 import PaymentSummary from "../../components/topup/PaymentSummary.jsx";
 import LoadingModal from "../../components/LoadingModal.jsx";
-import { useSearchParams } from "react-router";
+import { VscVerified } from "react-icons/vsc";
+import { useNavigate, useSearchParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../redux/slices/userSlice.js";
 import SetPhoneModal from "../../components/SetPhoneModal.jsx";
-
-const PAYMENT_METHODS = [
-  {
-    id: "bri",
-    name: "Bank Rakyat Indonesia",
-    logo: bri,
-  },
-  {
-    id: "dana",
-    name: "Dana",
-    logo: dana,
-  },
-  {
-    id: "bca",
-    name: "Bank Central Asia",
-    logo: bca,
-  },
-  {
-    id: "gopay",
-    name: "Gopay",
-    logo: gopay,
-  },
-  {
-    id: "ovo",
-    name: "Ovo",
-    logo: ovo,
-  },
-];
+import {
+  getPaymentMethod,
+  topUp,
+} from "../../redux/slices/transactionSlice.js";
 
 export default function TopUpPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get("status");
+  const paymentMethods = useSelector(
+    (state) => state.transactionState.paymentMethods,
+  );
 
-  const [selectedMethod, setSelectedMethod] = useState("bri");
+  const loading = useSelector((state) => state.transactionState.isPending);
+  const [selectedMethod, setSelectedMethod] = useState(1);
+  const [xenditCode, setXenditCode] = useState("GOPAY");
   const [amount, setAmount] = useState("40000");
 
   const user = useSelector((state) => state.userState.user);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [customError, setCustomError] = useState("");
 
   const numAm = parseFloat(amount) || 0;
   const deliveryFee = 0;
@@ -70,23 +49,60 @@ export default function TopUpPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (numAm < 10000) {
+      setCustomError("Minimun top up is Rp10.000");
+      return;
+    }
+
+    setCustomError("");
+
     if (!user?.phone) {
       setShowPhoneModal(true);
       return;
     }
-    console.log({ selectedMethod, numAm, subTotal });
+
+    const body = {
+      amount: numAm,
+      payment_method_id: selectedMethod,
+      tax: taxFee,
+      total_amount: subTotal,
+      xendit_code: xenditCode,
+    };
+
+    dispatch(
+      topUp({
+        body,
+        next: (url) => {
+          window.location.href = url;
+        },
+      }),
+    );
   };
 
   useEffect(() => {
     dispatch(getProfile());
+    dispatch(getPaymentMethod());
   }, [dispatch]);
 
   return (
     <>
-      {/* <LoadingModal /> */}
+      {loading && <LoadingModal />}
       {showPhoneModal && <SetPhoneModal />}
-      {status === "success" && <SuccessModal status={"Top Up"} />}
-      {status === "failed" && <FailedModal status={"Top Up"} />}
+      {status === "success" && (
+        <SuccessModal
+          status={"Top Up"}
+          done={() => navigate("/dashboard")}
+          again={() => navigate("/top-up")}
+        />
+      )}
+      {status === "failed" && (
+        <FailedModal
+          status={"Top Up"}
+          done={() => navigate("/dashboard")}
+          again={() => navigate("top-up")}
+        />
+      )}
       <div className="min-h-screen bg-white font-sans text-dark">
         <div className="border-b border-gray-100 bg-white">
           <div className="container flex items-center gap-3 py-4 text-dark">
@@ -117,10 +133,10 @@ export default function TopUpPage() {
                 <h2 className="mb-3 text-base font-bold text-dark">
                   Account Information
                 </h2>
-                <div className="flex items-center gap-4 rounded-2xl bg-gray/30 p-4">
+                <div className="flex items-start gap-4 rounded-2xl bg-gray/30 p-4">
                   {user?.image_url ? (
                     <img
-                      src={`${import.meta.env}/public/img/${user?.image_url}`}
+                      src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
                       alt="Sigma Cat Wizard"
                       className="h-16 w-16 rounded-xl object-cover"
                     />
@@ -134,15 +150,12 @@ export default function TopUpPage() {
                       {user?.name}
                     </h3>
                     <p className="text-sm text-dark-gray">{user?.phone}</p>
-                    <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-semibold text-white">
-                      <svg
-                        className="h-3.5 w-3.5 fill-current"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-                      </svg>
-                      Verified
-                    </span>
+                    <div className={user?.phone ? "block" : "hidden"}>
+                      <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-semibold text-white">
+                        <VscVerified className="text-lg" />
+                        Verified
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -175,6 +188,11 @@ export default function TopUpPage() {
                     placeholder="Enter Nominal Transfer"
                     className="no-scrollbar-number w-full rounded-xl border border-gray-200 py-3.5 pl-11 pr-4 text-sm font-medium text-dark placeholder:text-dark-gray/60 focus:border-primary focus:outline-none"
                   />
+                  <p
+                    className={`${customError ? "text-red" : "text-white"} mt-0.5 text-xs`}
+                  >
+                    {customError}
+                  </p>
                 </div>
               </div>
 
@@ -187,12 +205,15 @@ export default function TopUpPage() {
                 </p>
 
                 <div className="mt-4 space-y-3">
-                  {PAYMENT_METHODS.map((method) => {
+                  {paymentMethods?.map((method) => {
                     const isSelected = selectedMethod === method.id;
                     return (
                       <label
                         key={method.id}
-                        onClick={() => setSelectedMethod(method.id)}
+                        onClick={() => {
+                          setSelectedMethod(method.id);
+                          setXenditCode(method.xendit_code);
+                        }}
                         className={`flex cursor-pointer items-center justify-between rounded-2xl p-4 transition-all ${
                           isSelected
                             ? "bg-gray/40 ring-1 ring-primary/20"

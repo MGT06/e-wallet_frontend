@@ -14,13 +14,18 @@ const FindPeople = () => {
   const people = useSelector((state) => state.peopleState.people);
 
   useEffect(() => {
+    let params = `/transaction/people?search=${search}`;
+    if (!search) {
+      params = "/transaction/people?is_favorit=true";
+    }
+
     const debounce = setTimeout(() => {
       dispatch(
         findPeople({
-          params: `/transaction/people?search=${search}`,
+          params,
         }),
       );
-    }, 1500);
+    }, 1000);
 
     return () => clearTimeout(debounce);
   }, [dispatch, search]);
@@ -33,7 +38,7 @@ const FindPeople = () => {
           <p
             className={`${search ? "block" : "hidden"} text-dark-gray text-sm`}
           >
-            {people?.length} Result Found For {search}
+            {people?.length} Result found for {search}
           </p>
         </div>
         <div className="p-2 border border-dark-gray/80 rounded-lg flex items-center justify-between">
@@ -64,6 +69,7 @@ const FindPeople = () => {
               fullname={el.fullname}
               image_url={el.image_url}
               phone={el.phone}
+              is_favorit={el.is_favorit}
               color={idx % 2 === 0 ? "bg-gray" : "bg-white"}
             />
           ))}

@@ -1,6 +1,6 @@
 import successImage from "../../assets/success-img.png";
 
-const SuccessModal = ({ status }) => {
+const SuccessModal = ({ status, done, again }) => {
   return (
     <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/70 z-50">
       <div className="flex items-center justify-center h-full">
@@ -24,10 +24,18 @@ const SuccessModal = ({ status }) => {
             </p>
           </div>
           <div className="grid gap-4 mt-8 text-center">
-            <button className="py-4 lg:py-2 lg:text-sm bg-primary w-full text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg">
+            <button
+              type="button"
+              onClick={done}
+              className="py-4 lg:py-2 lg:text-sm bg-primary w-full text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg"
+            >
               Done
             </button>
-            <button className="py-4 lg:py-2 lg:text-sm w-full text-primary border border-primary rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg">
+            <button
+              type="button"
+              onClick={again}
+              className="py-4 lg:py-2 lg:text-sm w-full text-primary border border-primary rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg"
+            >
               {status} Again
             </button>
           </div>
