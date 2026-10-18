@@ -35,7 +35,7 @@ export const changePass = createAsyncThunk(
       }
 
       if (!response.ok) {
-        throw data;
+        throw { data, nextErr: payload.nextErr };
       }
 
       return { data, next: payload.next };
@@ -366,7 +366,12 @@ const userSlice = createSlice({
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          state.error = upperCaseResponse(payload);
+          const errorObj = payload?.data || payload;
+          const errorMsg = errorObj ? upperCaseResponse(errorObj) : "Failed to change password";
+          state.error = errorMsg;
+          if (payload?.nextErr) {
+            payload.nextErr(errorMsg);
+          }
         },
       })
       .addAsyncThunk(editProfile, {

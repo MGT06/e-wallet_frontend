@@ -21,6 +21,7 @@ const ChangePassword = () => {
     control,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm();
   const newPassword = useWatch({ control, name: "new_password" });
 
@@ -31,14 +32,7 @@ const ChangePassword = () => {
   });
 
   const onSubmit = (data) => {
-    if (userState.isRejected) {
-      setError("existing_password", {
-        type: "manual",
-        message: userState.error,
-      });
-
-      return;
-    }
+    clearErrors();
 
     dispatch(
       changePass({
@@ -50,18 +44,22 @@ const ChangePassword = () => {
           toast.success(m);
           navi("/profile");
         },
+        nextErr: (err) => {
+          setError("existing_password", {
+            type: "server",
+            message: err,
+          });
+        },
       }),
     );
   };
 
   useEffect(() => {
-    (() => {
-      if (userState.isPending) {
-        setLoading(true);
-      } else {
-        setLoading(false);
-      }
-    })();
+    if (userState.isPending) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
   }, [userState.isPending]);
 
   return (
