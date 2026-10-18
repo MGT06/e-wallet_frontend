@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bri from "../../assets/bri.svg";
 import dana from "../../assets/dana.svg";
 import bca from "../../assets/bca.svg";
@@ -9,6 +9,9 @@ import FailedModal from "../../components/transfer/FailedModal.jsx";
 import PaymentSummary from "../../components/topup/PaymentSummary.jsx";
 import LoadingModal from "../../components/LoadingModal.jsx";
 import { useSearchParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile } from "../../redux/slices/userSlice.js";
+import SetPhoneModal from "../../components/SetPhoneModal.jsx";
 
 const PAYMENT_METHODS = [
   {
@@ -39,11 +42,16 @@ const PAYMENT_METHODS = [
 ];
 
 export default function TopUpPage() {
+  const dispatch = useDispatch();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const status = searchParams.get("status");
 
   const [selectedMethod, setSelectedMethod] = useState("bri");
   const [amount, setAmount] = useState("40000");
+
+  const user = useSelector((state) => state.userState.user);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
   const numAm = parseFloat(amount) || 0;
   const deliveryFee = 0;
@@ -62,12 +70,21 @@ export default function TopUpPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!user?.phone) {
+      setShowPhoneModal(true);
+      return;
+    }
     console.log({ selectedMethod, numAm, subTotal });
   };
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, [dispatch]);
 
   return (
     <>
       {/* <LoadingModal /> */}
+      {showPhoneModal && <SetPhoneModal />}
       {status === "success" && <SuccessModal status={"Top Up"} />}
       {status === "failed" && <FailedModal status={"Top Up"} />}
       <div className="min-h-screen bg-white font-sans text-dark">
@@ -101,16 +118,22 @@ export default function TopUpPage() {
                   Account Information
                 </h2>
                 <div className="flex items-center gap-4 rounded-2xl bg-gray/30 p-4">
-                  <img
-                    src="https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg"
-                    alt="Sigma Cat Wizard"
-                    className="h-16 w-16 rounded-xl object-cover"
-                  />
+                  {user?.image_url ? (
+                    <img
+                      src={`${import.meta.env}/public/img/${user?.image_url}`}
+                      alt="Sigma Cat Wizard"
+                      className="h-16 w-16 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 bg-primary text-white rounded-lg flex items-center justify-center">
+                      <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
+                    </div>
+                  )}
                   <div>
                     <h3 className="text-base font-bold text-dark">
-                      Sigma Cat Wizard
+                      {user?.name}
                     </h3>
-                    <p className="text-sm text-dark-gray">(239) 555–0108</p>
+                    <p className="text-sm text-dark-gray">{user?.phone}</p>
                     <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-0.5 text-xs font-semibold text-white">
                       <svg
                         className="h-3.5 w-3.5 fill-current"
