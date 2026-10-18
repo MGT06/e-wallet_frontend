@@ -98,7 +98,7 @@ const CheckPin = ({checkShow, setCheckShow, setCurrentPin, setChangeShow}) => {
         const errorMsg =
           rejected?.message ||
           rejected?.data?.message ||
-          "Check pin not match";
+          "pin not match";
         setError("cpin.root", {
           type: "server",
           message: errorMsg,
