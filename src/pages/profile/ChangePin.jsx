@@ -1,20 +1,28 @@
 import { useForm, useWatch } from "react-hook-form";
 import { usePinInput } from "../../hooks/UsePinInput";
-// import { AiOutlineLoading3Quarters } from "react-icons/ai";
-// import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkPin } from "../../redux/slices/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useEffect, useState } from "react";
 
 const ChangePin = () => {
-  // const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navi = useNavigate();
+  const user = useSelector((state) => state.userState);
 
-  // useEffect(() => {
-  //     (() => {
-  //       if (pin.isPending) {
-  //         setLoading(true);
-  //       } else {
-  //         setLoading(false);
-  //       }
-  //     })();
-  //   }, [pin]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+      (() => {
+        if (user.isPending) {
+          setLoading(true);
+        } else {
+          setLoading(false);
+        }
+      })();
+    }, [user]);
 
   const {
     register,
@@ -47,11 +55,19 @@ const ChangePin = () => {
     }
 
     const fullPin = data.cpin.join("")
-    const pin = {
-      cpin: fullPin,
+    const cpin = {
+      pin: fullPin,
     };
 
-    console.log(pin)
+    dispatch(
+      checkPin({
+        cpin,
+        next: () => {
+          toast.success("Appropriate pin");
+          navi("/auth/pin")
+        }
+      })
+    )
   };
 
   return (
@@ -66,7 +82,9 @@ const ChangePin = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-4 flex flex-col items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full mt-4 flex flex-col items-center">
           <div className="flex justify-center items-center gap-2 sm:gap-3">
             {[0, 1, 2, 3, 4, 5].map((i) => {
               const { ref: registerRef, ...restRegister } = register(
@@ -96,7 +114,7 @@ const ChangePin = () => {
                   }}
                   onChange={(e) => handleChange(e, i)}
                   onKeyDown={(e) => handleKeyDown(e, i)}
-                  className={`my-14 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
+                  className={`my-8 h-12 w-10 sm:w-12 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
                     isInputErr
                       ? "border-red-500 text-red-500"
                       : "border-gray-300 focus:border-primary"
@@ -118,18 +136,12 @@ const ChangePin = () => {
           <div className="w-full mt-6">
             <button
               type="submit"
-              className="py-3 px-6 bg-primary w-full text-white font-medium rounded-lg cursor-pointer transition-opacity hover:opacity-90 hover:shadow-md"
-            >
-              Submit
-            </button>
-            {/* <button
-              type="submit"
               className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer">
               <AiOutlineLoading3Quarters
                 className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
-                />
+              />
               {loading ? "" : "Submit"}
-            </button> */}
+            </button>
           </div>
         </form>
       </div>
