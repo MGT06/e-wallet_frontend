@@ -1,9 +1,10 @@
 import { useForm, useWatch } from "react-hook-form";
 import { usePinInput } from "../../hooks/UsePinInput";
-import { NavLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { checkOtp } from "../../redux/slices/authSlice";
 import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Otp() {
   const {
@@ -25,6 +26,7 @@ export default function Otp() {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.authState.resetToken);
   const [customError, setCustomError] = useState(false);
+  const loading = useSelector((state) => state.authState.isPending);
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
@@ -52,8 +54,6 @@ export default function Otp() {
       }),
     );
   };
-
-  const hasPinError = Array.isArray(errors.otp) && errors.otp.some(Boolean);
 
   return (
     <section className="bg-primary min-h-screen flex justify-center items-center">
@@ -113,16 +113,19 @@ export default function Otp() {
               })}
             </div>
 
-            <div>
+            <div className="flex items-center justify-center w-full">
               <p
-                className={`mt-2 text-xs sm:text-xs h-6 ${customError ? "text-red-500" : "text-white"}`}
+                className={`mt-2 text-xs sm:text-xs text-center h-6 ${customError ? "text-red-500" : "text-white"}`}
               >
                 Invalid OTP
               </p>
             </div>
 
-            <button className="bg-primary rounded-lg text-white text-sm py-2 hover:opacity-80 cursor-pointer hover:shadow-lg">
-              Submit
+            <button className="bg-primary rounded-lg text-white text-sm py-2 hover:opacity-80 cursor-pointer hover:shadow-lg flex items-center justify-center">
+              <AiOutlineLoading3Quarters
+                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+              />
+              {loading ? "" : "Submit"}
             </button>
           </form>
         </div>
