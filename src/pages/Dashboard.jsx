@@ -1,8 +1,7 @@
 import { BiExport } from "react-icons/bi";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import { IoMdArrowDropup } from "react-icons/io";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import { Link } from "react-router";
 
 import {
@@ -19,12 +18,27 @@ import { FaMoneyBillTransfer, FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStats } from "../redux/slices/userSlice";
+import { getHistory } from "../redux/slices/historySlice";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const historyState = useSelector((state) => state.historyState);
+  const stats = useSelector((state) => state.userState?.stats);
+
+  const historyList = Array.isArray(historyState?.history?.data)
+    ? historyState.history.data
+    : Array.isArray(historyState?.history)
+      ? historyState.history
+      : [];
+
+  useEffect(() => {
+    dispatch(getStats());
+    dispatch(getHistory());
+  }, [dispatch]);
 
   const data = {
     labels: ["Sat", "Sun", "Mo", "Tue", "We", "Thu", "Fri"],
@@ -43,9 +57,7 @@ export default function Dashboard() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
         callbacks: {
           label: (context) => ` Rp ${context.raw.toLocaleString("id-ID")}`,
@@ -54,18 +66,9 @@ export default function Dashboard() {
     },
     scales: {
       x: {
-        grid: {
-          display: false,
-        },
-        border: {
-          display: false,
-        },
-        ticks: {
-          color: "#ff2a57",
-          font: {
-            size: 12,
-          },
-        },
+        grid: { display: false },
+        border: { display: false },
+        ticks: { color: "#ff2a57", font: { size: 12 } },
       },
       y: {
         min: 0,
@@ -73,153 +76,14 @@ export default function Dashboard() {
         ticks: {
           stepSize: 25000,
           color: "#ff2a57",
-          font: {
-            size: 10,
-          },
-          callback: (value) => {
-            if (value === 0) return "0";
-            return `${value / 1000}.000`;
-          },
+          font: { size: 10 },
+          callback: (value) => (value === 0 ? "0" : `${value / 1000}.000`),
         },
-        grid: {
-          color: "#4f5665",
-        },
-        border: {
-          dash: [4, 4],
-          display: false,
-        },
+        grid: { color: "#4f5665" },
+        border: { dash: [4, 4], display: false },
       },
     },
   };
-
-  const transactionsMob = [
-    {
-      id: 1,
-      name: "Floyd 1",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 2,
-      name: "Floyd 2",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 3,
-      name: "Floyd 3",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 4,
-      name: "Floyd Miles",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-  ];
-
-  const transactionsDesk = [
-    {
-      id: 1,
-      name: "Robert",
-      type: "Transfer",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 2,
-      name: "Floyd",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 3,
-      name: "Ujang",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 4,
-      name: "Asep",
-      type: "Transfer",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 5,
-      name: "Reva",
-      type: "Transfer",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 6,
-      name: "Thanos",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 7,
-      name: "Bunjay",
-      type: "Transfer",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 8,
-      name: "Adisurya",
-      type: "Send",
-      amount: "Rp50.000",
-      isIncome: false,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-    {
-      id: 9,
-      name: "Miguel",
-      type: "Transfer",
-      amount: "Rp50.000",
-      isIncome: true,
-      avatar:
-        "https://i.pinimg.com/736x/c2/95/ee/c295ee30c2a52643e6c6def2178547e6.jpg",
-    },
-  ];
-
-  const stats = useSelector((state) => state.userState.stats);
-
-  useEffect(() => {
-    dispatch(getStats());
-  }, [dispatch]);
 
   return (
     <div className="bg-gray-50 min-h-screen pb-10 lg:p-8">
@@ -387,37 +251,49 @@ export default function Dashboard() {
               </div>
 
               <div className="space-y-4 mb-32 lg:mb-0">
-                {transactionsMob.map((c) => (
-                  <div key={c.id} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={c.avatar}
-                        alt={c.name}
-                        className="w-12 h-12 rounded-2xl object-cover"
-                      />
-                      <div>
-                        <h3 className="font-bold text-gray-900 text-sm">
-                          {c.name}
-                        </h3>
-                        <p className="text-gray-400 text-xs">{c.type}</p>
-                      </div>
-                    </div>
-                    <div className="flex justify-center items-center gap-2">
-                      {c.isIncome ? (
-                        <IoMdArrowDropup className="text-green-500" />
-                      ) : (
-                        <IoMdArrowDropdown className="text-red-500" />
-                      )}
+                {historyList.length > 0 ? (
+                  historyList.map((c, i) => {
+                    const isReceiver = c?.type === "receiver";
+                    return (
                       <div
-                        className={`font-bold text-sm ${
-                          c.isIncome ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {c.amount}
+                        key={c?.id || i}
+                        className="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={`${import.meta.env.VITE_API_URL}/public/image/${c?.image_url}`}
+                            alt={c?.fullname || "User"}
+                            className="w-12 h-12 rounded-2xl object-cover bg-gray-100"
+                          />
+                          <div>
+                            <h3 className="font-bold text-gray-900 text-sm">
+                              {c?.fullname || "Unknown"}
+                            </h3>
+                            <p className="text-gray-400 text-xs capitalize">
+                              {c?.type}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-2">
+                          {isReceiver ? (
+                            <IoMdArrowDropup className="text-emerald-500 text-lg" />
+                          ) : (
+                            <IoMdArrowDropdown className="text-rose-500 text-lg" />
+                          )}
+                          <div
+                            className={`font-bold text-sm ${
+                              isReceiver ? "text-emerald-500" : "text-rose-500"
+                            }`}>
+                            Rp.{Number(c?.amount || 0).toLocaleString("id-ID")}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                ))}
+                    );
+                  })
+                ) : (
+                  <p className="text-gray-400 text-sm text-center py-4 bg-white rounded-2xl">
+                    Belum ada riwayat transaksi.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -436,37 +312,49 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-4">
-              {transactionsDesk.map((c) => (
-                <div key={c.id} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={c.avatar}
-                      alt={c.name}
-                      className="w-11 h-11 rounded-2xl object-cover"
-                    />
-                    <div>
-                      <h3 className="font-bold text-gray-900 text-sm">
-                        {c.name}
-                      </h3>
-                      <p className="text-gray-400 text-xs">{c.type}</p>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center gap-2">
-                    {c.isIncome ? (
-                      <IoMdArrowDropup className="text-green-500" />
-                    ) : (
-                      <IoMdArrowDropdown className="text-red-500" />
-                    )}
+              {historyList.length > 0 ? (
+                historyList.map((c, i) => {
+                  const isReceiver = c?.type === "receiver";
+                  return (
                     <div
-                      className={`font-bold text-sm ${
-                        c.isIncome ? "text-emerald-500" : "text-rose-500"
-                      }`}
-                    >
-                      {c.amount}
+                      key={c?.id || i}
+                      className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}/public/image/${c?.image_url}`}
+                          alt={c?.fullname || "User"}
+                          className="w-11 h-11 rounded-2xl object-cover bg-gray-100"
+                        />
+                        <div>
+                          <h3 className="font-bold text-gray-900 text-sm">
+                            {c?.fullname || "Unknown"}
+                          </h3>
+                          <p className="text-gray-400 text-xs capitalize">
+                            {c?.type}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center gap-2">
+                        {isReceiver ? (
+                          <IoMdArrowDropup className="text-emerald-500 text-lg" />
+                        ) : (
+                          <IoMdArrowDropdown className="text-rose-500 text-lg" />
+                        )}
+                        <div
+                          className={`font-bold text-sm ${
+                            isReceiver ? "text-emerald-500" : "text-rose-500"
+                          }`}>
+                          Rp.{Number(c?.amount || 0).toLocaleString("id-ID")}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                })
+              ) : (
+                <p className="text-gray-400 text-sm text-center py-4">
+                  Belum ada riwayat transaksi.
+                </p>
+              )}
             </div>
           </div>
         </div>
