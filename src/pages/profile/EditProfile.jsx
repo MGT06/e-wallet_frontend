@@ -99,7 +99,7 @@ const EditProfile = () => {
   }, [dispatch]);
 
   return (
-    <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
+    <section className="lg:p-8 mt-8 lg:mt-0 lg:bg-white w-full rounded-2xl lg:shadow-sm">
       <div className="flex flex-col justify-between lg:gap-4">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 lg:gap-4">
           <div className="grid gap-4 lg:gap-2">

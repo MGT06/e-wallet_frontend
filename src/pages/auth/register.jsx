@@ -86,10 +86,10 @@ export default function Register() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-2xl font-semibold text-primary">E-Wallet</div>
+            <div className="text-xl lg:text-lg font-semibold text-primary">E-Wallet</div>
           </div>
 
-          <div className="font-semibold text-[19px]">
+          <div className="font-semibold text-lg">
             Start Accessing Banking Needs With All Devices and All Platforms
             With 30.000+ Users
           </div>
@@ -110,7 +110,7 @@ export default function Register() {
                 alt="logo-google"
                 className="h-5 w-5 lg:h-4 lg:w-4 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium">
+              <span className="hidden lg:inline text-sm lg:text-xs font-medium">
                 Sign In With Google
               </span>
             </button>
@@ -124,7 +124,7 @@ export default function Register() {
                 alt="logo-facebook"
                 className="h-6 w-6 lg:h-5 lg:w-5 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium">
+              <span className="hidden lg:inline text-sm lg:text-xs font-medium">
                 Sign In With Facebook
               </span>
             </button>
@@ -137,9 +137,9 @@ export default function Register() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex w-full flex-col text-sm">
+            <div className="flex w-full flex-col text-sm lg:text-xs gap-2">
               <label htmlFor="email">Email</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
+              <div className="border lg:text-xs border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <MdOutlineEmail size={20} />
                 <input
                   {...register("email", {
@@ -152,13 +152,13 @@ export default function Register() {
               </div>
             </div>
 
-            <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
+            <p className="mt-2 text-xs lg:text-xs sm:text-xs h-6 text-red-500">
               {errors.email?.message}
             </p>
 
-            <div className="flex w-full flex-col text-sm">
+            <div className="flex w-full flex-col text-sm gap-2 lg:text-xs">
               <label htmlFor="name">Name</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
+              <div className="border lg:text-xs border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <CiUser size={20} />
                 <input
                   {...register("name", {
@@ -170,7 +170,7 @@ export default function Register() {
                   })}
                   type="name"
                   placeholder="Enter Your Name"
-                  className="outline-none w-full"
+                  className="outline-none w-full lg:text-xs"
                 />
               </div>
             </div>
@@ -179,9 +179,9 @@ export default function Register() {
               {errors.name?.message}
             </p>
 
-            <div className="flex w-full flex-col text-sm">
+            <div className="flex w-full flex-col text-sm gap-2 lg:text-xs">
               <label htmlFor="password">Password</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
+              <div className="border lg:text-xs border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2 text-sm">
                 <IoMdKey
                   className="border-2 border-slate-700 rounded-sm text-xl"
                   size={16}
@@ -203,7 +203,11 @@ export default function Register() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="text-gray-500 focus:outline-none"
                 >
-                  {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
+                  {showPassword ? (
+                    <LuEye size={20} className="cursor-pointer" />
+                  ) : (
+                    <LuEyeOff size={20} className="cursor-pointer" />
+                  )}
                 </button>
               </div>
             </div>
@@ -212,9 +216,9 @@ export default function Register() {
               {errors.password?.message}
             </p>
 
-            <div className="flex w-full flex-col text-sm">
+            <div className="flex w-full flex-col text-sm gap-2 lg:text-xs">
               <label htmlFor="cpassword">Confirm Password</label>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+              <div className="border lg:text-xs border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <IoMdKey
                   className="border-2 border-slate-600 rounded-sm text-xl"
                   size={16}
@@ -233,9 +237,9 @@ export default function Register() {
                   className="text-gray-500 focus:outline-none"
                 >
                   {showConfirmPassword ? (
-                    <LuEye size={20} />
+                    <LuEye size={20} className="cursor-pointer" />
                   ) : (
-                    <LuEyeOff size={20} />
+                    <LuEyeOff size={20} className="cursor-pointer" />
                   )}
                 </button>
               </div>
@@ -245,15 +249,15 @@ export default function Register() {
               {errors.cpassword?.message}
             </p>
 
-            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90 shadow-lg text-sm">
+            <button className="bg-primary lg:text-xs text-white flex justify-center items-center py-3 h-10 rounded-xl cursor-pointer w-full hover:bg-primary/90 shadow-lg text-sm">
               <AiOutlineLoading3Quarters
-                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+                className={`${loading ? "block" : "hidden"} text-lg animate-spin`}
               />
               {loading ? "" : "Register"}
             </button>
           </form>
 
-          <div className="flex justify-center items-center text-dark-gray text-sm">
+          <div className="flex lg:text-xs justify-center items-center text-dark-gray text-sm">
             Have An Account?
             <Link
               to={"/auth/login"}

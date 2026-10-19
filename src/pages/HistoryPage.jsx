@@ -13,20 +13,20 @@ const HistoryPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="lg:pr-11">
-      <div className="lg:grid gap-4 hidden lg:px-8 pt-8 pb-4">
+    <div className="bg-gray-50 w-full p-4 lg:p-8">
+      <div className="lg:grid gap-2 hidden lg:px-8 py-6 bg-white rounded-2xl shadow-sm">
         <div className="flex items-center gap-2">
           <MdHistory className="text-primary text-2xl" />
           <p className="font-semibold">History Transaction</p>
         </div>
       </div>
-      <div className="lg:p-4">
+      <div className="lg:px-2 py-4">
         {history?.map((h, i) => {
           <HistoryTable key={i} />;
         })}
       </div>
       <div
-        className={`${history?.length ? "hidden" : "flex"} w-full h-svw lg:h-full items-center justify-center`}
+        className={`${history?.length ? "hidden" : "flex"} w-full h-svw lg:h-full items-center lg:items-start my-32 justify-center`}
       >
         <p className="text-dark-gray">You don't have history yet</p>
       </div>

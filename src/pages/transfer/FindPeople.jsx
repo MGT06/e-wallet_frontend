@@ -31,7 +31,7 @@ const FindPeople = () => {
   }, [dispatch, search]);
 
   return (
-    <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
+    <section className="container w-full rounded-2xl bg-white lg:shadow-sm">
       <div className="flex flex-col justify-between gap-4">
         <div>
           <h2 className="font-semibold">Find People</h2>

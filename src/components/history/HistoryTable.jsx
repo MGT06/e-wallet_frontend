@@ -3,7 +3,7 @@ import HistoryCard from "../history/HistoryCard";
 
 const HistoryTable = () => {
   return (
-    <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
+    <section className="container w-full lg:shadow-sm lg:rounded-2xl bg-white">
       <div className="flex flex-col justify-between gap-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <h2 className="font-semibold text-lg lg:text-sm">Find Transaction</h2>

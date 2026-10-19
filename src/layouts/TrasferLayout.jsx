@@ -7,13 +7,13 @@ const TrasferLayout = () => {
 
   return (
     <>
-      <div className="lg:pr-11">
-        <div className="lg:grid gap-4 hidden lg:px-8 pt-8 pb-4">
+      <div className=" w-full p-4 lg:p-8 lg:bg-gray-50">
+        <div className="lg:grid gap-4 hidden lg:px-8 py-6 rounded-2xl shadow-sm bg-white">
           <div className="flex items-center gap-2">
             <IoPaperPlaneOutline className="text-primary text-xl" />
             <p className="font-semibold">Transfer money</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-xs">
             <div className="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center">
               <p>1</p>
             </div>
@@ -44,7 +44,7 @@ const TrasferLayout = () => {
             <p className="text-sm lg:text-xs text-dark-gray">Finish</p>
           </div>
         </div>
-        <div className="lg:p-4">
+        <div className="lg:px-1 lg:p-6">
           <Outlet />
         </div>
       </div>

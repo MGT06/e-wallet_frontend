@@ -24,7 +24,7 @@ const ProtectedLayout = () => {
     }
 
     if (!isHasPin) {
-      navigate("/set-pin");
+      navigate("/auth/pin");
     }
   }, [navigate, isHasPin, token]);
 
