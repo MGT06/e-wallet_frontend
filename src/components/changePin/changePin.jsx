@@ -7,7 +7,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-const ChangePinCompo = ({changeShow, setChangeShow, currentPin, setCurrentPin}) => {
+const ChangePinCompo = ({changeShow, setChangeShow, currentPin,setCheckShow}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userState);
   const navi = useNavigate()
@@ -84,8 +84,8 @@ const ChangePinCompo = ({changeShow, setChangeShow, currentPin, setCurrentPin}) 
         cpin,
         next: () => {
           toast.success("Appropriate pin");
-          setChangeShow(true)
-          setCurrentPin(false)
+          setCheckShow(true)
+          setChangeShow(false)
           navi("/profile")
         },
         nextErr: (err) => {
