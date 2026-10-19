@@ -27,6 +27,7 @@ export default function TopUpPage() {
   const [selectedMethod, setSelectedMethod] = useState(1);
   const [xenditCode, setXenditCode] = useState("GOPAY");
   const [amount, setAmount] = useState("40000");
+  const [tax, setTax] = useState(3);
 
   const user = useSelector((state) => state.userState.user);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
@@ -34,7 +35,7 @@ export default function TopUpPage() {
 
   const numAm = parseFloat(amount) || 0;
   const deliveryFee = 0;
-  const taxFee = numAm ? 4000 : 0;
+  const taxFee = (tax / 100) * numAm;
   const subTotal = numAm + deliveryFee + taxFee;
 
   const formatRupiah = (val) => {
@@ -213,6 +214,7 @@ export default function TopUpPage() {
                         onClick={() => {
                           setSelectedMethod(method.id);
                           setXenditCode(method.xendit_code);
+                          setTax(method.tax_percent);
                         }}
                         className={`flex cursor-pointer items-center justify-between rounded-2xl p-4 transition-all ${
                           isSelected
