@@ -53,7 +53,7 @@ export default function ResetPassUi() {
           </div>
 
           <form
-            className="flex flex-col gap-2 shadow-3xl"
+            className="flex flex-col gap-2 shadow-3xl my-2"
             onSubmit={handleSubmit(here)}
           >
             <label className="text-sm">New password</label>

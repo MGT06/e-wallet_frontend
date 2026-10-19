@@ -3,6 +3,7 @@ import { AiOutlineLoading3Quarters, AiOutlineMail } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { checkEmail } from "../../redux/slices/authSlice.js";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function Forgot() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ export default function Forgot() {
         body: data,
         next: () => {
           navigate("/auth/otp");
+          toast.success("The OTP code has been sent")
         },
       }),
     );

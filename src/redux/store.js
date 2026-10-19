@@ -31,7 +31,7 @@ const storage = {
 const persistAuthConfig = {
   key: "token",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "isHasPin"],
 };
 
 const store = configureStore({
