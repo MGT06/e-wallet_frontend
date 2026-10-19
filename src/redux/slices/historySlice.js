@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { clearToken } from "./authSlice";
-import { data } from "react-router";
 import { upperCaseResponse } from "../../utils";
 
 const initialState = {
