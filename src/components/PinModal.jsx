@@ -56,9 +56,9 @@ const PinModal = ({
   };
 
   return (
-    <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/70 z-50">
+    <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/70 z-40">
       <div className="flex items-center justify-center h-full">
-        <div className="w-10/12 lg:w-4/12 h-6/12 lg:h-8/12 rounded-lg bg-white p-8 flex flex-col justify-between">
+        <div className="w-10/12 lg:w-4/12 h-6/12 lg:h-8/12 rounded-2xl bg-white p-8 flex flex-col justify-between">
           <div>
             <div className="py-4">
               <p className="text-lg font-semibold lg:text-sm">
@@ -121,7 +121,7 @@ const PinModal = ({
                 </div>
                 <button
                   type="submit"
-                  className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
+                  className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-2 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
                 >
                   <AiOutlineLoading3Quarters
                     className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
