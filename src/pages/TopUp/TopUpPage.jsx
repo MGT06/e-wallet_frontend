@@ -26,7 +26,7 @@ export default function TopUpPage() {
   const loading = useSelector((state) => state.transactionState.isPending);
   const [selectedMethod, setSelectedMethod] = useState(1);
   const [xenditCode, setXenditCode] = useState("GOPAY");
-  const [amount, setAmount] = useState("40000");
+  const [amount, setAmount] = useState("0");
   const [tax, setTax] = useState(3);
 
   const user = useSelector((state) => state.userState.user);

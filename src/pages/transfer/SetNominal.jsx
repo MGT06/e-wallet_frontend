@@ -61,9 +61,9 @@ const SetNominal = () => {
         />
       )}
       {showSuccessModal && (
-        <SuccessModal status="transfer" done={handleDone} again={handleAgain} />
+        <SuccessModal status="Transfer" done={handleDone} again={handleAgain} />
       )}
-      {showFailedModal && <FailedModal status="transfer" again={handleAgain} />}
+      {showFailedModal && <FailedModal status="Transfer" again={handleAgain} />}
       <section className="lg:p-8 p-4 w-full bg-white shadow-sm rounded-2xl">
         <div className="flex flex-col justify-between gap-6">
           <div>
