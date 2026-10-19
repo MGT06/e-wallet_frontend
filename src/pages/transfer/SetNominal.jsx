@@ -1,6 +1,4 @@
 import { useForm } from "react-hook-form";
-import { CiStar } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
 import { HiCash } from "react-icons/hi";
 import { VscVerified } from "react-icons/vsc";
 import { useSelector } from "react-redux";
@@ -9,6 +7,8 @@ import SuccessModal from "../../components/transfer/SuccessModal.jsx";
 import FailedModal from "../../components/transfer/FailedModal.jsx";
 import { useNavigate } from "react-router";
 import PinModal from "../../components/PinModal.jsx";
+import LoadingModal from "../../components/LoadingModal.jsx";
+import { toast } from "react-toastify";
 
 const SetNominal = () => {
   const navigate = useNavigate();
@@ -24,8 +24,14 @@ const SetNominal = () => {
   const [showFailedModal, setFailedShowModal] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [body, setBody] = useState(null);
+  const loading = useSelector((state) => state.transactionState.isPending);
 
   const onSubmit = (data) => {
+    if (!user.phone) {
+      toast.error("Receiver must have phone number");
+      return;
+    }
+
     setShowPinModal(true);
 
     setBody({
@@ -34,8 +40,6 @@ const SetNominal = () => {
       receiver_id: user.id,
     });
   };
-
-  const handleAddFavorit = () => {};
 
   const handleDone = () => {
     navigate("/dashboard");
@@ -47,6 +51,7 @@ const SetNominal = () => {
 
   return (
     <>
+      {loading && <LoadingModal />}
       {showPinModal && (
         <PinModal
           body={body}
@@ -59,15 +64,15 @@ const SetNominal = () => {
         <SuccessModal status="transfer" done={handleDone} again={handleAgain} />
       )}
       {showFailedModal && <FailedModal status="transfer" again={handleAgain} />}
-      <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
+      <section className="lg:p-8 p-4 w-full bg-white shadow-sm rounded-2xl">
         <div className="flex flex-col justify-between gap-6">
           <div>
             <h2 className="text-lg font-semibold">People Information</h2>
           </div>
-          <div className="container bg-dark-gray/10 rounded-lg">
+          <div className="lg:p-4 p-2 bg-dark-gray/5 rounded-lg">
             <div className="flex items-center justify-between lg">
               <div className="flex items-center gap-4 justify-start">
-                <div className="rounded-lg overflow-hidden w-20 lg:w-16">
+                <div className="rounded-lg overflow-hidden w-20 lg:w-19">
                   {user?.image_url ? (
                     <img
                       src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
@@ -90,7 +95,7 @@ const SetNominal = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-2 text-2xl cursor-pointer">
+              {/* <div className="p-2 text-2xl cursor-pointer">
                 <CiStar
                   onClick={handleAddFavorit}
                   className={user?.is_favorit ? "hidden" : "block"}
@@ -98,7 +103,7 @@ const SetNominal = () => {
                 <FaStar
                   className={`${user?.is_favorit ? "block" : "hidden"} text-yellow-500`}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
