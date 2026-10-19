@@ -1,16 +1,29 @@
 import { useForm } from "react-hook-form";
 import { AiOutlineMail } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { checkEmail } from "../../redux/slices/authSlice.js";
+import { useNavigate } from "react-router";
 
 export default function Forgot() {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const here = (data) =>{
-        console.log(data)
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const here = (data) => {
+    dispatch(
+      checkEmail({
+        body: data,
+        next: () => {
+          navigate("/auth/otp");
+        },
+      }),
+    );
+  };
 
   return (
     <section className="bg-primary min-h-screen flex justify-center items-center">
@@ -29,7 +42,8 @@ export default function Forgot() {
 
           <form
             className="flex flex-col gap-2 shadow-3xl"
-            onSubmit={handleSubmit(here)}>
+            onSubmit={handleSubmit(here)}
+          >
             <label className="text-sm">Email</label>
             <div>
               <div className="flex gap-2 items-center text-xl border border-dark-gray/20 rounded-lg px-4 py-2">

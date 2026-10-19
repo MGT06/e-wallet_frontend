@@ -43,7 +43,7 @@ export default function Menu() {
         </NavLink>
 
         <NavLink
-          to="/top-up"
+          to="/topup"
           className={({ isActive }) =>
             `flex justify-center items-center flex-col gap-2 cursor-pointer hover:text-primary ${
               isActive ? "text-primary font-semibold" : "text-gray-500"

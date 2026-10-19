@@ -16,11 +16,15 @@ import { Bar } from "react-chartjs-2";
 
 import { GiMoneyStack } from "react-icons/gi";
 import { FaMoneyBillTransfer, FaMoneyBillTrendUp } from "react-icons/fa6";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getStats } from "../redux/slices/userSlice";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const data = {
     labels: ["Sat", "Sun", "Mo", "Tue", "We", "Thu", "Fri"],
@@ -211,6 +215,12 @@ export default function Dashboard() {
     },
   ];
 
+  const stats = useSelector((state) => state.userState.stats);
+
+  useEffect(() => {
+    dispatch(getStats());
+  }, [dispatch]);
+
   return (
     <div className="bg-gray-50 min-h-screen pb-10 lg:p-8">
       <div className="bg-primary h-28 w-full block lg:hidden" />
@@ -223,14 +233,14 @@ export default function Dashboard() {
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Balance</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp. 500.000
+                    Rp.{stats?.balance?.toLocaleString("id-ID")}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Income</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp. 500.000
+                    Rp.{stats?.income?.toLocaleString("id-ID")}
                   </p>
                   <p className="text-[10px] text-emerald-500 font-semibold mt-2">
                     +11.01% ↗
@@ -240,7 +250,7 @@ export default function Dashboard() {
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Expense</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp. 500.000
+                    Rp.{stats?.expense?.toLocaleString("id-ID")}
                   </p>
                   <p className="text-[10px] text-rose-500 font-semibold mt-2">
                     -5.06% ↘
@@ -259,7 +269,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp.120.000
+                    Rp.{stats?.balance?.toLocaleString("id-ID")}
                   </p>
                 </div>
                 <p className="text-xs text-emerald-500 font-medium mt-4">
@@ -276,7 +286,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp2.120.000
+                    Rp.{stats?.income?.toLocaleString("id-ID")}
                   </p>
                 </div>
                 <p className="text-xs text-emerald-500 font-medium mt-4">
@@ -293,7 +303,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp.200.000
+                    Rp.{stats?.expense?.toLocaleString("id-ID")}
                   </p>
                 </div>
                 <p className="text-xs text-rose-500 font-medium mt-4">

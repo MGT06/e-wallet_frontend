@@ -28,9 +28,10 @@ const Router = () => {
       <Route path="/auth" element={<AuthLayout />}>
         <Route index element={<Navigate to="login" replace />} />
         <Route path="login" element={<Login />} />
+        <Route path="pin" element={<UserPin />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot" element={<Forgot />} />
-        <Route path="reset/password" element={<ResetPassUi />} />
+        <Route path="reset-password" element={<ResetPassUi />} />
         <Route path="otp" element={<Otp />} />
       </Route>
 
@@ -40,8 +41,6 @@ const Router = () => {
       </Route>
 
       <Route element={<ProtectedLayout />}>
-        <Route path="/set-pin" element={<UserPin />} />
-
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/transfer" element={<TransferLayout />}>
@@ -50,7 +49,7 @@ const Router = () => {
           <Route path=":id/nominal" element={<SetNominal />} />
         </Route>
 
-        <Route path="/top-up" element={<TopUpPage />} />
+        <Route path="/topup" element={<TopUpPage />} />
 
         <Route path="/history" element={<HistoryPage />} />
 

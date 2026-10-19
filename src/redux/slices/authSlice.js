@@ -4,6 +4,7 @@ import { upperCaseResponse } from "../../utils";
 const initialState = {
   auth: null,
   isHasPin: null,
+  resetToken: null,
   isPending: false,
   isFulfilled: false,
   isRejected: false,
@@ -88,6 +89,55 @@ export const logoutThunk = createAsyncThunk(
   },
 );
 
+export const checkEmail = createAsyncThunk(
+  "check_email",
+  async (payload, { rejectWithValue }) => {
+    console.log(payload.body);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/forgot`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload.body),
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw data;
+      }
+
+      return { data, payload };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const checkOtp = createAsyncThunk(
+  "check_otp",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/check-otp`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload.body),
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw { data, setErr: payload.setErr };
+      }
+
+      return { data, next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -162,6 +212,50 @@ const authSlice = createSlice({
           state.isPending = false;
           state.isRejected = true;
           state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(checkEmail, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          state.resetToken = payload.payload.body.email;
+          if (payload.payload.next) {
+            payload.payload.next();
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(checkOtp, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          state.resetToken = payload.data.data;
+          console.log(payload.data.data)
+          if (payload.data.next) {
+            payload.data.next();
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          if (payload.setErr) {
+            payload.seteErr();
+          }
+          state.error = upperCaseResponse(payload.data);
         },
       });
   },

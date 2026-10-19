@@ -1,6 +1,9 @@
 import { useForm, useWatch } from "react-hook-form";
 import { usePinInput } from "../../hooks/UsePinInput";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { checkOtp } from "../../redux/slices/authSlice";
+import { useState } from "react";
 
 export default function Otp() {
   const {
@@ -16,7 +19,12 @@ export default function Otp() {
     },
   });
 
+  const navigate = useNavigate();
+
   const pinValues = useWatch({ control, name: "otp" });
+  const dispatch = useDispatch();
+  const email = useSelector((state) => state.authState.resetToken);
+  const [customError, setCustomError] = useState(false);
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
     length: 6,
@@ -32,7 +40,17 @@ export default function Otp() {
     }
 
     const fullPin = data.otp.join("");
-    console.log("PIN Submitted:", fullPin);
+    dispatch(
+      checkOtp({
+        body: { email, otp: fullPin },
+        next: () => {
+          navigate("/auth/reset-password");
+        },
+        setErr: () => {
+          setCustomError(true);
+        },
+      }),
+    );
   };
 
   const hasPinError = Array.isArray(errors.otp) && errors.otp.some(Boolean);
@@ -54,7 +72,8 @@ export default function Otp() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-2 shadow-3xl">
+            className="flex flex-col gap-2 shadow-3xl"
+          >
             <div className="flex justify-center gap-2">
               {[0, 1, 2, 3, 4, 5].map((index) => {
                 const { ref: registerRef, ...restRegister } = register(
@@ -84,7 +103,7 @@ export default function Otp() {
                     }}
                     onChange={(e) => handleChange(e, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
-                    className={`h-10 w-8 border-b-2 text-center text-xs font-bold text-gray-800 transition-colors focus:outline-none ${
+                    className={`my-8 h-10 w-8 border-b-2 text-center text-xs font-bold text-gray-800 transition-colors focus:outline-none ${
                       isInputError
                         ? "border-red-500 text-red-500"
                         : "border-gray-200 focus:border-primary"
@@ -95,10 +114,10 @@ export default function Otp() {
             </div>
 
             <div>
-              <p className="mt-2 text-xs sm:text-xs h-6 text-red-500">
-                {hasPinError &&
-                  (errors.otp.find((err) => err?.message)?.message ||
-                    "OTP not complete")}
+              <p
+                className={`mt-2 text-xs sm:text-xs h-6 ${customError ? "text-red-500" : "text-white"}`}
+              >
+                Invalid OTP
               </p>
             </div>
 
@@ -106,15 +125,6 @@ export default function Otp() {
               Submit
             </button>
           </form>
-
-          <div className="text-center text-sm text-gray-500">
-            Forgot Your Otp?{" "}
-            <NavLink
-              to="/"
-              className="font-semibold text-primary hover:underline">
-              Reset
-            </NavLink>
-          </div>
         </div>
       </div>
     </section>
