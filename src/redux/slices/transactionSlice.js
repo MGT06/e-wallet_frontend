@@ -93,10 +93,10 @@ export const transfer = createAsyncThunk(
         dispatch(clearToken());
       }
       if (!response.ok) {
-        throw payload;
+        throw { response, payload };
       }
 
-      return payload;
+      return { response, payload };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -154,15 +154,15 @@ const transactionSlice = createSlice({
         fulfilled: (state, { payload }) => {
           state.isPending = false;
           state.isFulfilled = true;
-          if (payload.next) {
-            payload.next();
+          if (payload.payload.next) {
+            payload.payload.next();
           }
         },
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
-          if (payload.setErr) {
-            payload.setErr();
+          if (payload.payload.setErr) {
+            payload.payload.setErr();
           }
         },
       });
