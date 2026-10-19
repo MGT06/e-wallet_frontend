@@ -92,7 +92,6 @@ export const logoutThunk = createAsyncThunk(
 export const checkEmail = createAsyncThunk(
   "check_email",
   async (payload, { rejectWithValue }) => {
-    console.log(payload.body);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/auth/forgot`,
@@ -132,6 +131,34 @@ export const checkOtp = createAsyncThunk(
       }
 
       return { data, next: payload.next };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export const resetPassword = createAsyncThunk(
+  "reset_password",
+  async (payload, { getState, rejectWithValue }) => {
+    const resetToken = getState().authState.resetToken;
+    const body = {
+      new_password: payload.new_password,
+      reset_token: resetToken,
+    };
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/reset-password`,
+        {
+          method: "POST",
+          body: JSON.stringify(body),
+        },
+      );
+      if (!response.ok) {
+        throw { setErr: payload.setErr };
+      }
+
+      return { next: payload.next };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -244,18 +271,38 @@ const authSlice = createSlice({
           state.isPending = false;
           state.isFulfilled = true;
           state.resetToken = payload.data.data;
-          console.log(payload.data.data)
-          if (payload.data.next) {
-            payload.data.next();
+          if (payload.next) {
+            payload.next();
           }
         },
         rejected: (state, { payload }) => {
           state.isPending = false;
           state.isRejected = true;
           if (payload.setErr) {
-            payload.seteErr();
+            payload.setErr();
           }
-          state.error = upperCaseResponse(payload.data);
+          state.error = payload.data.message;
+        },
+      })
+      .addAsyncThunk(resetPassword, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isRejected = false;
+          state.isFulfilled = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next();
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          if (payload.setErr) {
+            payload.setErr();
+          }
         },
       });
   },
