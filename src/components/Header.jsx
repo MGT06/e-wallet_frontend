@@ -50,7 +50,7 @@ export default function Header() {
         setTitle("History");
       }
 
-      if (param?.pathname?.includes("top-up")) {
+      if (param?.pathname?.includes("topup")) {
         setTitle("Top Up");
       }
 

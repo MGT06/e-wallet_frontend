@@ -1,14 +1,53 @@
+import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
+import { usePinInput } from "../hooks/UsePinInput";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { checkPin } from "../redux/slices/userSlice";
 
 const PinModal = () => {
+  const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      pin: ["", "", "", "", "", ""],
+    },
+  });
+
+  const pinValues = useWatch({ control, name: "pin" });
+  const user = useSelector((state) => state.userState);
+  const [loading, setLoading] = useState(false);
+
+  const { inputRefs, handleChange, handleKeyDown } = usePinInput({
+    length: 6,
+    setValue,
+    getValues,
+    name: "pin",
+  });
+
+  const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
+
+  const onSubmit = (data) => {
+    const cpin = {
+      pin: data.pin.join(""),
+    };
+
+    dispatch(checkPin({ cpin }));
+  };
+
   return (
     <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/70 z-50">
       <div className="flex items-center justify-center h-full">
         <div className="w-10/12 lg:w-4/12 h-6/12 lg:h-8/12 rounded-lg bg-white p-8 flex flex-col justify-between">
           <div>
-            <div className="border-b border-b-dark-gray/40 pb-4">
-              <h2 className="font-semibold">TRANSFER TO GHALUH 1</h2>
-            </div>
             <div className="py-4">
               <p className="text-lg font-semibold lg:text-sm">
                 Enter Your Pin 👋
@@ -19,14 +58,68 @@ const PinModal = () => {
             </div>
           </div>
           <div className="flex gap-2 justify-around">
-            <div className="grid grid-cols-6 gap-2 lg:gap-4">
-              {/* pin */}
+            <div className="w-full">
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full">
+                <div className="flex justify-between gap-2">
+                  {[0, 1, 2, 3, 4, 5].map((index) => {
+                    const { ref: registerRef, ...restRegister } = register(
+                      `pin.${index}`,
+                      {
+                        required: "PIN must be filled in completely",
+                        pattern: {
+                          value: /^[0-9]$/,
+                          message: "The PIN must be a number",
+                        },
+                      },
+                    );
+
+                    const isInputError = errors.pin?.[index];
+
+                    return (
+                      <input
+                        key={index}
+                        {...restRegister}
+                        type="password"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={pinValues[index] || ""}
+                        ref={(e) => {
+                          registerRef(e);
+                          inputRefs.current[index] = e;
+                        }}
+                        onChange={(e) => handleChange(e, index)}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        className={`h-12 w-10 border-b-2 text-center text-xl font-bold text-gray-800 transition-colors focus:outline-none ${
+                          isInputError
+                            ? "border-red-500 text-red-500"
+                            : "border-gray-200 focus:border-primary"
+                        }`}
+                      />
+                    );
+                  })}
+                </div>
+
+                <div className="mt-2 h-6 w-full">
+                  {hasPinError && (
+                    <p className="text-xs text-red-500">
+                      {errors.pin.find((err) => err?.message)?.message ||
+                        "PIN not complete"}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="mt-6 w-full flex items-center justify-center rounded-xl bg-primary py-3.5 text-base font-semibold text-white shadow-md transition-colors hover:bg-primary/90 active:bg-primary cursor-pointer"
+                >
+                  <AiOutlineLoading3Quarters
+                    className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+                  />
+                  {loading ? "" : "Submit"}
+                </button>
+              </form>
             </div>
           </div>
           <div className="grid gap-4 mt-8 text-center">
-            <button className="py-4 lg:py-2 lg:text-sm bg-primary w-full text-white rounded-lg cursor-pointer hover:opacity-90 hover:shadow-lg">
-              Next
-            </button>
             <div className="flex items-center justify-center gap-2 lg:text-sm">
               <p>Forgot Your Pin?</p>
               <Link className="text-primary" to="">

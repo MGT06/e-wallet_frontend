@@ -14,6 +14,7 @@ import authReducer from "./slices/authSlice";
 import userReducer from "./slices/userSlice";
 import peopleReducer from "./slices/peopleSlice";
 import transactionReducer from "./slices/transactionSlice.js";
+import historyReducer from "./slices/historySlice.js";
 
 const storage = {
   getItem: (key) => {
@@ -39,6 +40,7 @@ const store = configureStore({
     userState: userReducer,
     peopleState: peopleReducer,
     transactionState: transactionReducer,
+    historyState: historyReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -50,6 +52,7 @@ const store = configureStore({
           "payload",
           "meta.arg.body",
           "meta.arg.nextErr",
+          "meta.arg.setErr",
         ],
       },
     }),

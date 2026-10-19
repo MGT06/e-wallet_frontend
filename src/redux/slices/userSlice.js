@@ -8,6 +8,7 @@ const initialState = {
   isFulfilled: false,
   isRejected: false,
   error: null,
+  stats: null,
 };
 
 export const checkPin = createAsyncThunk(
@@ -302,6 +303,36 @@ export const editProfile = createAsyncThunk(
   },
 );
 
+export const getStats = createAsyncThunk(
+  "get_stats",
+  async (_, { dispatch, getState, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/user/stats-dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (response.status === 401) {
+        dispatch(clearToken());
+      }
+      if (!response.ok) {
+        throw data;
+      }
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -455,12 +486,10 @@ const userSlice = createSlice({
           state.isFulfilled = false;
           state.isRejected = false;
         },
-        fulfilled: (state, { payload }) => {
+        fulfilled: (state) => {
           state.isPending = false;
           state.isFulfilled = true;
-          if (payload.next) {
-            payload.next("Pin setted successfully");
-          }
+          state.isChecked = true;
         },
         rejected: (state, { payload }) => {
           state.isPending = false;
@@ -474,6 +503,23 @@ const userSlice = createSlice({
           if (payload?.nextErr) {
             payload.nextErr(errorMsg);
           }
+        },
+      })
+      .addAsyncThunk(getStats, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          state.stats = payload.data;
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          state.error = payload.data;
         },
       });
   },

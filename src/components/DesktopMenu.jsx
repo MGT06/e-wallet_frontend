@@ -36,7 +36,7 @@ const DesktopMenu = () => {
         <p className="text-sm">History</p>
       </NavLink>
       <NavLink
-        to="/top-up"
+        to="/topup"
         className={({ isActive }) =>
           `flex items-center gap-3 py-3 px-3 rounded-lg w-full ${isActive ? "bg-primary" : "bg-white text-dark-gray hover:bg-blue-50"}`
         }

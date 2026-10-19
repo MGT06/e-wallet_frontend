@@ -34,7 +34,7 @@ export default function Login() {
         next: (message, hasPin) => {
           toast.success(message);
           if (!hasPin) {
-            navigate("/set-pin");
+            navigate("/auth/pin");
             return;
           }
           navigate("/dashboard");

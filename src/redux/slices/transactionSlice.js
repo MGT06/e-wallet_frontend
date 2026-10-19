@@ -72,6 +72,37 @@ export const topUp = createAsyncThunk(
   },
 );
 
+export const transfer = createAsyncThunk(
+  "transfer",
+  async (payload, { getState, dispatch, rejectWithValue }) => {
+    const token = getState().authState.auth.token;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/transaction/transfer`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload.body),
+        },
+      );
+
+      if (response.status === 401) {
+        dispatch(clearToken());
+      }
+      if (!response.ok) {
+        throw payload;
+      }
+
+      return payload;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const transactionSlice = createSlice({
   name: "transaction",
   initialState,
@@ -112,6 +143,27 @@ const transactionSlice = createSlice({
           state.isPending = false;
           state.isRejected = true;
           state.error = payload.message;
+        },
+      })
+      .addAsyncThunk(transfer, {
+        pending: (state) => {
+          state.isPending = true;
+          state.isFulfilled = false;
+          state.isRejected = false;
+        },
+        fulfilled: (state, { payload }) => {
+          state.isPending = false;
+          state.isFulfilled = true;
+          if (payload.next) {
+            payload.next();
+          }
+        },
+        rejected: (state, { payload }) => {
+          state.isPending = false;
+          state.isRejected = true;
+          if (payload.setErr) {
+            payload.setErr();
+          }
         },
       });
   },

@@ -5,13 +5,13 @@ const SuccessModal = ({ status, done, again }) => {
     <article className="fixed top-0 left-0 bottom-0 right-0 bg-black/70 z-50">
       <div className="flex items-center justify-center h-full">
         <div className="w-10/12 lg:w-4/12 rounded-lg bg-white p-8 flex flex-col justify-between">
-          <div>
+          {/* <div>
             <div className="border-b border-b-dark-gray/40 pb-4">
               <h2 className="font-semibold">
                 {status.toUpperCase()} TO GHALUH 1
               </h2>
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center">
             <img className="lg:h-60" src={successImage} alt="success-image" />
           </div>
