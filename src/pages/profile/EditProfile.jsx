@@ -46,6 +46,9 @@ const EditProfile = () => {
         type: "manual",
         message: "The phone number must begin with 62",
       });
+
+      setLoading(false);
+      return;
     }
 
     if (imgUpload) {
@@ -184,7 +187,7 @@ const EditProfile = () => {
               <input
                 id="phone"
                 type="text"
-                className={`${errors?.phone?.message && "outline outline-red"}  focus:outline-none w-full`}
+                className="focus:outline-none w-full"
                 placeholder="Enter Your Phone Number"
                 {...register("phone", {
                   minLength: {

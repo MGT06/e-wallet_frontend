@@ -29,7 +29,7 @@ const PeopleCard = ({ id, fullname, image_url, phone, is_favorit, color }) => {
 
   return (
     <article
-      className={`px-4 py-2 ${color} border-b border-b-dark-gray/20 rounded-lg`}
+      className={`px-2 lg:px-4 py-2 ${color} border-b border-b-dark-gray/20 rounded-lg`}
     >
       <div className="flex items-center justify-between">
         <div className="rounded-lg overflow-hidden w-18 lg:w-12">

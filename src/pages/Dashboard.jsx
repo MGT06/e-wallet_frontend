@@ -232,14 +232,14 @@ export default function Dashboard() {
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Balance</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp{stats?.balance?.toLocaleString("id-ID")}
+                    Rp{stats?.balance?.toLocaleString("id-ID") || 0}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Income</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp{stats?.income?.toLocaleString("id-ID")}
+                    Rp{stats?.income?.toLocaleString("id-ID") || 0}
                   </p>
                   <p className="text-[10px] text-emerald-500 font-semibold mt-2">
                     +11.01% ↗
@@ -249,7 +249,7 @@ export default function Dashboard() {
                 <div>
                   <p className="text-gray-400 text-xs font-medium">Expense</p>
                   <p className="font-bold text-sm text-gray-800 mt-1">
-                    Rp{stats?.expense?.toLocaleString("id-ID")}
+                    Rp{stats?.expense?.toLocaleString("id-ID") || 0}
                   </p>
                   <p className="text-[10px] text-rose-500 font-semibold mt-2">
                     -5.06% ↘
@@ -268,7 +268,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp{stats?.balance?.toLocaleString("id-ID")}
+                    Rp{stats?.balance?.toLocaleString("id-ID") || 0}
                   </p>
                 </div>
                 <p className="text-xs text-emerald-500 font-medium mt-4">
@@ -285,7 +285,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp{stats?.income?.toLocaleString("id-ID")}
+                    Rp{stats?.income?.toLocaleString("id-ID") || 0}
                   </p>
                 </div>
                 <p className="text-xs text-emerald-500 font-medium mt-4">
@@ -302,7 +302,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <p className="font-bold text-2xl text-gray-800 mt-2">
-                    Rp{stats?.expense?.toLocaleString("id-ID")}
+                    Rp{stats?.expense?.toLocaleString("id-ID") || 0}
                   </p>
                 </div>
                 <p className="text-xs text-rose-500 font-medium mt-4">
