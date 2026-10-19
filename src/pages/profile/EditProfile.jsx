@@ -105,7 +105,7 @@ const EditProfile = () => {
           <div className="grid gap-4 lg:gap-2">
             <h2 className="font-semibold text-xl lg:text-sm">My Profile</h2>
             <div className="flex gap-4 lg:gap-2 items-center justify-between lg:justify-start">
-              <div className="rounded-lg overflow-hidden w-6/12 lg:w-26 h-24">
+              <div className="rounded-lg overflow-hidden w-34 lg:lg:w-24 h-24">
                 {user?.image_url || img ? (
                   <img
                     className="w-full h-full"

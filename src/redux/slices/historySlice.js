@@ -50,6 +50,7 @@ const historySlice = createSlice({
         state.isPending = false;
         state.isFulfilled = true;
         state.history = payload.data.data;
+        console.log(payload)
       },
       rejected: (state, { payload }) => {
         state.isPending = false;

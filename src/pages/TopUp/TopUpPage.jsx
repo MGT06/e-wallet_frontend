@@ -137,7 +137,7 @@ export default function TopUpPage() {
                 <div className="flex items-start gap-4 rounded-2xl bg-gray/30 p-4">
                   {user?.image_url ? (
                     <img
-                      src={user?.image_url}
+                      src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
                       alt="Sigma Cat Wizard"
                       className="h-16 w-16 rounded-xl object-cover"
                     />
@@ -224,20 +224,20 @@ export default function TopUpPage() {
                       >
                         <div className="flex items-center gap-4">
                           <div
-                            className={`flex h-5 w-5 items-center justify-center rounded-full border ${
+                            className={`flex h-3 w-3 items-center justify-center rounded-full border ${
                               isSelected
                                 ? "border-primary bg-primary"
                                 : "border-gray-400 bg-white"
                             }`}
                           >
                             {isSelected && (
-                              <div className="h-2 w-2 rounded-full bg-white" />
+                              <div className="h-1 w-1 rounded-full bg-white" />
                             )}
                           </div>
 
                           <div className="flex h-8 w-12 items-center justify-center">
                             <img
-                              src={method.logo}
+                              src={method.icon_url}
                               alt={method.name}
                               className="max-h-6 max-w-full object-contain"
                             />

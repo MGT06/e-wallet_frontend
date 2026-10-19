@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
-import { AiOutlineMail } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { AiOutlineLoading3Quarters, AiOutlineMail } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 import { checkEmail } from "../../redux/slices/authSlice.js";
 import { useNavigate } from "react-router";
 
 export default function Forgot() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const loading = useSelector((state) => state.authState.isPending);
 
   const {
     register,
@@ -62,8 +64,11 @@ export default function Forgot() {
               </p>
             </div>
 
-            <button className="bg-primary rounded-lg text-white text-sm py-2 hover:opacity-80 cursor-pointer hover:shadow-lg">
-              Submit
+            <button className="bg-primary rounded-lg text-white text-sm py-2 hover:opacity-80 cursor-pointer hover:shadow-lg flex items-center justify-center">
+              <AiOutlineLoading3Quarters
+                className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
+              />
+              {loading ? "" : "Submit"}
             </button>
           </form>
         </div>
