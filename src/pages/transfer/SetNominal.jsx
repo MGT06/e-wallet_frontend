@@ -3,8 +3,7 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { HiCash } from "react-icons/hi";
 import { VscVerified } from "react-icons/vsc";
-import { useDispatch, useSelector } from "react-redux";
-import { transfer } from "../../redux/slices/transactionSlice";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import SuccessModal from "../../components/transfer/SuccessModal.jsx";
 import FailedModal from "../../components/transfer/FailedModal.jsx";
@@ -12,7 +11,6 @@ import { useNavigate } from "react-router";
 import PinModal from "../../components/PinModal.jsx";
 
 const SetNominal = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const {
@@ -25,43 +23,16 @@ const SetNominal = () => {
   const [showSuccessModal, setSuccessShowModal] = useState(false);
   const [showFailedModal, setFailedShowModal] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
-
-  const checkPin = useSelector((state) => state.userState.isChecked);
+  const [body, setBody] = useState(null);
 
   const onSubmit = (data) => {
-    const body = {
+    setShowPinModal(true);
+
+    setBody({
       amount: parseInt(data.ammount),
       notes: data.notes,
       receiver_id: user.id,
-    };
-
-    // setShowPinModal(true); 
-
-    // if (checkPin) {
-    //   dispatch(
-    //     transfer({
-    //       body,
-    //       next: () => {
-    //         setSuccessShowModal(true);
-    //       },
-    //       setErr: () => {
-    //         setFailedShowModal(true);
-    //       },
-    //     }),
-    //   );
-    // }
-
-    dispatch(
-      transfer({
-        body,
-        next: () => {
-          setSuccessShowModal(true);
-        },
-        setErr: () => {
-          setFailedShowModal(true);
-        },
-      }),
-    );
+    });
   };
 
   const handleAddFavorit = () => {};
@@ -76,7 +47,14 @@ const SetNominal = () => {
 
   return (
     <>
-      {showPinModal && <PinModal transfer={transfer} />}
+      {showPinModal && (
+        <PinModal
+          body={body}
+          setFailedShowModal={setFailedShowModal}
+          setSuccessShowModal={setSuccessShowModal}
+          setShowPinModal={setShowPinModal}
+        />
+      )}
       {showSuccessModal && (
         <SuccessModal status="transfer" done={handleDone} again={handleAgain} />
       )}

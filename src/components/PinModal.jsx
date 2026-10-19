@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 import { usePinInput } from "../hooks/UsePinInput";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { checkPin } from "../redux/slices/userSlice";
+import { transfer } from "../redux/slices/transactionSlice";
 
-const PinModal = () => {
+const PinModal = ({
+  body,
+  setSuccessShowModal,
+  setFailedShowModal,
+  setShowPinModal,
+}) => {
   const dispatch = useDispatch();
 
   const {
@@ -23,7 +28,6 @@ const PinModal = () => {
   });
 
   const pinValues = useWatch({ control, name: "pin" });
-  const user = useSelector((state) => state.userState);
   const [loading, setLoading] = useState(false);
 
   const { inputRefs, handleChange, handleKeyDown } = usePinInput({
@@ -36,11 +40,19 @@ const PinModal = () => {
   const hasPinError = Array.isArray(errors.pin) && errors.pin.some(Boolean);
 
   const onSubmit = (data) => {
-    const cpin = {
-      pin: data.pin.join(""),
-    };
-
-    dispatch(checkPin({ cpin }));
+    dispatch(
+      transfer({
+        body: { ...body, pin: data.pin.join("") },
+        next: () => {
+          setShowPinModal(false);
+          setSuccessShowModal(true);
+        },
+        setErr: () => {
+          setShowPinModal(false);
+          setFailedShowModal(true);
+        },
+      }),
+    );
   };
 
   return (
@@ -122,7 +134,7 @@ const PinModal = () => {
           <div className="grid gap-4 mt-8 text-center">
             <div className="flex items-center justify-center gap-2 lg:text-sm">
               <p>Forgot Your Pin?</p>
-              <Link className="text-primary" to="">
+              <Link className="text-primary" to="/profile/change-pin">
                 Reset
               </Link>
             </div>

@@ -19,12 +19,12 @@ const ProtectedLayout = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-
     if (!isHasPin) {
       navigate("/auth/pin");
+    }
+
+    if (!token) {
+      navigate("/");
     }
   }, [navigate, isHasPin, token]);
 
