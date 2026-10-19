@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { clearToken } from "./authSlice.js";
+import { clearToken, setIsHasPin } from "./authSlice.js";
 import { upperCaseResponse } from "../../utils/index.js";
 
 const initialState = {
@@ -43,7 +43,11 @@ export const checkPin = createAsyncThunk(
           payload.nextErr(formattedMsg);
         }
 
-        return rejectWithValue({ data, message: formattedMsg, nextErr: payload?.nextErr });
+        return rejectWithValue({
+          data,
+          message: formattedMsg,
+          nextErr: payload?.nextErr,
+        });
       }
 
       return { data, next: payload.next };
@@ -55,7 +59,11 @@ export const checkPin = createAsyncThunk(
         payload.nextErr(formattedMsg);
       }
 
-      return rejectWithValue({ err, message: formattedMsg, nextErr: payload?.nextErr });
+      return rejectWithValue({
+        err,
+        message: formattedMsg,
+        nextErr: payload?.nextErr,
+      });
     }
   },
 );
@@ -250,6 +258,8 @@ export const setUserPin = createAsyncThunk(
       if (!response.ok) {
         throw await response.json();
       }
+
+      dispatch(setIsHasPin());
 
       return { next: payload.next };
     } catch (error) {

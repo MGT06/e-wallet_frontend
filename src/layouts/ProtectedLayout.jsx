@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import Menu from "../components/Menu.jsx";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
@@ -12,6 +12,7 @@ const ProtectedLayout = () => {
   const navigate = useNavigate();
 
   const token = useSelector((state) => state.authState.auth?.token);
+  const isHasPin = useSelector((state) => state.authState.isHasPin);
 
   useEffect(() => {
     dispatch(getUserInfo());
@@ -21,7 +22,11 @@ const ProtectedLayout = () => {
     if (!token) {
       navigate("/");
     }
-  }, [navigate, token]);
+
+    if (!isHasPin) {
+      navigate("/set-pin");
+    }
+  }, [navigate, isHasPin, token]);
 
   return (
     <main>

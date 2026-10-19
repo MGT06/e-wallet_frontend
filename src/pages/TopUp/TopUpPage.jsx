@@ -141,7 +141,7 @@ export default function TopUpPage() {
                       className="h-16 w-16 rounded-xl object-cover"
                     />
                   ) : (
-                    <div className="w-24 h-24 bg-primary text-white rounded-lg flex items-center justify-center">
+                    <div className="w-24 h-24 bg-primary text-white rounded-lg flex items-center justify-center text-2xl">
                       <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
                     </div>
                   )}
