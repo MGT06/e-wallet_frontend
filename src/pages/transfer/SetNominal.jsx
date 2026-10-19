@@ -35,7 +35,7 @@ const SetNominal = () => {
       receiver_id: user.id,
     };
 
-    // setShowPinModal(true);
+    // setShowPinModal(true); 
 
     // if (checkPin) {
     //   dispatch(
