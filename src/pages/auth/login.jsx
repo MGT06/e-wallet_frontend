@@ -74,7 +74,9 @@ export default function Login() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-2xl font-semibold text-primary">E-Wallet</div>
+            <div className="text-xl lg:text-lg font-semibold text-primary">
+              E-Wallet
+            </div>
           </div>
 
           <div className="font-semibold text-[19px]">Hello Welcome Back 👋</div>
@@ -91,9 +93,9 @@ export default function Login() {
               <img
                 src={logoGogle}
                 alt="logo-google"
-                className="h-5 w-5 object-contain"
+                className="h-5 w-5 lg:h-4 lg:w-4 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium">
+              <span className="hidden lg:inline text-sm lg:text-xs font-medium">
                 Sign In With Google
               </span>
             </button>
@@ -105,9 +107,9 @@ export default function Login() {
               <img
                 src={logoFacebook}
                 alt="logo-facebook"
-                className="h-6 w-6 object-contain"
+                className="h-6 w-6 lg:h-4 lg:w-4 object-contain"
               />
-              <span className="hidden lg:inline text-sm font-medium">
+              <span className="hidden lg:inline text-sm lg:text-xs font-medium">
                 Sign In With Facebook
               </span>
             </button>
@@ -119,7 +121,7 @@ export default function Login() {
             <div className="flex-1 border-t border-dark-gray/20" />
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex w-full flex-col">
+            <div className="flex w-full flex-col gap-2 lg:text-xs">
               <label>Email</label>
               <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <MdOutlineEmail size={20} />
@@ -133,22 +135,17 @@ export default function Login() {
                 />
               </div>
             </div>
-
-            <p className="m-2 text-xs sm:text-xs h-6 text-red-500">
-              {errors.email?.message}
-            </p>
-
-            <div className="flex w-full flex-col">
+            <div className="my-4 flex w-full flex-col gap-2 lg:text-xs">
               <div className="flex justify-between">
                 <label>Password</label>
                 <NavLink
-                  className="text-primary hover:text-primary/60"
+                  className="text-primary lg:text-xs hover:text-primary/60"
                   to="/auth/forgot"
                 >
                   Forgot Password?
                 </NavLink>
               </div>
-              <div className="border border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
+              <div className="border lg:text-xs border-dark-gray/30 rounded-xl px-4 py-2 flex items-center gap-2">
                 <IoMdKey
                   className="border-2 border-slate-700 rounded-sm text-xl"
                   size={16}
@@ -166,7 +163,11 @@ export default function Login() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="text-gray-500 focus:outline-none"
                 >
-                  {showPassword ? <LuEye size={20} /> : <LuEyeOff size={20} />}
+                  {showPassword ? (
+                    <LuEye size={20} className="cursor-pointer" />
+                  ) : (
+                    <LuEyeOff size={20} className="cursor-pointer" />
+                  )}
                 </button>
               </div>
             </div>
@@ -175,14 +176,14 @@ export default function Login() {
               {errors.password?.message}
             </p>
 
-            <button className="bg-primary text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90">
+            <button className="bg-primary lg:text-xs h-10 text-white flex justify-center items-center py-3 rounded-xl cursor-pointer w-full hover:bg-primary/90">
               <AiOutlineLoading3Quarters
                 className={`${loading ? "block" : "hidden"} text-xl animate-spin`}
               />
               {loading ? "" : "Login"}
             </button>
           </form>
-          <div className="flex justify-center items-center text-dark-gray">
+          <div className="flex lg:text-xs justify-center items-center text-dark-gray">
             Have An Account?
             <Link
               to={"/auth/register"}

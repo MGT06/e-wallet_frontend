@@ -103,8 +103,8 @@ export default function TopUpPage() {
           again={() => navigate("top-up")}
         />
       )}
-      <div className="min-h-screen bg-white font-sans text-dark">
-        <div className="border-b border-gray-100 bg-white">
+      <div className="min-h-screen font-sans text-dark lg:p-8 lg:bg-gray-50">
+        <div className="bg-white lg:shadow-sm rounded-2xl">
           <div className="container flex items-center gap-3 py-4 text-dark">
             <svg
               className="h-5 w-5 text-primary"
@@ -123,12 +123,12 @@ export default function TopUpPage() {
           </div>
         </div>
 
-        <div className="section-container">
+        <div className="px-8 lg:px-2 py-6">
           <form
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start"
           >
-            <div className="space-y-8 lg:col-span-7 xl:col-span-8">
+            <div className="lg:p-8 space-y-8 lg:col-span-7 xl:col-span-8 bg-white lg:shadow-sm lg:rounded-3xl">
               <div>
                 <h2 className="mb-3 text-base font-bold text-dark">
                   Account Information
@@ -136,7 +136,7 @@ export default function TopUpPage() {
                 <div className="flex items-start gap-4 rounded-2xl bg-gray/30 p-4">
                   {user?.image_url ? (
                     <img
-                      src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
+                      src={user?.image_url}
                       alt="Sigma Cat Wizard"
                       className="h-16 w-16 rounded-xl object-cover"
                     />

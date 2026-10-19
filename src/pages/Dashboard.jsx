@@ -314,7 +314,7 @@ export default function Dashboard() {
 
             <div className="flex lg:hidden items-center justify-between gap-4 my-6 text-white">
               <button
-                onClick={() => navigate("/top-up")}
+                onClick={() => navigate("/topup")}
                 className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity"
               >
                 <BiExport className="text-xl" />
@@ -323,7 +323,7 @@ export default function Dashboard() {
 
               <button
                 onClick={() => navigate("/transfer")}
-                className="bg-primary flex-1 flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity"
+                className="flex-1 text-primary border border-primary flex items-center justify-center py-3.5 rounded-xl cursor-pointer gap-2 font-medium shadow-md hover:opacity-95 transition-opacity"
               >
                 <FaRegPaperPlane className="text-lg" />
                 <span>Transfer</span>
@@ -336,7 +336,7 @@ export default function Dashboard() {
               </div>
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate("/top-up")}
+                  onClick={() => navigate("/topup")}
                   className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm"
                 >
                   <BiExport className="text-lg" />
@@ -344,7 +344,7 @@ export default function Dashboard() {
                 </button>
                 <button
                   onClick={() => navigate("/transfer")}
-                  className="bg-primary hover:bg-primary/80 cursor-pointer text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm"
+                  className="text-primary border border-primary cursor-pointer hover:opacity-60 px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 font-medium text-sm transition-colors shadow-sm"
                 >
                   <FaRegPaperPlane className="text-base" />
                   <span>Transfer</span>
@@ -358,11 +358,11 @@ export default function Dashboard() {
                   Income Chart
                 </div>
                 <div className="flex gap-2">
-                  <select className="bg-gray-100 text-gray-700 text-sm py-1.5 px-3 rounded-xl outline-none cursor-pointer font-medium">
+                  <select className="bg-white border border-dark/80 text-dark/80 text-sm py-1.5 px-3 rounded-xl outline-none cursor-pointer font-medium">
                     <option value="income">Income</option>
                     <option value="outcome">Outcome</option>
                   </select>
-                  <select className="bg-gray-100 text-gray-700 text-sm py-1.5 px-3 rounded-xl outline-none cursor-pointer font-medium">
+                  <select className="bg-white border border-dark/80 text-dark/80 text-sm py-1.5 px-3 rounded-xl outline-none cursor-pointer font-medium">
                     <option value="7">7 Days</option>
                     <option value="30">1 Month</option>
                   </select>

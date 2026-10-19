@@ -65,8 +65,8 @@ const ChangePassword = () => {
   }, [userState.isPending]);
 
   return (
-    <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
-      <div className="mb-4">
+    <section className="lg:p-6 bg-white w-full lg:rounded-2xl lg:shadow-sm">
+      <div className="mb-8 mt-8 lg:mt-0">
         <h2 className="font-semibold text-xl lg:text-sm">Change Password</h2>
       </div>
       <div className="flex flex-col justify-between lg:gap-4">

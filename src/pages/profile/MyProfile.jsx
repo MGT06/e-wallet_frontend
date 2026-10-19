@@ -17,7 +17,7 @@ const MyProfile = () => {
   }, [dispatch]);
 
   return (
-    <section className="container w-full lg:border rounded-lg lg:border-dark-gray/20">
+    <section className="lg:p-8 my-8 lg:my-0 w-full rounded-2xl bg-white lg:shadow-sm">
       <div className="grid grid-cols-4 grid-rows-8 lg:grid-cols-8 lg:grid-rows-4 gap-6">
         <div className="rounded-lg overflow-hidden col-span-2 row-span-2">
           {user?.image_url ? (

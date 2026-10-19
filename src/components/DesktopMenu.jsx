@@ -7,7 +7,7 @@ import { NavLink } from "react-router";
 
 const DesktopMenu = () => {
   return (
-    <section className="py-8 px-2 pl-16 hidden lg:flex flex-col gap-4 text-white left-0 bottom-0 border border-r-dark-gray/20">
+    <section className="py-4 px-2 pl-16 h-screen hidden lg:flex flex-col gap-4 text-white left-0 bottom-0 border-r border-r-gray-200">
       <NavLink
         to="/dashboard"
         className={({ isActive }) =>

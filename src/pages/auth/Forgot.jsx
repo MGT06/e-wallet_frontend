@@ -54,7 +54,7 @@ export default function Forgot() {
                   })}
                   type="email"
                   placeholder="Enter Your Email"
-                  className=" outline-none text-xs"
+                  className=" outline-none text-xs w-full"
                 />
               </div>
               <p className="mt-2 text-xs sm:text-xs h-6  text-red-500">
