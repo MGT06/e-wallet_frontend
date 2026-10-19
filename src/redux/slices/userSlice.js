@@ -486,10 +486,13 @@ const userSlice = createSlice({
           state.isFulfilled = false;
           state.isRejected = false;
         },
-        fulfilled: (state) => {
+        fulfilled: (state, {payload}) => {
           state.isPending = false;
           state.isFulfilled = true;
           state.isChecked = true;
+          if (payload.next) {
+            payload.next();
+          }
         },
         rejected: (state, { payload }) => {
           state.isPending = false;
