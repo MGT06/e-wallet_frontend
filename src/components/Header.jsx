@@ -61,21 +61,21 @@ export default function Header() {
   }, [param, title]);
 
   return (
-    <header className="lg:hidden bg-primary p-5 text-white text-1xl flex gap-4 border-b border-gray min-w-screen justify-between items-center z-50">
-      <div className="flex gap-4">
+    <header className="lg:hidden bg-primary py-2 px-5 text-white text-sm flex gap-4 border-b border-gray min-w-screen justify-between items-center z-50">
+      <div className="flex items-center justify-center gap-4">
         {user?.image_url ? (
           <img
             src={`${import.meta.env.VITE_API_URL}/public/image/${user?.image_url}`}
             alt="user-image"
-            className="h-10 w-10 rounded-xl object-cover"
+            className="h-8 w-8 rounded-xl object-cover"
           />
         ) : (
-          <div className="w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center">
-            <p>{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
+          <div className="w-8 h-8 bg-white text-primary rounded-full flex items-center justify-center">
+            <p className="text-xs">{`${user?.name[0].toUpperCase()}${user?.name[1].toUpperCase()}`}</p>
           </div>
         )}
-        <div className="text-sm">
-          <div>Hallo,</div>
+        <div className="text-xs">
+          <div>Hello,</div>
           <div>{user?.name}</div>
         </div>
       </div>
