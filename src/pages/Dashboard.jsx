@@ -271,7 +271,7 @@ export default function Dashboard() {
                                 alt="user-img"
                               />
                             ) : (
-                              <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center">
+                              <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center truncate">
                                 <p>{`${c.fullname[0].toUpperCase()}${c.fullname[1].toUpperCase()}`}</p>
                               </div>
                             )}
@@ -343,7 +343,7 @@ export default function Dashboard() {
                               alt="user-img"
                             />
                           ) : (
-                            <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center">
+                            <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center truncate">
                               <p>{`${c.fullname[0].toUpperCase()}${c.fullname[1].toUpperCase()}`}</p>
                             </div>
                           )}
