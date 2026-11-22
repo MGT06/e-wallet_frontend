@@ -22,7 +22,7 @@ body {
     margin: auto;
 
     @media (max-width: 600px) {
-      padding: 14px 24px;
+      padding: 8px 10px;
     }
   }
 
