@@ -27,6 +27,7 @@ export default function Register() {
     register,
     handleSubmit,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -54,6 +55,10 @@ export default function Register() {
       }),
     );
   };
+
+  useEffect(() => {
+    clearErrors();
+  }, [clearErrors]);
 
   useEffect(() => {
     (() => {
@@ -86,7 +91,9 @@ export default function Register() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-xl lg:text-lg font-semibold text-primary">E-Wallet</div>
+            <div className="text-xl lg:text-lg font-semibold text-primary">
+              E-Wallet
+            </div>
           </div>
 
           <div className="font-semibold text-lg">
