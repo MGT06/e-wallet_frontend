@@ -375,7 +375,7 @@ export default function Dashboard() {
                   })
                 ) : (
                   <p className="text-gray-400 text-sm text-center py-4">
-                    Belum ada riwayat transaksi.
+                    No transaction history yet.
                   </p>
                 )}
               </div>
