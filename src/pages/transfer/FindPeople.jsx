@@ -55,7 +55,7 @@ const FindPeople = () => {
 
               setSearchParams(newSearchParams);
             }}
-            className="w-full outline-none lg:text-xs"
+            className="w-full outline-none text-sm lg:text-xs"
             type="text"
             placeholder="Enter Number Or Full Name"
           />
