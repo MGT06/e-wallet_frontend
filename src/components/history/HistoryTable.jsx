@@ -47,10 +47,10 @@ const HistoryTable = () => {
   return (
     <>
       {loading && <LoadingModal />}
-      <section className="lg:p-8 p-4 w-full lg:shadow-sm lg:rounded-2xl min-h-dvh flex flex-col justify-between bg-white">
+      <section className="container w-full lg:shadow-sm lg:rounded-2xl min-h-dvh flex flex-col justify-between bg-white">
         <div className="flex flex-col justify-between gap-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <h2 className="font-semibold text-lg lg:text-lg">
+            <h2 className="font-semibold text-md lg:text-lg">
               Find Transaction
             </h2>
             <div className="w-full lg:w-4/12 p-2 border border-dark-gray/80 rounded-lg flex items-center justify-between">
@@ -66,7 +66,7 @@ const HistoryTable = () => {
 
                   setSearchParams(newSearchParams);
                 }}
-                className="w-full outline-none lg:text-xs"
+                className="w-full outline-none lg:text-xs text-sm"
                 type="text"
                 placeholder="Enter Number Or Full Name"
               />
