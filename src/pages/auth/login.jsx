@@ -25,6 +25,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -42,6 +43,10 @@ export default function Login() {
       }),
     );
   };
+
+  useEffect(() => {
+    clearErrors();
+  }, [clearErrors]);
 
   useEffect(() => {
     (() => {

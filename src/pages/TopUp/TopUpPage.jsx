@@ -106,7 +106,7 @@ export default function TopUpPage() {
       )}
       <div className="min-h-screen font-sans text-dark lg:p-8 lg:bg-gray-50">
         <div className="bg-white lg:shadow-sm rounded-2xl">
-          <div className="container flex items-center gap-3 py-4 text-dark">
+          <div className="container hidden lg:flex items-center gap-3 py-4 text-dark">
             <svg
               className="h-5 w-5 text-primary"
               fill="none"

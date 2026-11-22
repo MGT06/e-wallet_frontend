@@ -48,8 +48,8 @@ const PeopleCard = ({ id, fullname, image_url, phone, is_favorit, color }) => {
           onClick={handleClick}
           className="cursor-pointer flex flex-col lg:flex-row lg:gap-32 items-center w-full lg:justify-between lg:w-6/12"
         >
-          <p className="lg:text-sm">{fullname}</p>
-          <p className="lg:text-sm">{phone}</p>
+          <p className="text-sm">{fullname}</p>
+          <p className="text-sm">{phone}</p>
         </div>
         <div className="p-2 text-2xl cursor-pointer">
           <CiStar
